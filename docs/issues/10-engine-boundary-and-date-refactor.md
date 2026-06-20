@@ -48,8 +48,10 @@ behind the now-granular tests.
    helpers. Code move only, tests unchanged.
 4. **Targeted unit tests on `bridge.ts`** — cover `isValidBridgeInterval` branches
    directly instead of through the 428-line black-box suite.
-5. **`project references`** — root references `engine`; verify `next build` + `vitest`
-   green. End-to-end type-check, no drift.
+5. **Engine in the root type-check** — remove `engine` from `tsconfig.json` `exclude`
+   so `next build` / `tsc -p tsconfig.json` checks engine source end-to-end. (Full
+   `project references` were skipped: `composite` fights Next's `noEmit`, and they only
+   help `tsc -b`, which this repo never invokes — dropping the exclude is the actual win.)
 6. **Locale-neutral core + branded `ISODateString`** — engine returns keys
    (`anchorHolidayKey`), UI dictionary translates; `ISODateString = string & { __iso: true }`
    with a validating constructor at the `buildEngineInput` boundary.
@@ -64,7 +66,7 @@ behind the now-granular tests.
 - [ ] `index.ts` is a barrel only; `calculatePlan` lives in `planner.ts`, bridge helpers
       in `bridge.ts` and are exported.
 - [ ] `bridge.ts` has direct unit tests for the validation branches.
-- [ ] `tsconfig.json` uses `project references`; `engine` is no longer in `exclude`.
+- [ ] `engine` is no longer in `tsconfig.json` `exclude`; `next build` type-checks engine source.
 - [ ] Engine output carries locale-neutral keys; Italian strings live only in the UI layer.
 - [ ] `ISODateString` is branded; malformed dates are rejected at the input boundary.
 - [ ] `pnpm test` and `pnpm build` stay green after every step.
