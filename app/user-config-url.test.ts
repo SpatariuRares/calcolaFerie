@@ -15,17 +15,19 @@ describe("user config URL persistence", () => {
         { date: "2026-12-24", type: "mandatoryLeave" },
       ],
       patronSaintDate: "2026-06-24",
+      selectedVacationDates: ["2026-12-28", "2026-12-29"],
     });
 
     expect(params.get("budget")).toBe("20");
     expect(params.get("daysOff")).toBe("2026-08-14:closure,2026-12-24:mandatory");
     expect(params.get("patron")).toBe("2026-06-24");
+    expect(params.get("vacation")).toBe("2026-12-28,2026-12-29");
   });
 
   it("deserializes valid URL params into user config", () => {
     const config = deserializeConfig(
       new URLSearchParams(
-        "budget=20&daysOff=2026-08-14:closure,2026-12-24:mandatory&patron=2026-06-24"
+        "budget=20&daysOff=2026-08-14:closure,2026-12-24:mandatory&patron=2026-06-24&vacation=2026-12-29,2026-12-28"
       )
     );
 
@@ -36,6 +38,7 @@ describe("user config URL persistence", () => {
         { date: "2026-12-24", type: "mandatoryLeave" },
       ],
       patronSaintDate: "2026-06-24",
+      selectedVacationDates: ["2026-12-28", "2026-12-29"],
     });
   });
 
@@ -46,6 +49,7 @@ describe("user config URL persistence", () => {
     ).toBeNull();
     expect(deserializeConfig(new URLSearchParams("budget=20&daysOff=2026-12-24:other"))).toBeNull();
     expect(deserializeConfig(new URLSearchParams("budget=20&patron=not-a-date"))).toBeNull();
+    expect(deserializeConfig(new URLSearchParams("budget=20&vacation=2026-02-30"))).toBeNull();
   });
 
   it("silently ignores corrupt stored config", () => {
@@ -61,12 +65,14 @@ describe("user config URL persistence", () => {
           totalVacationDays: 15,
           daysOff: [{ date: "2026-11-02", type: "mandatoryLeave" }],
           patronSaintDate: "2026-06-24",
+          selectedVacationDates: ["2026-12-29", "2026-12-28"],
         })
       )
     ).toEqual({
       totalVacationDays: 15,
       daysOff: [{ date: "2026-11-02", type: "mandatoryLeave" }],
       patronSaintDate: "2026-06-24",
+      selectedVacationDates: ["2026-12-28", "2026-12-29"],
     });
   });
 
