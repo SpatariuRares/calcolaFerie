@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
 import { type DayOff, type UserConfig } from "@/engine/src/index";
 import {
@@ -552,6 +553,10 @@ export function VacationPlanner() {
           />
         </div>
       </div>
+
+      <footer className={styles.pageFooter}>
+        <Link href="/privacy">Privacy</Link>
+      </footer>
     </main>
   );
 }
