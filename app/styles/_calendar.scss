@@ -1,0 +1,136 @@
+@use "sass:list";
+@use "./theme" as *;
+
+.legend {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  border: 1px solid $border;
+  border-radius: 8px;
+  padding: 8px;
+  background: $surface;
+}
+
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #34423a;
+  font-size: 0.78rem;
+  font-weight: 750;
+  line-height: 1.2;
+}
+
+.legendSwatch {
+  width: 12px;
+  height: 12px;
+  flex: 0 0 auto;
+  border-radius: 3px;
+}
+
+.monthBlock {
+  gap: 8px;
+  border: 1px solid $border;
+  border-radius: 8px;
+  padding: 12px;
+  background: $surface;
+  content-visibility: auto;
+  contain-intrinsic-size: 240px;
+
+  h3 {
+    @include heading;
+    color: $strong;
+    font-size: 1rem;
+    line-height: 1.25;
+    text-transform: capitalize;
+  }
+}
+
+.weekdayGrid,
+.monthGrid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 5px;
+}
+
+.weekdayGrid span {
+  color: #66727b;
+  font-size: 0.7rem;
+  font-weight: 850;
+  text-align: center;
+}
+
+.blankDay,
+.dayCell {
+  aspect-ratio: 1;
+  min-width: 0;
+  border-radius: 5px;
+}
+
+.dayCell {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  border: 1px solid token($days, workday, 3);
+  color: $strong;
+  cursor: help;
+  font-size: 0.72rem;
+  font-weight: 800;
+  font-family: inherit;
+  line-height: 1;
+  padding: 0;
+
+  &:focus-visible {
+    @include focus;
+    z-index: 3;
+  }
+
+  &::after {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    z-index: 4;
+    display: none;
+    width: max-content;
+    max-width: min(220px, 70vw);
+    transform: translateX(-50%);
+    border: 1px solid #26342b;
+    border-radius: 6px;
+    padding: 7px 9px;
+    background: #17211b;
+    color: #fff;
+    content: attr(data-tooltip);
+    font-size: 0.76rem;
+    font-weight: 750;
+    line-height: 1.25;
+    text-align: center;
+    white-space: normal;
+    box-shadow: 0 8px 20px rgb(35 45 55 / 0.18);
+    pointer-events: none;
+  }
+
+  &:hover::after,
+  &:focus-visible::after {
+    display: block;
+  }
+}
+
+@each $type, $colors in $days {
+  .dayCell_#{$type} {
+    border-color: list.nth($colors, 3);
+    background: list.nth($colors, 1);
+    color: list.nth($colors, 2);
+  }
+}
+
+.monthBlock:first-child {
+  .dayCell::after {
+    top: calc(100% + 8px);
+    bottom: auto;
+  }
+}

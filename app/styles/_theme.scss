@@ -1,0 +1,61 @@
+@use "sass:list";
+@use "sass:map";
+
+$surface: #fff;
+$page-bg: #f4f6f8;
+$text: #18231d;
+$strong: #17211b;
+$muted: #5e6a72;
+$border: #dfe5eb;
+$border-strong: #b8c2cb;
+$focus: #86b7ff;
+$green: #115f43;
+$accent: #9a3f2b;
+$shadow: 0 10px 28px rgb(35 45 55 / 0.07);
+
+$leva: (
+  high: (#ccefdc, #0b5b35),
+  medium: (#fff0bd, #765000),
+  low: (#e8edf0, #4a565e),
+);
+$days: (
+  workday: (#fff, $strong, #d8e0e6),
+  weekend: (#e8edf1, #5a6670, #d8e0e6),
+  publicHoliday: (#ffd9d0, #8c2f1c, #e4b0a3),
+  companyClosure: (#d7eafa, #1e557d, #9dbfdd),
+  mandatoryLeave: (#ffe5b8, #7b4c00, #e4bd7d),
+  recommendedLeave: (#ccefdc, #0b5b35, #8bc9a9),
+);
+
+@mixin at($width) {
+  @media (min-width: $width) {
+    @content;
+  }
+}
+
+@mixin stack($gap) {
+  display: grid;
+  gap: $gap;
+}
+
+@mixin panel($padding: 16px) {
+  border: 1px solid #d7dee5;
+  border-radius: 8px;
+  padding: $padding;
+  background: $surface;
+  box-shadow: $shadow;
+}
+
+@mixin focus {
+  outline: 3px solid $focus;
+  outline-offset: 2px;
+}
+
+@mixin heading {
+  margin: 0;
+  letter-spacing: 0;
+}
+
+@function token($tokens, $key, $index) {
+  @return list.nth(map.get($tokens, $key), $index);
+}

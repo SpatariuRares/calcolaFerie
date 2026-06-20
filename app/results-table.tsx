@@ -1,5 +1,5 @@
 import { type BridgeOpportunity, type EngineOutput, type WeekdayIndex } from "@/engine/src/index";
-import styles from "./page.module.css";
+import styles from "./page.module.scss";
 
 const MONTH_LABELS = [
   "gen",

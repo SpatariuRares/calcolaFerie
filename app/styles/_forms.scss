@@ -1,0 +1,150 @@
+@use "./theme" as *;
+
+.label,
+.fieldset legend {
+  color: #26342b;
+  font-size: 0.94rem;
+  font-weight: 800;
+}
+
+.input {
+  width: 100%;
+  min-height: 46px;
+  border: 1px solid $border-strong;
+  border-radius: 6px;
+  padding: 10px 12px;
+  background: $surface;
+  color: $text;
+  font: inherit;
+
+  &:hover {
+    border-color: #8f9da8;
+  }
+
+  &:focus {
+    @include focus;
+  }
+}
+
+.fieldset {
+  min-width: 0;
+  margin: 0;
+  border: 0;
+  padding: 0;
+}
+
+.helpText,
+.mutedText {
+  margin: 0;
+  color: $muted;
+  font-size: 0.93rem;
+  line-height: 1.45;
+}
+
+.dayOffRow {
+  @include stack(10px);
+  border: 1px solid $border;
+  border-left: 4px solid #2d6a89;
+  border-radius: 8px;
+  padding: 12px;
+  background: #f9fbfc;
+}
+
+.segmentedControl {
+  @include stack(8px);
+  grid-template-columns: 1fr;
+}
+
+.segment {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #c6d0d8;
+  border-radius: 6px;
+  padding: 9px 10px;
+  background: $surface;
+  color: #26342b;
+  cursor: pointer;
+
+  &:has(input:checked) {
+    border-color: #16724f;
+    background: #e7f5ee;
+    box-shadow: inset 0 0 0 1px #16724f;
+  }
+
+  &:has(input:focus-visible) {
+    @include focus;
+  }
+
+  input {
+    flex: 0 0 auto;
+    width: 17px;
+    height: 17px;
+    margin: 0;
+    accent-color: #16724f;
+  }
+
+  span {
+    min-width: 0;
+    font-size: 0.88rem;
+    line-height: 1.25;
+  }
+}
+
+.primaryButton,
+.secondaryButton,
+.linkButton {
+  border: 0;
+  font: inherit;
+  font-weight: 850;
+  cursor: pointer;
+
+  &:focus-visible {
+    @include focus;
+  }
+}
+
+.primaryButton,
+.secondaryButton {
+  min-height: 46px;
+  border-radius: 6px;
+  padding: 11px 15px;
+}
+
+.primaryButton {
+  background: $green;
+  color: $surface;
+
+  &:hover:not(:disabled) {
+    background: #0b4c35;
+  }
+
+  &:disabled {
+    background: #a8b2b9;
+    cursor: not-allowed;
+  }
+}
+
+.secondaryButton {
+  border: 1px solid $border-strong;
+  background: $surface;
+  color: $strong;
+
+  &:hover {
+    background: #f3f6f8;
+  }
+}
+
+.linkButton {
+  padding: 4px;
+  background: transparent;
+  color: #a23d26;
+  font-size: 0.88rem;
+}
+
+@include at(540px) {
+  .segmentedControl {
+    grid-template-columns: 1fr 1fr;
+  }
+}

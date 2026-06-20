@@ -1,60 +1,25 @@
 "use client";
 
 import { useId, useRef, useState } from "react";
-import { type DayOff, type DayType, type EngineInput, type EngineOutput } from "@/engine/src/index";
+import { type DayOff } from "@/engine/src/index";
+import {
+  buildCalendarMonths,
+  CALENDAR_LEGEND,
+  DAY_TYPE_LABELS,
+  getCalendarDayLabel,
+} from "./calendar-model";
 import { calculateVacationPlan, type CalculationState } from "./calculate-vacation-plan";
-import styles from "./page.module.css";
+import styles from "./page.module.scss";
 import { ResultsTable } from "./results-table";
 
 type DayOffRow = DayOff & { id: string };
-type CalendarDay = {
-  iso: string;
-  dayNumber: number;
-  type: DayType;
-  holidayName?: string;
-};
-type CalendarMonth = {
-  key: string;
-  label: string;
-  leadingBlankDays: number;
-  days: CalendarDay[];
-};
 
 const DAY_OFF_TYPE_LABELS: Record<DayOff["type"], string> = {
   companyClosure: "Chiusura aziendale — giorno gratuito",
   mandatoryLeave: "Giorno obbligatorio — scala dal budget",
 };
 
-const DAY_TYPE_LABELS: Record<DayType, string> = {
-  weekend: "Weekend",
-  publicHoliday: "Festivo",
-  companyClosure: "Chiusura",
-  mandatoryLeave: "Ferie obbligatorie",
-  recommendedLeave: "Ferie consigliate",
-  workday: "Lavorativo",
-};
-
-const CALENDAR_LEGEND: DayType[] = [
-  "recommendedLeave",
-  "publicHoliday",
-  "companyClosure",
-  "mandatoryLeave",
-  "weekend",
-  "workday",
-];
-
 const WEEKDAY_INITIALS = ["L", "M", "M", "G", "V", "S", "D"];
-
-const MONTH_FORMATTER = new Intl.DateTimeFormat("it-IT", {
-  month: "long",
-  year: "numeric",
-});
-
-const DAY_FORMATTER = new Intl.DateTimeFormat("it-IT", {
-  day: "numeric",
-  month: "long",
-  year: "numeric",
-});
 
 function createDayOffRow(id: string, type: DayOff["type"] = "companyClosure"): DayOffRow {
   return {
@@ -69,65 +34,6 @@ function parseVacationDays(value: string): number | null {
   const parsed = Number(value);
   if (!Number.isInteger(parsed) || parsed < 0) return null;
   return parsed;
-}
-
-function parseISODate(isoDate: string) {
-  return new Date(`${isoDate}T00:00:00`);
-}
-
-function dateToISO(date: Date) {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-}
-
-function getMondayFirstBlankDays(date: Date) {
-  return (date.getDay() + 6) % 7;
-}
-
-function buildCalendarMonths(input: EngineInput, output: EngineOutput): CalendarMonth[] {
-  const startDate = parseISODate(input.windowStart);
-  const endDate = parseISODate(input.windowEnd);
-  const holidayNames = new Map(input.publicHolidays.map((holiday) => [holiday.date, holiday.name]));
-  const months: CalendarMonth[] = [];
-  const cursor = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
-
-  while (cursor <= endDate) {
-    const year = cursor.getFullYear();
-    const month = cursor.getMonth();
-    const firstDay = new Date(year, month, 1);
-    const lastDay = new Date(year, month + 1, 0);
-    const days: CalendarDay[] = [];
-
-    for (let day = 1; day <= lastDay.getDate(); day++) {
-      const date = new Date(year, month, day);
-      const iso = dateToISO(date);
-      const type = output.dayMap.get(iso);
-
-      if (!type || iso < input.windowStart || iso > input.windowEnd) continue;
-
-      days.push({
-        iso,
-        dayNumber: day,
-        type,
-        holidayName: holidayNames.get(iso),
-      });
-    }
-
-    months.push({
-      key: `${year}-${month}`,
-      label: MONTH_FORMATTER.format(firstDay),
-      leadingBlankDays:
-        year === startDate.getFullYear() && month === startDate.getMonth()
-          ? getMondayFirstBlankDays(startDate)
-          : getMondayFirstBlankDays(firstDay),
-      days,
-    });
-    cursor.setMonth(cursor.getMonth() + 1);
-  }
-
-  return months;
 }
 
 function ResultsPanel({ calculation }: { calculation: CalculationState | null }) {
@@ -212,23 +118,19 @@ function CalendarView({ calculation }: { calculation: CalculationState | null })
                   <span className={styles.blankDay} key={`blank-${index}`} />
                 ))}
                 {month.days.map((day) => {
-                  const label = [
-                    DAY_FORMATTER.format(parseISODate(day.iso)),
-                    DAY_TYPE_LABELS[day.type],
-                    day.holidayName,
-                  ]
-                    .filter(Boolean)
-                    .join(" — ");
+                  const label = getCalendarDayLabel(day);
 
                   return (
-                    <span
+                    <button
                       aria-label={label}
                       className={`${styles.dayCell} ${styles[`dayCell_${day.type}`]}`}
+                      data-tooltip={label}
                       key={day.iso}
                       title={label}
+                      type="button"
                     >
                       {day.dayNumber}
-                    </span>
+                    </button>
                   );
                 })}
               </div>
