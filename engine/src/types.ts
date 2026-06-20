@@ -11,9 +11,12 @@ export type WeekdayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
 export interface PublicHoliday {
   date: ISODateString;
-  name: string;
+  /** Locale-neutral identifier; the UI maps it to a display label. */
+  key: string;
   kind: PublicHolidayKind;
 }
+
+export type AnchorKind = 'publicHoliday' | 'companyClosure';
 
 export interface WorkSchedule {
   workDays: Set<WeekdayIndex>;
@@ -36,11 +39,13 @@ export interface EngineInput {
 }
 
 export interface ExplanationData {
-  anchorHolidayName: string;
+  anchorKind: AnchorKind;
+  /** Holiday key of the anchor; absent when the anchor is a company closure. */
+  anchorHolidayKey?: string;
   anchorWeekday: WeekdayIndex;
   costDays: number;
   staccoDays: number;
-  fusedHolidayNames?: string[];
+  fusedHolidayKeys?: string[];
 }
 
 export interface BridgeOpportunity {

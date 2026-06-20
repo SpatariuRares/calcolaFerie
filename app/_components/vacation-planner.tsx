@@ -1,18 +1,24 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
-import { type DayOff, type UserConfig } from "@/engine/src/index";
+import { type DayOff, type UserConfig } from "@engine";
 import {
   buildCalendarMonths,
   CALENDAR_LEGEND,
   DAY_TYPE_LABELS,
   getCalendarDayLabel,
   isSelectableVacationDay,
-} from "./calendar-model";
-import { calculateVacationPlan, type CalculationState } from "./calculate-vacation-plan";
-import styles from "./page.module.scss";
+} from "../_lib/calendar-model";
+import { calculateVacationPlan, type CalculationState } from "../_lib/calculate-vacation-plan";
+import styles from "../styles/app.module.scss";
 import { getSelectedOpportunityCost, ResultsTable } from "./results-table";
-import { CONFIG_STORAGE_KEY, getInitialUserConfig, serializeConfig } from "./user-config-url";
+import {
+  CONFIG_STORAGE_KEY,
+  getInitialUserConfig,
+  type PlannerConfig,
+  serializeConfig,
+} from "../_lib/user-config-url";
 
 type DayOffRow = DayOff & { id: string };
 
@@ -244,7 +250,7 @@ export function VacationPlanner() {
   const [dayOffRows, setDayOffRows] = useState<DayOffRow[]>([createDayOffRow("day-off-0")]);
   const [patronSaintDate, setPatronSaintDate] = useState("");
   const [calculation, setCalculation] = useState<CalculationState | null>(null);
-  const [submittedConfig, setSubmittedConfig] = useState<UserConfig | null>(null);
+  const [submittedConfig, setSubmittedConfig] = useState<PlannerConfig | null>(null);
   const [shareStatus, setShareStatus] = useState("");
   const [selectedVacationDates, setSelectedVacationDates] = useState<Set<string>>(() => new Set());
   const [selectedOpportunityIds, setSelectedOpportunityIds] = useState<Set<string>>(
@@ -270,6 +276,12 @@ export function VacationPlanner() {
       setTotalVacationDays(String(config.totalVacationDays));
       setDayOffRows(rows);
       setPatronSaintDate(config.patronSaintDate ?? "");
+      setSelectedVacationDates(new Set(config.selectedVacationDates ?? []));
+
+      if (config.selectedVacationDates && config.selectedVacationDates.length > 0) {
+        setSubmittedConfig(config);
+        setCalculation(calculateVacationPlan(config));
+      }
     });
 
     return () => {
@@ -293,15 +305,15 @@ export function VacationPlanner() {
   }
 
   function toggleVacationDate(isoDate: string) {
-    setSelectedVacationDates((dates) => {
-      const nextDates = new Set(dates);
-      if (nextDates.has(isoDate)) {
-        nextDates.delete(isoDate);
-      } else {
-        nextDates.add(isoDate);
-      }
-      return nextDates;
-    });
+    const nextDates = new Set(selectedVacationDates);
+    if (nextDates.has(isoDate)) {
+      nextDates.delete(isoDate);
+    } else {
+      nextDates.add(isoDate);
+    }
+
+    setSelectedVacationDates(nextDates);
+    saveSelectedVacationDates(nextDates);
   }
 
   function toggleOpportunity(opportunityId: string) {
@@ -329,12 +341,31 @@ export function VacationPlanner() {
     };
   }
 
-  function saveUserConfig(config: UserConfig) {
+  function saveUserConfig(config: PlannerConfig) {
     try {
       window.localStorage.setItem(CONFIG_STORAGE_KEY, JSON.stringify(config));
     } catch {
       // Storage can be unavailable in private contexts; calculation should still work.
     }
+  }
+
+  function withSelectedVacationDates(config: UserConfig, dates: Set<string>): PlannerConfig {
+    const baseConfig: PlannerConfig = { ...(config as PlannerConfig) };
+    delete baseConfig.selectedVacationDates;
+    const selectedVacationDates = [...dates].sort((a, b) => a.localeCompare(b));
+
+    return {
+      ...baseConfig,
+      ...(selectedVacationDates.length > 0 ? { selectedVacationDates } : {}),
+    };
+  }
+
+  function saveSelectedVacationDates(dates: Set<string>) {
+    if (!submittedConfig) return;
+
+    const nextConfig = withSelectedVacationDates(submittedConfig, dates);
+    setSubmittedConfig(nextConfig);
+    saveUserConfig(nextConfig);
   }
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -512,12 +543,20 @@ export function VacationPlanner() {
           />
           <CalendarView
             calculation={calculation}
-            onClearSelectedVacationDates={() => setSelectedVacationDates(new Set())}
+            onClearSelectedVacationDates={() => {
+              const nextDates = new Set<string>();
+              setSelectedVacationDates(nextDates);
+              saveSelectedVacationDates(nextDates);
+            }}
             onToggleVacationDate={toggleVacationDate}
             selectedVacationDates={selectedVacationDates}
           />
         </div>
       </div>
+
+      <footer className={styles.pageFooter}>
+        <Link href="/privacy">Privacy</Link>
+      </footer>
     </main>
   );
 }

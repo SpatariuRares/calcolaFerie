@@ -1,5 +1,10 @@
-import { type BridgeOpportunity, type EngineOutput, type WeekdayIndex } from "@/engine/src/index";
-import styles from "./page.module.scss";
+import { type BridgeOpportunity, type EngineOutput, type WeekdayIndex } from "@engine";
+import { buildBookingDeepLink } from "../_lib/affiliate-link";
+import { COMPANY_CLOSURE_LABEL, holidayLabel } from "../_lib/holiday-labels";
+import styles from "../styles/app.module.scss";
+
+const AFFILIATE_DISCLOSURE =
+  "Link affiliato: se prenoti, riceviamo una commissione senza costi extra per te.";
 
 const MONTH_LABELS = [
   "gen",
@@ -70,11 +75,16 @@ export function formatExplanation(opportunity: BridgeOpportunity) {
   const costPhrase = `${costDays} ${vacationDayLabel(costDays)} di ferie`;
   const resultPhrase = `${costPhrase} = ${staccoDays} giorni di stacco`;
 
-  if (explanation.fusedHolidayNames && explanation.fusedHolidayNames.length > 1) {
-    return `${explanation.fusedHolidayNames.join(" + ")} → ${resultPhrase}`;
+  if (explanation.fusedHolidayKeys && explanation.fusedHolidayKeys.length > 1) {
+    return `${explanation.fusedHolidayKeys.map(holidayLabel).join(" + ")} → ${resultPhrase}`;
   }
 
-  return `${explanation.anchorHolidayName} cade ${WEEKDAY_LABELS[explanation.anchorWeekday]} → ${resultPhrase}`;
+  const anchorLabel =
+    explanation.anchorKind === "companyClosure"
+      ? COMPANY_CLOSURE_LABEL
+      : holidayLabel(explanation.anchorHolidayKey ?? "");
+
+  return `${anchorLabel} cade ${WEEKDAY_LABELS[explanation.anchorWeekday]} → ${resultPhrase}`;
 }
 
 export function getLevaTier(leva: number): LevaTier {
@@ -96,6 +106,29 @@ export function getSelectedOpportunityCost(
     (total, opportunity) =>
       selectedOpportunityIds.has(opportunity.id) ? total + opportunity.costDays : total,
     0
+  );
+}
+
+function BookingCta({ opportunity }: { opportunity: BridgeOpportunity }) {
+  const href = buildBookingDeepLink({
+    startDate: opportunity.startDate,
+    endDate: opportunity.endDate,
+  });
+
+  // Stop propagation so booking does not toggle the row/card selection.
+  const stop = (event: { stopPropagation: () => void }) => event.stopPropagation();
+
+  return (
+    <a
+      className={styles.bookingCta}
+      href={href}
+      onClick={stop}
+      onKeyDown={stop}
+      rel="sponsored noopener noreferrer"
+      target="_blank"
+    >
+      Prenota questi giorni
+    </a>
   );
 }
 
@@ -155,6 +188,8 @@ function OpportunityCard({
 
       {isOverBudget ? <span className={styles.budgetChip}>Fuori budget</span> : null}
       {isSelected ? <span className={styles.selectedChip}>Selezionato</span> : null}
+
+      <BookingCta opportunity={opportunity} />
     </article>
   );
 }
@@ -207,6 +242,9 @@ function OpportunityRow({
         {isSelected ? <span className={styles.selectedChip}>Scalato</span> : null}
         {isOverBudget ? <span className={styles.budgetChip}>Fuori budget</span> : null}
       </td>
+      <td className={styles.bookingCell} onClick={(event) => event.stopPropagation()}>
+        <BookingCta opportunity={opportunity} />
+      </td>
     </tr>
   );
 }
@@ -253,6 +291,7 @@ export function ResultsTable({
               <th scope="col">Leva</th>
               <th scope="col">Perché conviene</th>
               <th scope="col">Budget</th>
+              <th scope="col">Prenota</th>
             </tr>
           </thead>
           <tbody>
@@ -269,6 +308,8 @@ export function ResultsTable({
           </tbody>
         </table>
       </div>
+
+      <p className={styles.affiliateDisclosure}>{AFFILIATE_DISCLOSURE}</p>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import type { EngineOutput } from "@/engine/src/index";
+import type { EngineOutput } from "@engine";
 import { calculateVacationPlan } from "./calculate-vacation-plan";
 import { buildEngineInput } from "./engine-input";
 
@@ -39,7 +39,7 @@ describe("buildEngineInput", () => {
 
     expect(input.publicHolidays).toContainEqual({
       date: "2026-06-24",
-      name: "Patrono locale",
+      key: "patron",
       kind: "patron",
     });
   });
@@ -82,7 +82,7 @@ describe("buildEngineInput", () => {
     expect(calculation.output).toBe(output);
     expect(calculation.input.publicHolidays).toContainEqual({
       date: "2026-06-24",
-      name: "Patrono locale",
+      key: "patron",
       kind: "patron",
     });
   });

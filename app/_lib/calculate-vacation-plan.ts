@@ -1,4 +1,4 @@
-import { calculatePlan, type EngineOutput, type UserConfig } from "@/engine/src/index";
+import { calculatePlan, type EngineOutput, type UserConfig } from "@engine";
 import { buildEngineInput } from "./engine-input";
 
 type CalculatePlan = typeof calculatePlan;

@@ -1,6 +1,10 @@
-import type { DayOff, UserConfig, WeekdayIndex, WorkSchedule } from "@/engine/src/index";
+import type { DayOff, ISODateString, UserConfig, WeekdayIndex, WorkSchedule } from "@engine";
 
 export const CONFIG_STORAGE_KEY = "calcolaferie_config";
+
+export interface PlannerConfig extends UserConfig {
+  selectedVacationDates?: ISODateString[];
+}
 
 const DAY_OFF_TYPE_TO_PARAM = {
   companyClosure: "closure",
@@ -69,6 +73,18 @@ function parseDayOffs(value: unknown): DayOff[] | null {
   return dayOffs;
 }
 
+function parseISODateList(value: unknown): ISODateString[] | null {
+  if (!Array.isArray(value)) return null;
+
+  const dates = new Set<ISODateString>();
+  for (const date of value) {
+    if (!isISODateString(date) || dates.has(date)) return null;
+    dates.add(date);
+  }
+
+  return [...dates].sort((a, b) => a.localeCompare(b));
+}
+
 function parseDayOffTypeParam(value: string | undefined): DayOff["type"] | null {
   if (value === "closure") return PARAM_TO_DAY_OFF_TYPE.closure;
   if (value === "mandatory") return PARAM_TO_DAY_OFF_TYPE.mandatory;
@@ -120,7 +136,7 @@ function normalizeWorkSchedule(value: unknown): Partial<WorkSchedule> | undefine
   return schedule;
 }
 
-function normalizeUserConfig(value: unknown): UserConfig | null {
+function normalizeUserConfig(value: unknown): PlannerConfig | null {
   if (!isRecord(value)) return null;
 
   const totalVacationDays = parseBudget(value.totalVacationDays);
@@ -132,6 +148,12 @@ function normalizeUserConfig(value: unknown): UserConfig | null {
   const workSchedule = normalizeWorkSchedule(value.workSchedule);
   if (workSchedule === null) return null;
 
+  const selectedVacationDates =
+    value.selectedVacationDates === undefined
+      ? undefined
+      : parseISODateList(value.selectedVacationDates);
+  if (selectedVacationDates === null) return null;
+
   if (value.patronSaintDate !== undefined && !isISODateString(value.patronSaintDate)) return null;
 
   return {
@@ -139,6 +161,7 @@ function normalizeUserConfig(value: unknown): UserConfig | null {
     daysOff,
     ...(value.patronSaintDate ? { patronSaintDate: value.patronSaintDate } : {}),
     ...(workSchedule ? { workSchedule } : {}),
+    ...(selectedVacationDates && selectedVacationDates.length > 0 ? { selectedVacationDates } : {}),
   };
 }
 
@@ -183,11 +206,24 @@ function parseConsumeHolidaysParam(value: string | null): boolean | null | undef
   return null;
 }
 
+function parseVacationDatesParam(value: string | null): ISODateString[] | null | undefined {
+  if (value === null) return undefined;
+  if (value === "") return null;
+
+  const dates = new Set<ISODateString>();
+  for (const date of value.split(",")) {
+    if (!isISODateString(date) || dates.has(date)) return null;
+    dates.add(date);
+  }
+
+  return [...dates].sort((a, b) => a.localeCompare(b));
+}
+
 function workDaysToArray(workDays: WorkSchedule["workDays"] | undefined): WeekdayIndex[] {
   return workDays ? [...workDays].sort((a, b) => a - b) : [];
 }
 
-export function serializeConfig(config: UserConfig): URLSearchParams {
+export function serializeConfig(config: PlannerConfig): URLSearchParams {
   const params = new URLSearchParams();
   params.set("budget", String(config.totalVacationDays));
 
@@ -213,10 +249,17 @@ export function serializeConfig(config: UserConfig): URLSearchParams {
     params.set("consumeHolidays", config.workSchedule.consumeHolidaysOnPublicHolidays ? "1" : "0");
   }
 
+  if (config.selectedVacationDates && config.selectedVacationDates.length > 0) {
+    params.set(
+      "vacation",
+      [...config.selectedVacationDates].sort((a, b) => a.localeCompare(b)).join(",")
+    );
+  }
+
   return params;
 }
 
-export function deserializeConfig(params: URLSearchParams): UserConfig | null {
+export function deserializeConfig(params: URLSearchParams): PlannerConfig | null {
   const budget = parseBudget(params.get("budget"));
   if (budget === null) return null;
 
@@ -232,6 +275,9 @@ export function deserializeConfig(params: URLSearchParams): UserConfig | null {
   const consumeHolidaysOnPublicHolidays = parseConsumeHolidaysParam(params.get("consumeHolidays"));
   if (consumeHolidaysOnPublicHolidays === null) return null;
 
+  const selectedVacationDates = parseVacationDatesParam(params.get("vacation"));
+  if (selectedVacationDates === null) return null;
+
   const workSchedule: Partial<WorkSchedule> = {};
   if (workDays !== undefined) workSchedule.workDays = workDays;
   if (consumeHolidaysOnPublicHolidays !== undefined) {
@@ -243,10 +289,11 @@ export function deserializeConfig(params: URLSearchParams): UserConfig | null {
     daysOff,
     ...(patronSaintDate ? { patronSaintDate } : {}),
     ...(Object.keys(workSchedule).length > 0 ? { workSchedule } : {}),
+    ...(selectedVacationDates && selectedVacationDates.length > 0 ? { selectedVacationDates } : {}),
   };
 }
 
-export function deserializeStoredConfig(value: string | null): UserConfig | null {
+export function deserializeStoredConfig(value: string | null): PlannerConfig | null {
   if (!value) return null;
 
   try {
@@ -259,6 +306,6 @@ export function deserializeStoredConfig(value: string | null): UserConfig | null
 export function getInitialUserConfig(
   params: URLSearchParams,
   storedValue: string | null
-): UserConfig | null {
+): PlannerConfig | null {
   return deserializeConfig(params) ?? deserializeStoredConfig(storedValue);
 }

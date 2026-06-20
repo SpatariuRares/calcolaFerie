@@ -1,18 +1,5 @@
 import type { ISODateString, PublicHoliday } from "./types";
-
-function pad(n: number): string {
-  return String(n).padStart(2, "0");
-}
-
-function toISO(year: number, month: number, day: number): ISODateString {
-  return `${year}-${pad(month)}-${pad(day)}`;
-}
-
-function addDays(iso: ISODateString, days: number): ISODateString {
-  const d = new Date(iso + "T00:00:00Z");
-  d.setUTCDate(d.getUTCDate() + days);
-  return `${d.getUTCFullYear()}-${pad(d.getUTCMonth() + 1)}-${pad(d.getUTCDate())}`;
-}
+import { addDays, toISO } from "./date";
 
 // Anonymous Gregorian algorithm (computus)
 export function computeEaster(year: number): ISODateString {
@@ -34,22 +21,22 @@ export function computeEaster(year: number): ISODateString {
 
 export function getItalianPublicHolidays(year: number): PublicHoliday[] {
   const fixed: PublicHoliday[] = [
-    { date: toISO(year, 1, 1), name: "Capodanno", kind: "national" },
-    { date: toISO(year, 1, 6), name: "Epifania", kind: "national" },
-    { date: toISO(year, 4, 25), name: "Festa della Liberazione", kind: "national" },
-    { date: toISO(year, 5, 1), name: "Festa dei Lavoratori", kind: "national" },
-    { date: toISO(year, 6, 2), name: "Festa della Repubblica", kind: "national" },
-    { date: toISO(year, 8, 15), name: "Ferragosto", kind: "national" },
-    { date: toISO(year, 11, 1), name: "Ognissanti", kind: "national" },
-    { date: toISO(year, 12, 8), name: "Immacolata Concezione", kind: "national" },
-    { date: toISO(year, 12, 25), name: "Natale", kind: "national" },
-    { date: toISO(year, 12, 26), name: "Santo Stefano", kind: "national" },
+    { date: toISO(year, 1, 1), key: "newYear", kind: "national" },
+    { date: toISO(year, 1, 6), key: "epiphany", kind: "national" },
+    { date: toISO(year, 4, 25), key: "liberation", kind: "national" },
+    { date: toISO(year, 5, 1), key: "labourDay", kind: "national" },
+    { date: toISO(year, 6, 2), key: "republic", kind: "national" },
+    { date: toISO(year, 8, 15), key: "assumption", kind: "national" },
+    { date: toISO(year, 11, 1), key: "allSaints", kind: "national" },
+    { date: toISO(year, 12, 8), key: "immaculateConception", kind: "national" },
+    { date: toISO(year, 12, 25), key: "christmas", kind: "national" },
+    { date: toISO(year, 12, 26), key: "stStephen", kind: "national" },
   ];
 
   const easterDate = computeEaster(year);
   const pasquetta: PublicHoliday = {
     date: addDays(easterDate, 1),
-    name: "Lunedì di Pasqua",
+    key: "easterMonday",
     kind: "pasquetta",
   };
 

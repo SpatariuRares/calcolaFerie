@@ -86,7 +86,7 @@ describe('calculatePlan', () => {
       input({
         windowStart: '2027-03-29',
         windowEnd: '2027-04-04',
-        publicHolidays: [{ date: '2027-04-01', name: 'Festa Test', kind: 'national' }],
+        publicHolidays: [{ date: '2027-04-01', key: 'Festa Test', kind: 'national' }],
       }),
     );
     expect(out.opportunities).toHaveLength(1);
@@ -104,7 +104,7 @@ describe('calculatePlan', () => {
       input({
         windowStart: '2027-10-25',
         windowEnd: '2027-11-07',
-        publicHolidays: [{ date: '2027-11-01', name: 'Ognissanti', kind: 'national' }],
+        publicHolidays: [{ date: '2027-11-01', key: 'Ognissanti', kind: 'national' }],
       }),
     );
     expect(out.opportunities).toHaveLength(1);
@@ -125,7 +125,7 @@ describe('calculatePlan', () => {
       input({
         windowStart: '2027-08-09',
         windowEnd: '2027-08-22',
-        publicHolidays: [{ date: '2027-08-15', name: 'Ferragosto', kind: 'national' }],
+        publicHolidays: [{ date: '2027-08-15', key: 'Ferragosto', kind: 'national' }],
       }),
     );
 
@@ -138,8 +138,8 @@ describe('calculatePlan', () => {
         windowStart: '2026-12-21',
         windowEnd: '2026-12-27',
         publicHolidays: [
-          { date: '2026-12-25', name: 'Natale', kind: 'national' },
-          { date: '2026-12-26', name: 'Santo Stefano', kind: 'national' },
+          { date: '2026-12-25', key: 'Natale', kind: 'national' },
+          { date: '2026-12-26', key: 'Santo Stefano', kind: 'national' },
         ],
       }),
     );
@@ -155,7 +155,7 @@ describe('calculatePlan', () => {
       input({
         windowStart: '2027-05-29',
         windowEnd: '2027-06-06',
-        publicHolidays: [{ date: '2027-06-02', name: 'Repubblica', kind: 'national' }],
+        publicHolidays: [{ date: '2027-06-02', key: 'Repubblica', kind: 'national' }],
       }),
     );
     expect(out.opportunities).toHaveLength(1);
@@ -176,7 +176,7 @@ describe('calculatePlan', () => {
       input({
         windowStart: '2027-05-29',
         windowEnd: '2027-06-06',
-        publicHolidays: [{ date: '2027-06-02', name: 'Repubblica', kind: 'national' }],
+        publicHolidays: [{ date: '2027-06-02', key: 'Repubblica', kind: 'national' }],
         minBridgeLeverage: 2.4,
       }),
     );
@@ -196,14 +196,14 @@ describe('calculatePlan', () => {
         windowStart: '2026-04-01',
         windowEnd: '2026-04-12',
         publicHolidays: [
-          { date: '2026-04-05', name: 'Pasqua', kind: 'easter' },
-          { date: '2026-04-06', name: 'Pasquetta', kind: 'pasquetta' },
+          { date: '2026-04-05', key: 'Pasqua', kind: 'easter' },
+          { date: '2026-04-06', key: 'Pasquetta', kind: 'pasquetta' },
         ],
       }),
     );
     expect(out.opportunities).toHaveLength(1);
     const opp = out.opportunities[0];
-    expect(opp.explanation.fusedHolidayNames).toEqual(['Pasqua', 'Pasquetta']);
+    expect(opp.explanation.fusedHolidayKeys).toEqual(['Pasqua', 'Pasquetta']);
     expect(opp.costDays).toBe(4);
     expect(opp.staccoDays).toBe(9);
     expect(opp.leva).toBe(2.25);
@@ -217,14 +217,14 @@ describe('calculatePlan', () => {
         windowStart: '2027-03-29',
         windowEnd: '2027-04-11',
         publicHolidays: [
-          { date: '2027-04-01', name: 'A', kind: 'national' },
-          { date: '2027-04-05', name: 'B', kind: 'national' },
+          { date: '2027-04-01', key: 'A', kind: 'national' },
+          { date: '2027-04-05', key: 'B', kind: 'national' },
         ],
       }),
     );
     expect(out.opportunities).toHaveLength(1);
     const opp = out.opportunities[0];
-    expect(opp.explanation.fusedHolidayNames).toEqual(['A', 'B']);
+    expect(opp.explanation.fusedHolidayKeys).toEqual(['A', 'B']);
     expect(opp.startDate).toBe('2027-04-01');
     expect(opp.endDate).toBe('2027-04-11');
     expect(opp.costDays).toBe(5);
@@ -239,8 +239,8 @@ describe('calculatePlan', () => {
         windowStart: '2027-04-01',
         windowEnd: '2027-06-30',
         publicHolidays: [
-          { date: '2027-04-01', name: 'A', kind: 'national' },
-          { date: '2027-06-02', name: 'B', kind: 'national' },
+          { date: '2027-04-01', key: 'A', kind: 'national' },
+          { date: '2027-06-02', key: 'B', kind: 'national' },
         ],
       }),
     );
@@ -282,7 +282,7 @@ describe('calculatePlan', () => {
       input({
         windowStart: '2027-03-29',
         windowEnd: '2027-04-04',
-        publicHolidays: [{ date: '2027-04-01', name: 'Festa Test', kind: 'national' }],
+        publicHolidays: [{ date: '2027-04-01', key: 'Festa Test', kind: 'national' }],
         daysOff: [{ date: '2027-03-31', type: 'companyClosure' }],
       }),
     );
@@ -300,7 +300,7 @@ describe('calculatePlan', () => {
       input({
         windowStart: '2027-05-29',
         windowEnd: '2027-06-06',
-        publicHolidays: [{ date: '2027-06-02', name: 'Repubblica', kind: 'national' }],
+        publicHolidays: [{ date: '2027-06-02', key: 'Repubblica', kind: 'national' }],
         totalVacationDays: 1,
       }),
     );
@@ -316,10 +316,10 @@ describe('calculatePlan', () => {
         windowEnd: '2027-01-10',
         totalVacationDays: 7,
         publicHolidays: [
-          { date: '2026-12-25', name: 'Natale', kind: 'national' },
-          { date: '2026-12-26', name: 'Santo Stefano', kind: 'national' },
-          { date: '2027-01-01', name: 'Capodanno', kind: 'national' },
-          { date: '2027-01-06', name: 'Epifania', kind: 'national' },
+          { date: '2026-12-25', key: 'Natale', kind: 'national' },
+          { date: '2026-12-26', key: 'Santo Stefano', kind: 'national' },
+          { date: '2027-01-01', key: 'Capodanno', kind: 'national' },
+          { date: '2027-01-06', key: 'Epifania', kind: 'national' },
         ],
       }),
     );
@@ -349,7 +349,7 @@ describe('calculatePlan', () => {
       input({
         windowStart: '2027-04-01',
         windowEnd: '2027-04-30',
-        publicHolidays: [{ date: '2027-04-01', name: 'Festa Test', kind: 'national' }],
+        publicHolidays: [{ date: '2027-04-01', key: 'Festa Test', kind: 'national' }],
         daysOff: [
           { date: '2027-04-20', type: 'companyClosure' },
           { date: '2027-04-21', type: 'mandatoryLeave' },
@@ -373,8 +373,8 @@ describe('calculatePlan', () => {
         windowStart,
         windowEnd,
         publicHolidays: [
-          { date: '2027-04-01', name: 'A', kind: 'national' },
-          { date: '2027-06-02', name: 'B', kind: 'national' },
+          { date: '2027-04-01', key: 'A', kind: 'national' },
+          { date: '2027-06-02', key: 'B', kind: 'national' },
         ],
       }),
     );
@@ -391,12 +391,12 @@ describe('calculatePlan', () => {
       input({
         windowStart: '2027-03-29',
         windowEnd: '2027-04-04',
-        publicHolidays: [{ date: '2027-04-01', name: 'San Test', kind: 'patron' }],
+        publicHolidays: [{ date: '2027-04-01', key: 'San Test', kind: 'patron' }],
       }),
     );
     expect(out.dayMap.get('2027-04-01')).toBe('publicHoliday');
     expect(out.opportunities).toHaveLength(1);
-    expect(out.opportunities[0].explanation.anchorHolidayName).toBe('San Test');
+    expect(out.opportunities[0].explanation.anchorHolidayKey).toBe('San Test');
   });
 
   // Case 14 — consuming holidays adds the in-span public holiday to the cost.
@@ -404,7 +404,7 @@ describe('calculatePlan', () => {
     const base = input({
       windowStart: '2027-03-29',
       windowEnd: '2027-04-04',
-      publicHolidays: [{ date: '2027-04-01', name: 'Festa Test', kind: 'national' }],
+      publicHolidays: [{ date: '2027-04-01', key: 'Festa Test', kind: 'national' }],
       minBridgeLeverage: 2,
     });
     const off = calculatePlan(base);
@@ -419,7 +419,7 @@ describe('calculatePlan', () => {
       input({
         windowStart: '2027-03-29',
         windowEnd: '2027-04-04',
-        publicHolidays: [{ date: '2027-04-01', name: 'Festa Test', kind: 'national' }],
+        publicHolidays: [{ date: '2027-04-01', key: 'Festa Test', kind: 'national' }],
       }),
     );
     const weekday: WeekdayIndex = out.opportunities[0].explanation.anchorWeekday;

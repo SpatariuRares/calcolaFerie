@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { BridgeOpportunity } from "@/engine/src/index";
+import type { BridgeOpportunity } from "@engine";
 import {
   formatDateRange,
   formatExplanation,
@@ -17,7 +17,8 @@ function opportunity(overrides: Partial<BridgeOpportunity>): BridgeOpportunity {
     leva: 4,
     recommendedDays: ["2026-08-14"],
     explanation: {
-      anchorHolidayName: "Ferragosto",
+      anchorKind: "publicHoliday",
+      anchorHolidayKey: "assumption",
       anchorWeekday: 6,
       costDays: 1,
       staccoDays: 4,
@@ -45,15 +46,16 @@ describe("results table formatting", () => {
           costDays: 2,
           staccoDays: 6,
           explanation: {
-            anchorHolidayName: "Pasqua",
+            anchorKind: "publicHoliday",
+            anchorHolidayKey: "christmas",
             anchorWeekday: 0,
             costDays: 2,
             staccoDays: 6,
-            fusedHolidayNames: ["Pasqua", "Pasquetta"],
+            fusedHolidayKeys: ["christmas", "stStephen"],
           },
         })
       )
-    ).toBe("Pasqua + Pasquetta → 2 giorni di ferie = 6 giorni di stacco");
+    ).toBe("Natale + Santo Stefano → 2 giorni di ferie = 6 giorni di stacco");
   });
 
   it("uses the zero-cost explanation when no vacation is needed", () => {
@@ -63,7 +65,7 @@ describe("results table formatting", () => {
           costDays: 0,
           staccoDays: 3,
           explanation: {
-            anchorHolidayName: "Chiusura aziendale",
+            anchorKind: "companyClosure",
             anchorWeekday: 5,
             costDays: 0,
             staccoDays: 3,
