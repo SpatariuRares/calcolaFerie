@@ -9,7 +9,7 @@ import {
   type UserConfig,
   type WeekdayIndex,
   type WorkSchedule,
-} from "@/engine/src/index";
+} from "@engine";
 
 const DEFAULT_WORK_DAYS = new Set<WeekdayIndex>([1, 2, 3, 4, 5]);
 

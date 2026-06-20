@@ -26,8 +26,8 @@
       "@/*": [
         "./*"
       ],
-      "@engine/*": [
-        "./engine/*"
+      "@engine": [
+        "./engine/src/index.ts"
       ]
     }
   },

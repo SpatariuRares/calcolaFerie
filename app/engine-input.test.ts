@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import type { EngineOutput } from "@/engine/src/index";
+import type { EngineOutput } from "@engine";
 import { calculateVacationPlan } from "./calculate-vacation-plan";
 import { buildEngineInput } from "./engine-input";
 

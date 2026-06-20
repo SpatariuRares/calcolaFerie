@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { DayType, EngineInput, EngineOutput } from "@/engine/src/index";
+import type { DayType, EngineInput, EngineOutput } from "@engine";
 import { buildCalendarMonths, getCalendarDayLabel, isSelectableVacationDay } from "./calendar-model";
 
 function baseInput(overrides: Partial<EngineInput> = {}): EngineInput {

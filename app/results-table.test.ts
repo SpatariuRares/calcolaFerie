@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { BridgeOpportunity } from "@/engine/src/index";
+import type { BridgeOpportunity } from "@engine";
 import {
   formatDateRange,
   formatExplanation,

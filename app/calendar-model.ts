@@ -6,7 +6,7 @@ import {
   type DayType,
   type EngineInput,
   type EngineOutput,
-} from "@/engine/src/index";
+} from "@engine";
 
 export type CalendarDay = {
   iso: string;
