@@ -1,7 +1,7 @@
 "use client";
 
-import { useId, useRef, useState } from "react";
-import { type DayOff } from "@/engine/src/index";
+import { useEffect, useId, useRef, useState } from "react";
+import { type DayOff, type UserConfig } from "@/engine/src/index";
 import {
   buildCalendarMonths,
   CALENDAR_LEGEND,
@@ -12,6 +12,7 @@ import {
 import { calculateVacationPlan, type CalculationState } from "./calculate-vacation-plan";
 import styles from "./page.module.scss";
 import { getSelectedOpportunityCost, ResultsTable } from "./results-table";
+import { CONFIG_STORAGE_KEY, getInitialUserConfig, serializeConfig } from "./user-config-url";
 
 type DayOffRow = DayOff & { id: string };
 
@@ -28,6 +29,15 @@ function createDayOffRow(id: string, type: DayOff["type"] = "companyClosure"): D
     date: "",
     type,
   };
+}
+
+function createDayOffRows(dayOffs: DayOff[]): DayOffRow[] {
+  if (dayOffs.length === 0) return [createDayOffRow("day-off-0")];
+
+  return dayOffs.map((dayOff, index) => ({
+    ...dayOff,
+    id: `day-off-${index}`,
+  }));
 }
 
 function parseVacationDays(value: string): number | null {
@@ -234,6 +244,8 @@ export function VacationPlanner() {
   const [dayOffRows, setDayOffRows] = useState<DayOffRow[]>([createDayOffRow("day-off-0")]);
   const [patronSaintDate, setPatronSaintDate] = useState("");
   const [calculation, setCalculation] = useState<CalculationState | null>(null);
+  const [submittedConfig, setSubmittedConfig] = useState<UserConfig | null>(null);
+  const [shareStatus, setShareStatus] = useState("");
   const [selectedVacationDates, setSelectedVacationDates] = useState<Set<string>>(() => new Set());
   const [selectedOpportunityIds, setSelectedOpportunityIds] = useState<Set<string>>(
     () => new Set()
@@ -241,6 +253,30 @@ export function VacationPlanner() {
 
   const parsedVacationDays = parseVacationDays(totalVacationDays);
   const canCalculate = parsedVacationDays !== null;
+
+  useEffect(() => {
+    const config = getInitialUserConfig(
+      new URLSearchParams(window.location.search),
+      window.localStorage.getItem(CONFIG_STORAGE_KEY)
+    );
+    if (!config) return;
+
+    let isCancelled = false;
+    const animationFrame = window.requestAnimationFrame(() => {
+      if (isCancelled) return;
+
+      const rows = createDayOffRows(config.daysOff);
+      nextDayOffId.current = rows.length;
+      setTotalVacationDays(String(config.totalVacationDays));
+      setDayOffRows(rows);
+      setPatronSaintDate(config.patronSaintDate ?? "");
+    });
+
+    return () => {
+      isCancelled = true;
+      window.cancelAnimationFrame(animationFrame);
+    };
+  }, []);
 
   function updateDayOffDate(id: string, date: string) {
     setDayOffRows((rows) => rows.map((row) => (row.id === id ? { ...row, date } : row)));
@@ -280,24 +316,53 @@ export function VacationPlanner() {
     });
   }
 
+  function buildUserConfig(totalVacationDays: number): UserConfig {
+    return {
+      totalVacationDays,
+      daysOff: dayOffRows
+        .filter((row) => row.date !== "")
+        .map(({ date, type }) => ({
+          date,
+          type,
+        })),
+      ...(patronSaintDate ? { patronSaintDate } : {}),
+    };
+  }
+
+  function saveUserConfig(config: UserConfig) {
+    try {
+      window.localStorage.setItem(CONFIG_STORAGE_KEY, JSON.stringify(config));
+    } catch {
+      // Storage can be unavailable in private contexts; calculation should still work.
+    }
+  }
+
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (parsedVacationDays === null) return;
 
+    const config = buildUserConfig(parsedVacationDays);
+
     setSelectedVacationDates(new Set());
     setSelectedOpportunityIds(new Set());
-    setCalculation(
-      calculateVacationPlan({
-        totalVacationDays: parsedVacationDays,
-        daysOff: dayOffRows
-          .filter((row) => row.date !== "")
-          .map(({ date, type }) => ({
-            date,
-            type,
-          })),
-        ...(patronSaintDate ? { patronSaintDate } : {}),
-      })
-    );
+    setShareStatus("");
+    setSubmittedConfig(config);
+    saveUserConfig(config);
+    setCalculation(calculateVacationPlan(config));
+  }
+
+  async function handleCopyLink() {
+    if (!submittedConfig) return;
+
+    const params = serializeConfig(submittedConfig);
+    const link = `${window.location.origin}?${params.toString()}`;
+
+    try {
+      await navigator.clipboard.writeText(link);
+      setShareStatus("Link copiato");
+    } catch {
+      setShareStatus("Copia non riuscita");
+    }
   }
 
   return (
@@ -422,9 +487,21 @@ export function VacationPlanner() {
             />
           </div>
 
-          <button className={styles.primaryButton} disabled={!canCalculate} type="submit">
-            Calcola
-          </button>
+          <div className={styles.submitActions}>
+            <button className={styles.primaryButton} disabled={!canCalculate} type="submit">
+              Calcola
+            </button>
+            {submittedConfig ? (
+              <button className={styles.secondaryButton} onClick={handleCopyLink} type="button">
+                Copia link
+              </button>
+            ) : null}
+          </div>
+          {shareStatus ? (
+            <p className={styles.shareStatus} role="status">
+              {shareStatus}
+            </p>
+          ) : null}
         </form>
 
         <div className={styles.outputStack}>
