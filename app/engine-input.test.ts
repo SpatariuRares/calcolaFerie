@@ -39,7 +39,7 @@ describe("buildEngineInput", () => {
 
     expect(input.publicHolidays).toContainEqual({
       date: "2026-06-24",
-      name: "Patrono locale",
+      key: "patron",
       kind: "patron",
     });
   });
@@ -82,7 +82,7 @@ describe("buildEngineInput", () => {
     expect(calculation.output).toBe(output);
     expect(calculation.input.publicHolidays).toContainEqual({
       date: "2026-06-24",
-      name: "Patrono locale",
+      key: "patron",
       kind: "patron",
     });
   });

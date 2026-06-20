@@ -28,13 +28,14 @@ bugs near DST. Pure refactors — no change to user-visible behaviour.
 6. **i18n leak into core.** Engine returns Italian strings (`"Chiusura aziendale"`,
    holiday names). Domain should be locale-neutral; UI translates.
 7. **`ISODateString = string`** has no smart constructor — malformed strings reach
-   the engine unchecked.
+   the engine unchecked. _(Deferred to its own issue #11 — branding ripples through
+   every date value and the `<input type="date">` boundary; too big to ride along here.)_
 
 ### Plan (ordered: high-value/low-risk → complex)
 
 Each step is one commit with `pnpm test` green before the next. Steps 1–5 are pure
-refactors (zero behaviour change); 6–7 touch the public type surface, done last
-behind the now-granular tests.
+refactors (zero behaviour change); step 6 reshapes the engine's public output (opaque
+keys instead of Italian labels) but keeps the rendered UI text identical.
 
 1. **Single canonical date module** `engine/src/date.ts` — `pad`, `isoToDate`,
    `dateToISO`, `addDays`, all **UTC**. Replace the duplicated helpers in `index.ts`,
@@ -52,9 +53,12 @@ behind the now-granular tests.
    so `next build` / `tsc -p tsconfig.json` checks engine source end-to-end. (Full
    `project references` were skipped: `composite` fights Next's `noEmit`, and they only
    help `tsc -b`, which this repo never invokes — dropping the exclude is the actual win.)
-6. **Locale-neutral core + branded `ISODateString`** — engine returns keys
-   (`anchorHolidayKey`), UI dictionary translates; `ISODateString = string & { __iso: true }`
-   with a validating constructor at the `buildEngineInput` boundary.
+6. **Locale-neutral core** — engine emits opaque string keys, no Italian text.
+   `PublicHoliday.name` → `PublicHoliday.key`; `ExplanationData` carries `anchorKind`
+   (`publicHoliday` | `companyClosure`) + `anchorHolidayKey` + `fusedHolidayKeys`. The
+   `HolidayKey`→label dictionary and the "Chiusura aziendale" label live in the app
+   (`app/holiday-labels.ts`). Rendered UI text is unchanged. _(Branded `ISODateString`
+   split out to #11.)_
 
 ## Acceptance criteria
 
@@ -68,10 +72,12 @@ behind the now-granular tests.
 - [ ] `bridge.ts` has direct unit tests for the validation branches.
 - [ ] `engine` is no longer in `tsconfig.json` `exclude`; `next build` type-checks engine source.
 - [ ] Engine output carries locale-neutral keys; Italian strings live only in the UI layer.
-- [ ] `ISODateString` is branded; malformed dates are rejected at the input boundary.
 - [ ] `pnpm test` and `pnpm build` stay green after every step.
+
+(Branded `ISODateString` tracked separately in #11.)
 
 ## Blocked by
 
-Nothing. Best done before #08 (persistence) and #09 (leads), since both serialise
-`UserConfig`/dates and will benefit from the branded type and the canonical date module.
+Nothing. Best done before #08 (persistence) and #09 (newsletter signup), since both
+serialise `UserConfig`/dates and will benefit from the branded type and the
+canonical date module.

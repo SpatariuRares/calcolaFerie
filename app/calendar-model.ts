@@ -7,6 +7,7 @@ import {
   type EngineInput,
   type EngineOutput,
 } from "@engine";
+import { holidayLabel } from "./holiday-labels";
 
 export type CalendarDay = {
   iso: string;
@@ -68,7 +69,9 @@ export function isSelectableVacationDay(type: DayType) {
 }
 
 export function buildCalendarMonths(input: EngineInput, output: EngineOutput): CalendarMonth[] {
-  const holidayNames = new Map(input.publicHolidays.map((holiday) => [holiday.date, holiday.name]));
+  const holidayNames = new Map(
+    input.publicHolidays.map((holiday) => [holiday.date, holidayLabel(holiday.key)])
+  );
   const months: CalendarMonth[] = [];
 
   let current: CalendarMonth | null = null;

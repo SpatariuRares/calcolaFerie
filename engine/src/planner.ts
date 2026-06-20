@@ -30,8 +30,8 @@ export function calculatePlan(input: EngineInput): EngineOutput {
   const minBridgeLeverage = input.minBridgeLeverage ?? DEFAULT_MIN_BRIDGE_LEVERAGE;
 
   // --- 1. Build the day list and dayMap -------------------------------------
-  const holidayName = new Map<ISODateString, string>();
-  for (const h of publicHolidays) holidayName.set(h.date, h.name);
+  const holidayKey = new Map<ISODateString, string>();
+  for (const h of publicHolidays) holidayKey.set(h.date, h.key);
 
   const offType = new Map<ISODateString, "companyClosure" | "mandatoryLeave">();
   for (const o of daysOff) offType.set(o.date, o.type);
@@ -43,10 +43,10 @@ export function calculatePlan(input: EngineInput): EngineOutput {
     const iso = dateToISO(d);
     const weekday = d.getUTCDay() as WeekdayIndex;
     let type: DayType = workSchedule.workDays.has(weekday) ? "workday" : "weekend";
-    if (holidayName.has(iso)) type = "publicHoliday";
+    if (holidayKey.has(iso)) type = "publicHoliday";
     const off = offType.get(iso);
     if (off) type = off;
-    days.push({ iso, weekday, type, holidayName: holidayName.get(iso) });
+    days.push({ iso, weekday, type, holidayKey: holidayKey.get(iso) });
   }
 
   const dayMap = new Map<ISODateString, DayType>();
@@ -139,17 +139,19 @@ export function calculatePlan(input: EngineInput): EngineOutput {
     const recommendedDays = b.recommended.map((idx) => days[idx].iso);
 
     let anchorDay: Day | undefined;
-    const fusedHolidayNames: string[] = [];
+    const fusedHolidayKeys: string[] = [];
     for (let idx = b.start; idx <= b.end; idx++) {
       const day = days[idx];
       if (day.type === "publicHoliday") {
         if (!anchorDay || anchorDay.type !== "publicHoliday") anchorDay = day;
-        if (day.holidayName) fusedHolidayNames.push(day.holidayName);
+        if (day.holidayKey) fusedHolidayKeys.push(day.holidayKey);
       } else if (day.type === "companyClosure" && !anchorDay) {
         anchorDay = day;
       }
     }
     if (!anchorDay) continue;
+
+    const anchorKind = anchorDay.type === "companyClosure" ? "companyClosure" : "publicHoliday";
 
     opportunities.push({
       id: `bridge-${days[b.start].iso}`,
@@ -160,11 +162,14 @@ export function calculatePlan(input: EngineInput): EngineOutput {
       leva: b.leva,
       recommendedDays,
       explanation: {
-        anchorHolidayName: anchorDay.holidayName ?? "Chiusura aziendale",
+        anchorKind,
+        ...(anchorKind === "publicHoliday" && anchorDay.holidayKey
+          ? { anchorHolidayKey: anchorDay.holidayKey }
+          : {}),
         anchorWeekday: anchorDay.weekday,
         costDays: b.cost,
         staccoDays: b.stacco,
-        ...(fusedHolidayNames.length > 1 ? { fusedHolidayNames } : {}),
+        ...(fusedHolidayKeys.length > 1 ? { fusedHolidayKeys } : {}),
       },
     });
 

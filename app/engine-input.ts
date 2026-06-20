@@ -30,7 +30,7 @@ export function buildPublicHolidays(
   if (patronSaintDate && patronSaintDate >= windowStart && patronSaintDate <= windowEnd) {
     holidays.push({
       date: patronSaintDate,
-      name: "Patrono locale",
+      key: "patron",
       kind: "patron",
     });
   }

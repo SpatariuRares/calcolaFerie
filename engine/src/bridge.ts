@@ -4,7 +4,7 @@ export interface Day {
   iso: ISODateString;
   weekday: WeekdayIndex;
   type: DayType;
-  holidayName?: string;
+  holidayKey?: string;
 }
 
 export interface BridgeInterval {

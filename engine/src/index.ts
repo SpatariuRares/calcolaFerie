@@ -2,6 +2,7 @@ export type {
   ISODateString,
   DayType,
   PublicHolidayKind,
+  AnchorKind,
   WeekdayIndex,
   PublicHoliday,
   WorkSchedule,

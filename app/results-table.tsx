@@ -1,4 +1,5 @@
 import { type BridgeOpportunity, type EngineOutput, type WeekdayIndex } from "@engine";
+import { COMPANY_CLOSURE_LABEL, holidayLabel } from "./holiday-labels";
 import styles from "./page.module.scss";
 
 const MONTH_LABELS = [
@@ -70,11 +71,16 @@ export function formatExplanation(opportunity: BridgeOpportunity) {
   const costPhrase = `${costDays} ${vacationDayLabel(costDays)} di ferie`;
   const resultPhrase = `${costPhrase} = ${staccoDays} giorni di stacco`;
 
-  if (explanation.fusedHolidayNames && explanation.fusedHolidayNames.length > 1) {
-    return `${explanation.fusedHolidayNames.join(" + ")} → ${resultPhrase}`;
+  if (explanation.fusedHolidayKeys && explanation.fusedHolidayKeys.length > 1) {
+    return `${explanation.fusedHolidayKeys.map(holidayLabel).join(" + ")} → ${resultPhrase}`;
   }
 
-  return `${explanation.anchorHolidayName} cade ${WEEKDAY_LABELS[explanation.anchorWeekday]} → ${resultPhrase}`;
+  const anchorLabel =
+    explanation.anchorKind === "companyClosure"
+      ? COMPANY_CLOSURE_LABEL
+      : holidayLabel(explanation.anchorHolidayKey ?? "");
+
+  return `${anchorLabel} cade ${WEEKDAY_LABELS[explanation.anchorWeekday]} → ${resultPhrase}`;
 }
 
 export function getLevaTier(leva: number): LevaTier {

@@ -10,7 +10,7 @@ function baseInput(overrides: Partial<EngineInput> = {}): EngineInput {
       workDays: new Set([1, 2, 3, 4, 5]),
       consumeHolidaysOnPublicHolidays: false,
     },
-    publicHolidays: [{ date: "2026-08-15", name: "Ferragosto", kind: "national" }],
+    publicHolidays: [{ date: "2026-08-15", key: "assumption", kind: "national" }],
     daysOff: [],
     totalVacationDays: 20,
     ...overrides,
