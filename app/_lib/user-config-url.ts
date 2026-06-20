@@ -1,10 +1,4 @@
-import type {
-  DayOff,
-  ISODateString,
-  UserConfig,
-  WeekdayIndex,
-  WorkSchedule,
-} from "@/engine/src/index";
+import type { DayOff, ISODateString, UserConfig, WeekdayIndex, WorkSchedule } from "@engine";
 
 export const CONFIG_STORAGE_KEY = "calcolaferie_config";
 

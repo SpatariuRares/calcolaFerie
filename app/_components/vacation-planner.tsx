@@ -2,23 +2,23 @@
 
 import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
-import { type DayOff, type UserConfig } from "@/engine/src/index";
+import { type DayOff, type UserConfig } from "@engine";
 import {
   buildCalendarMonths,
   CALENDAR_LEGEND,
   DAY_TYPE_LABELS,
   getCalendarDayLabel,
   isSelectableVacationDay,
-} from "./calendar-model";
-import { calculateVacationPlan, type CalculationState } from "./calculate-vacation-plan";
-import styles from "./page.module.scss";
+} from "../_lib/calendar-model";
+import { calculateVacationPlan, type CalculationState } from "../_lib/calculate-vacation-plan";
+import styles from "../styles/app.module.scss";
 import { getSelectedOpportunityCost, ResultsTable } from "./results-table";
 import {
   CONFIG_STORAGE_KEY,
   getInitialUserConfig,
   type PlannerConfig,
   serializeConfig,
-} from "./user-config-url";
+} from "../_lib/user-config-url";
 
 type DayOffRow = DayOff & { id: string };
 

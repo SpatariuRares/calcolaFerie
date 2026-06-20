@@ -1,6 +1,6 @@
 import { type BridgeOpportunity, type EngineOutput, type WeekdayIndex } from "@engine";
-import { COMPANY_CLOSURE_LABEL, holidayLabel } from "./holiday-labels";
-import styles from "./page.module.scss";
+import { COMPANY_CLOSURE_LABEL, holidayLabel } from "../_lib/holiday-labels";
+import styles from "../styles/app.module.scss";
 
 const MONTH_LABELS = [
   "gen",

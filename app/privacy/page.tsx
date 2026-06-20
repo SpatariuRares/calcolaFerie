@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import styles from "../page.module.scss";
+import styles from "../styles/app.module.scss";
 
 export const metadata: Metadata = {
   title: "Privacy policy | CalcolaFerie",
