@@ -4,7 +4,8 @@ import styles from "../styles/app.module.scss";
 
 export const metadata: Metadata = {
   title: "Privacy policy | CalcolaFerie",
-  description: "Informativa privacy minimale per la newsletter di CalcolaFerie.",
+  description:
+    "Informativa privacy minimale di CalcolaFerie: newsletter e link di affiliazione.",
 };
 
 export default function PrivacyPage() {
@@ -19,9 +20,11 @@ export default function PrivacyPage() {
           <p className={styles.eyebrow}>Privacy</p>
           <h1 id="privacy-title">Privacy policy</h1>
           <p>
-            Questa informativa riguarda solo la newsletter di CalcolaFerie: aggiornamenti sul
-            prodotto e un promemoria annuale quando sono pronti il nuovo calendario e i dati sulle
-            festivita.
+            Questa informativa copre i due soli punti in cui CalcolaFerie tocca dati o servizi
+            esterni: la newsletter (aggiornamenti sul prodotto e un promemoria annuale quando sono
+            pronti il nuovo calendario e i dati sulle festivita) e i link di affiliazione per
+            prenotare i giorni dei ponti. Il calcolo dei ponti avviene nel tuo browser e non ci
+            invia alcun dato.
           </p>
         </header>
 
@@ -57,6 +60,22 @@ export default function PrivacyPage() {
           <p>
             La lista email e gestita da Buttondown. Buttondown gestisce l'archiviazione degli
             iscritti, la conferma dell'iscrizione, l'invio delle email e i link di disiscrizione.
+          </p>
+        </section>
+
+        <section>
+          <h2>Link di affiliazione</h2>
+          <p>
+            Accanto a ogni ponte trovi un link per prenotare i giorni suggeriti. Sono link di
+            affiliazione: se prenoti tramite questi link riceviamo una piccola commissione, senza
+            costi extra per te. I link passano solo le date del ponte, nessuna destinazione, e ti
+            portano alla ricerca del provider tramite Travelpayouts.
+          </p>
+          <p>
+            Noi non impostiamo cookie di tracciamento dal nostro dominio e non aggiungiamo
+            pubblicita, banner dei cookie o Google Analytics. Dopo che hai cliccato un link, il
+            provider di prenotazione puo impostare i propri cookie sul suo dominio, secondo la sua
+            informativa privacy.
           </p>
         </section>
 

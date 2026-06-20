@@ -1,6 +1,10 @@
 import { type BridgeOpportunity, type EngineOutput, type WeekdayIndex } from "@engine";
+import { buildBookingDeepLink } from "../_lib/affiliate-link";
 import { COMPANY_CLOSURE_LABEL, holidayLabel } from "../_lib/holiday-labels";
 import styles from "../styles/app.module.scss";
+
+const AFFILIATE_DISCLOSURE =
+  "Link affiliato: se prenoti, riceviamo una commissione senza costi extra per te.";
 
 const MONTH_LABELS = [
   "gen",
@@ -105,6 +109,29 @@ export function getSelectedOpportunityCost(
   );
 }
 
+function BookingCta({ opportunity }: { opportunity: BridgeOpportunity }) {
+  const href = buildBookingDeepLink({
+    startDate: opportunity.startDate,
+    endDate: opportunity.endDate,
+  });
+
+  // Stop propagation so booking does not toggle the row/card selection.
+  const stop = (event: { stopPropagation: () => void }) => event.stopPropagation();
+
+  return (
+    <a
+      className={styles.bookingCta}
+      href={href}
+      onClick={stop}
+      onKeyDown={stop}
+      rel="sponsored noopener noreferrer"
+      target="_blank"
+    >
+      Prenota questi giorni
+    </a>
+  );
+}
+
 type ResultsSelectionProps = {
   onToggleOpportunity: (opportunityId: string) => void;
   selectedOpportunityIds: Set<string>;
@@ -161,6 +188,8 @@ function OpportunityCard({
 
       {isOverBudget ? <span className={styles.budgetChip}>Fuori budget</span> : null}
       {isSelected ? <span className={styles.selectedChip}>Selezionato</span> : null}
+
+      <BookingCta opportunity={opportunity} />
     </article>
   );
 }
@@ -213,6 +242,9 @@ function OpportunityRow({
         {isSelected ? <span className={styles.selectedChip}>Scalato</span> : null}
         {isOverBudget ? <span className={styles.budgetChip}>Fuori budget</span> : null}
       </td>
+      <td className={styles.bookingCell} onClick={(event) => event.stopPropagation()}>
+        <BookingCta opportunity={opportunity} />
+      </td>
     </tr>
   );
 }
@@ -259,6 +291,7 @@ export function ResultsTable({
               <th scope="col">Leva</th>
               <th scope="col">Perché conviene</th>
               <th scope="col">Budget</th>
+              <th scope="col">Prenota</th>
             </tr>
           </thead>
           <tbody>
@@ -275,6 +308,8 @@ export function ResultsTable({
           </tbody>
         </table>
       </div>
+
+      <p className={styles.affiliateDisclosure}>{AFFILIATE_DISCLOSURE}</p>
     </div>
   );
 }
