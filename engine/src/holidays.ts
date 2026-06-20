@@ -1,18 +1,5 @@
 import type { ISODateString, PublicHoliday } from "./types";
-
-function pad(n: number): string {
-  return String(n).padStart(2, "0");
-}
-
-function toISO(year: number, month: number, day: number): ISODateString {
-  return `${year}-${pad(month)}-${pad(day)}`;
-}
-
-function addDays(iso: ISODateString, days: number): ISODateString {
-  const d = new Date(iso + "T00:00:00Z");
-  d.setUTCDate(d.getUTCDate() + days);
-  return `${d.getUTCFullYear()}-${pad(d.getUTCMonth() + 1)}-${pad(d.getUTCDate())}`;
-}
+import { addDays, toISO } from "./date";
 
 // Anonymous Gregorian algorithm (computus)
 export function computeEaster(year: number): ISODateString {

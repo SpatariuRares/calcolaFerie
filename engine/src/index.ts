@@ -13,6 +13,7 @@ export type {
   UserConfig,
 } from "./types";
 export { computeEaster, getItalianPublicHolidays, getPublicHolidaysForWindow } from "./holidays";
+export { localToday, addMonths, addDays, isoToDate, dateToISO, toISO, pad } from "./date";
 
 import type {
   ISODateString,
@@ -22,21 +23,10 @@ import type {
   EngineOutput,
   BridgeOpportunity,
 } from "./types";
+import { isoToDate, dateToISO } from "./date";
 
 const CAP = 9; // max workday extension scanned on either edge of an anchor
 const DEFAULT_MIN_BRIDGE_LEVERAGE = 2.1;
-
-function pad(n: number): string {
-  return String(n).padStart(2, "0");
-}
-
-function isoToUTC(iso: ISODateString): Date {
-  return new Date(iso + "T00:00:00Z");
-}
-
-function utcToISO(d: Date): ISODateString {
-  return `${d.getUTCFullYear()}-${pad(d.getUTCMonth() + 1)}-${pad(d.getUTCDate())}`;
-}
 
 interface Day {
   iso: ISODateString;
@@ -190,10 +180,10 @@ export function calculatePlan(input: EngineInput): EngineOutput {
   for (const o of daysOff) offType.set(o.date, o.type);
 
   const days: Day[] = [];
-  const start = isoToUTC(windowStart);
-  const end = isoToUTC(windowEnd);
+  const start = isoToDate(windowStart);
+  const end = isoToDate(windowEnd);
   for (let d = new Date(start); d <= end; d.setUTCDate(d.getUTCDate() + 1)) {
-    const iso = utcToISO(d);
+    const iso = dateToISO(d);
     const weekday = d.getUTCDay() as WeekdayIndex;
     let type: DayType = workSchedule.workDays.has(weekday) ? "workday" : "weekend";
     if (holidayName.has(iso)) type = "publicHoliday";

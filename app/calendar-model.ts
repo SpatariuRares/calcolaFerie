@@ -1,4 +1,12 @@
-import type { DayType, EngineInput, EngineOutput } from "@/engine/src/index";
+import {
+  addDays,
+  isoToDate,
+  pad,
+  toISO,
+  type DayType,
+  type EngineInput,
+  type EngineOutput,
+} from "@/engine/src/index";
 
 export type CalendarDay = {
   iso: string;
@@ -35,31 +43,22 @@ export const CALENDAR_LEGEND: DayType[] = [
 const MONTH_FORMATTER = new Intl.DateTimeFormat("it-IT", {
   month: "long",
   year: "numeric",
+  timeZone: "UTC",
 });
 
 const DAY_FORMATTER = new Intl.DateTimeFormat("it-IT", {
   day: "numeric",
   month: "long",
   year: "numeric",
+  timeZone: "UTC",
 });
 
-function parseISODate(isoDate: string) {
-  return new Date(`${isoDate}T00:00:00`);
-}
-
-function dateToISO(date: Date) {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-}
-
 function getMondayFirstBlankDays(date: Date) {
-  return (date.getDay() + 6) % 7;
+  return (date.getUTCDay() + 6) % 7;
 }
 
 export function getCalendarDayLabel(day: CalendarDay) {
-  return [DAY_FORMATTER.format(parseISODate(day.iso)), DAY_TYPE_LABELS[day.type], day.holidayName]
+  return [DAY_FORMATTER.format(isoToDate(day.iso)), DAY_TYPE_LABELS[day.type], day.holidayName]
     .filter(Boolean)
     .join(" — ");
 }
@@ -69,44 +68,43 @@ export function isSelectableVacationDay(type: DayType) {
 }
 
 export function buildCalendarMonths(input: EngineInput, output: EngineOutput): CalendarMonth[] {
-  const startDate = parseISODate(input.windowStart);
-  const endDate = parseISODate(input.windowEnd);
   const holidayNames = new Map(input.publicHolidays.map((holiday) => [holiday.date, holiday.name]));
   const months: CalendarMonth[] = [];
-  const cursor = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
 
-  while (cursor <= endDate) {
-    const year = cursor.getFullYear();
-    const month = cursor.getMonth();
-    const firstDay = new Date(year, month, 1);
-    const lastDay = new Date(year, month + 1, 0);
-    const days: CalendarDay[] = [];
+  let current: CalendarMonth | null = null;
+  let currentKey = "";
+  let firstDayOfWindow = true;
 
-    for (let day = 1; day <= lastDay.getDate(); day++) {
-      const date = new Date(year, month, day);
-      const iso = dateToISO(date);
-      const type = output.dayMap.get(iso);
+  for (let iso = input.windowStart; iso <= input.windowEnd; iso = addDays(iso, 1)) {
+    const date = isoToDate(iso);
+    const year = date.getUTCFullYear();
+    const month = date.getUTCMonth();
+    const key = `${year}-${pad(month + 1)}`;
 
-      if (!type || iso < input.windowStart || iso > input.windowEnd) continue;
+    if (key !== currentKey) {
+      const firstOfMonth = isoToDate(toISO(year, month + 1, 1));
+      current = {
+        key,
+        label: MONTH_FORMATTER.format(firstOfMonth),
+        // First window month is anchored on windowStart so the grid lines up with
+        // the partial month; later months start on their 1st.
+        leadingBlankDays: getMondayFirstBlankDays(firstDayOfWindow ? date : firstOfMonth),
+        days: [],
+      };
+      months.push(current);
+      currentKey = key;
+      firstDayOfWindow = false;
+    }
 
-      days.push({
+    const type = output.dayMap.get(iso);
+    if (type) {
+      current!.days.push({
         iso,
-        dayNumber: day,
+        dayNumber: date.getUTCDate(),
         type,
         holidayName: holidayNames.get(iso),
       });
     }
-
-    months.push({
-      key: `${year}-${String(month + 1).padStart(2, "0")}`,
-      label: MONTH_FORMATTER.format(firstDay),
-      leadingBlankDays:
-        year === startDate.getFullYear() && month === startDate.getMonth()
-          ? getMondayFirstBlankDays(startDate)
-          : getMondayFirstBlankDays(firstDay),
-      days,
-    });
-    cursor.setMonth(cursor.getMonth() + 1);
   }
 
   return months;
