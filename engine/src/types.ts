@@ -32,6 +32,7 @@ export interface EngineInput {
   publicHolidays: PublicHoliday[];
   daysOff: DayOff[];
   totalVacationDays: number;
+  minBridgeLeverage?: number;
 }
 
 export interface ExplanationData {
@@ -63,5 +64,6 @@ export interface UserConfig {
   totalVacationDays: number;
   daysOff: DayOff[];
   patronSaintDate?: ISODateString;
+  minBridgeLeverage?: number;
   workSchedule?: Partial<WorkSchedule>;
 }

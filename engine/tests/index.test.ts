@@ -97,8 +97,9 @@ describe('calculatePlan', () => {
     expect(opp.recommendedDays).toEqual(['2027-04-02']);
   });
 
-  // Case 2 — holiday on a Monday (2027-11-01) → take the Friday before.
-  it('2. Monday holiday → take the Friday before for a 4-day break', () => {
+  // Case 2 — holiday on a Monday (2027-11-01). With the default minimum
+  // leverage of 2.1, the following Tue-Fri bridge is still worth showing.
+  it('2. Monday holiday → longest bridge above the minimum leverage threshold', () => {
     const out = calculatePlan(
       input({
         windowStart: '2027-10-25',
@@ -108,14 +109,48 @@ describe('calculatePlan', () => {
     );
     expect(out.opportunities).toHaveLength(1);
     const opp = out.opportunities[0];
-    expect(opp.recommendedDays).toEqual(['2027-10-29']);
-    expect(opp.staccoDays).toBe(4);
-    expect(opp.leva).toBe(4);
+    expect(opp.recommendedDays).toEqual([
+      '2027-11-02',
+      '2027-11-03',
+      '2027-11-04',
+      '2027-11-05',
+    ]);
+    expect(opp.costDays).toBe(4);
+    expect(opp.staccoDays).toBe(9);
+    expect(opp.leva).toBe(2.25);
   });
 
-  // Case 3 — holiday on a Wednesday (2027-06-02). Two bridge days needed; the
-  // engine explores both edges and returns the higher-leva 5-day span.
-  it('3. Wednesday holiday → 2 bridge days for the best leva', () => {
+  it('does not suggest a bridge when the only holiday falls on a weekend', () => {
+    const out = calculatePlan(
+      input({
+        windowStart: '2027-08-09',
+        windowEnd: '2027-08-22',
+        publicHolidays: [{ date: '2027-08-15', name: 'Ferragosto', kind: 'national' }],
+      }),
+    );
+
+    expect(out.opportunities).toHaveLength(0);
+  });
+
+  it('does not suggest Thursday when Friday and Saturday are already holidays', () => {
+    const out = calculatePlan(
+      input({
+        windowStart: '2026-12-21',
+        windowEnd: '2026-12-27',
+        publicHolidays: [
+          { date: '2026-12-25', name: 'Natale', kind: 'national' },
+          { date: '2026-12-26', name: 'Santo Stefano', kind: 'national' },
+        ],
+      }),
+    );
+
+    expect(out.opportunities).toHaveLength(0);
+    expect(out.dayMap.get('2026-12-24')).toBe('workday');
+  });
+
+  // Case 3 — holiday on a Wednesday (2027-06-02). The full surrounding week is
+  // recommended because it stays above the default minimum leverage.
+  it('3. Wednesday holiday → longest bridge above the minimum leverage threshold', () => {
     const out = calculatePlan(
       input({
         windowStart: '2027-05-29',
@@ -125,9 +160,31 @@ describe('calculatePlan', () => {
     );
     expect(out.opportunities).toHaveLength(1);
     const opp = out.opportunities[0];
-    expect(opp.costDays).toBe(2);
-    expect(opp.staccoDays).toBe(5);
-    expect(opp.leva).toBe(2.5);
+    expect(opp.recommendedDays).toEqual([
+      '2027-05-31',
+      '2027-06-01',
+      '2027-06-03',
+      '2027-06-04',
+    ]);
+    expect(opp.costDays).toBe(4);
+    expect(opp.staccoDays).toBe(9);
+    expect(opp.leva).toBe(2.25);
+  });
+
+  it('uses minBridgeLeverage to keep only bridges above the configured threshold', () => {
+    const out = calculatePlan(
+      input({
+        windowStart: '2027-05-29',
+        windowEnd: '2027-06-06',
+        publicHolidays: [{ date: '2027-06-02', name: 'Repubblica', kind: 'national' }],
+        minBridgeLeverage: 2.4,
+      }),
+    );
+
+    expect(out.opportunities).toHaveLength(1);
+    expect(out.opportunities[0].costDays).toBe(2);
+    expect(out.opportunities[0].staccoDays).toBe(5);
+    expect(out.opportunities[0].leva).toBe(2.5);
   });
 
   // Case 4 — Easter (Sun) + Pasquetta (Mon) fuse into one opportunity. The
@@ -147,8 +204,9 @@ describe('calculatePlan', () => {
     expect(out.opportunities).toHaveLength(1);
     const opp = out.opportunities[0];
     expect(opp.explanation.fusedHolidayNames).toEqual(['Pasqua', 'Pasquetta']);
-    expect(opp.staccoDays).toBeGreaterThanOrEqual(4);
-    expect(opp.costDays).toBe(1);
+    expect(opp.costDays).toBe(4);
+    expect(opp.staccoDays).toBe(9);
+    expect(opp.leva).toBe(2.25);
   });
 
   // Case 5 — two holidays a short hop apart, where bridging both at once beats
@@ -167,9 +225,11 @@ describe('calculatePlan', () => {
     expect(out.opportunities).toHaveLength(1);
     const opp = out.opportunities[0];
     expect(opp.explanation.fusedHolidayNames).toEqual(['A', 'B']);
-    expect(opp.costDays).toBe(1);
     expect(opp.startDate).toBe('2027-04-01');
-    expect(opp.endDate).toBe('2027-04-05');
+    expect(opp.endDate).toBe('2027-04-11');
+    expect(opp.costDays).toBe(5);
+    expect(opp.staccoDays).toBe(11);
+    expect(opp.leva).toBe(2.2);
   });
 
   // Case 6 — two holidays far apart stay as two separate opportunities.
@@ -249,6 +309,40 @@ describe('calculatePlan', () => {
     expect(out.opportunities[0].costDays).toBeGreaterThan(out.availableBudget);
   });
 
+  it('fuses the Christmas, New Year and Epiphany window into a long recommendation', () => {
+    const out = calculatePlan(
+      input({
+        windowStart: '2026-12-21',
+        windowEnd: '2027-01-10',
+        totalVacationDays: 7,
+        publicHolidays: [
+          { date: '2026-12-25', name: 'Natale', kind: 'national' },
+          { date: '2026-12-26', name: 'Santo Stefano', kind: 'national' },
+          { date: '2027-01-01', name: 'Capodanno', kind: 'national' },
+          { date: '2027-01-06', name: 'Epifania', kind: 'national' },
+        ],
+      }),
+    );
+
+    expect(out.opportunities).toHaveLength(1);
+    expect(out.opportunities[0]).toMatchObject({
+      startDate: '2026-12-25',
+      endDate: '2027-01-10',
+      recommendedDays: [
+        '2026-12-28',
+        '2026-12-29',
+        '2026-12-30',
+        '2026-12-31',
+        '2027-01-04',
+        '2027-01-05',
+        '2027-01-07',
+        '2027-01-08',
+      ],
+      staccoDays: 17,
+      costDays: 8,
+    });
+  });
+
   // Case 11 — every DayType is classified correctly in the dayMap.
   it('11. dayMap classifies each DayType', () => {
     const out = calculatePlan(
@@ -311,6 +405,7 @@ describe('calculatePlan', () => {
       windowStart: '2027-03-29',
       windowEnd: '2027-04-04',
       publicHolidays: [{ date: '2027-04-01', name: 'Festa Test', kind: 'national' }],
+      minBridgeLeverage: 2,
     });
     const off = calculatePlan(base);
     const on = calculatePlan({ ...base, workSchedule: schedule(true) });

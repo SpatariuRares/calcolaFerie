@@ -24,6 +24,7 @@ import type {
 } from "./types";
 
 const CAP = 9; // max workday extension scanned on either edge of an anchor
+const DEFAULT_MIN_BRIDGE_LEVERAGE = 2.1;
 
 function pad(n: number): string {
   return String(n).padStart(2, "0");
@@ -48,6 +49,71 @@ function isFree(type: DayType): boolean {
   return type === "weekend" || type === "publicHoliday" || type === "companyClosure";
 }
 
+function isScheduledWorkday(day: Day, workDays: Set<WeekdayIndex>): boolean {
+  return workDays.has(day.weekday);
+}
+
+function isWeekdayAnchor(day: Day, workDays: Set<WeekdayIndex>): boolean {
+  return (
+    (day.type === "publicHoliday" || day.type === "companyClosure") &&
+    isScheduledWorkday(day, workDays)
+  );
+}
+
+function hasScheduledRestDay(
+  days: Day[],
+  workDays: Set<WeekdayIndex>,
+  start: number,
+  end: number
+): boolean {
+  for (let i = start; i <= end; i++) {
+    if (!isScheduledWorkday(days[i], workDays)) return true;
+  }
+  return false;
+}
+
+function isValidBridgeInterval(
+  days: Day[],
+  workDays: Set<WeekdayIndex>,
+  start: number,
+  end: number,
+  coverStart: number,
+  coverEnd: number
+): boolean {
+  let hasRecommendedDay = false;
+  for (let i = start; i <= end; i++) {
+    if (days[i].type === "workday") {
+      hasRecommendedDay = true;
+      break;
+    }
+  }
+  if (!hasRecommendedDay) return false;
+
+  if (days[start].type === "workday" && start < coverStart) {
+    let leftRunEnd = start;
+    while (leftRunEnd + 1 <= end && days[leftRunEnd + 1].type === "workday") leftRunEnd++;
+
+    if (leftRunEnd < coverStart) {
+      let firstWeekdayAnchor = -1;
+      for (let i = leftRunEnd + 1; i <= coverEnd; i++) {
+        if (isWeekdayAnchor(days[i], workDays)) {
+          firstWeekdayAnchor = i;
+          break;
+        }
+      }
+
+      if (firstWeekdayAnchor < 0) return false;
+      if (!hasScheduledRestDay(days, workDays, leftRunEnd + 1, firstWeekdayAnchor - 1)) {
+        return false;
+      }
+    }
+  }
+
+  if (days[end].type === "workday" && end > coverEnd) return false;
+
+  return true;
+}
+
 /**
  * Best bridge interval covering day indices [coverStart, coverEnd], scanning the
  * left edge in [leftBound, coverStart] and the right edge in [coverEnd, rightBound].
@@ -55,7 +121,9 @@ function isFree(type: DayType): boolean {
  */
 function bestInterval(
   days: Day[],
+  workDays: Set<WeekdayIndex>,
   consume: boolean,
+  minBridgeLeverage: number,
   leftBound: number,
   coverStart: number,
   coverEnd: number,
@@ -72,6 +140,8 @@ function bestInterval(
 
   for (let s = leftBound; s <= coverStart; s++) {
     for (let e = coverEnd; e <= rightBound; e++) {
+      if (!isValidBridgeInterval(days, workDays, s, e, coverStart, coverEnd)) continue;
+
       const recommended: number[] = [];
       let holidayCount = 0;
       for (let i = s; i <= e; i++) {
@@ -83,13 +153,16 @@ function bestInterval(
       if (cost < 1) continue; // no vacation spent -> not an opportunity
       const stacco = e - s + 1;
       const leva = stacco / cost;
-      if (
+      if (leva < minBridgeLeverage) continue;
+
+      const isBetterByLength =
         best === null ||
-        leva > best.leva ||
-        (leva === best.leva && stacco > best.stacco) ||
-        (leva === best.leva && stacco === best.stacco && cost < best.cost) ||
-        (leva === best.leva && stacco === best.stacco && cost === best.cost && s < best.start)
-      ) {
+        stacco > best.stacco ||
+        (stacco === best.stacco && cost < best.cost) ||
+        (stacco === best.stacco && cost === best.cost && leva > best.leva) ||
+        (stacco === best.stacco && cost === best.cost && leva === best.leva && s < best.start);
+
+      if (isBetterByLength) {
         best = { start: s, end: e, leva, stacco, cost, recommended };
       }
     }
@@ -107,6 +180,7 @@ export function calculatePlan(input: EngineInput): EngineOutput {
   const { windowStart, windowEnd, workSchedule, publicHolidays, daysOff, totalVacationDays } =
     input;
   const consume = workSchedule.consumeHolidaysOnPublicHolidays;
+  const minBridgeLeverage = input.minBridgeLeverage ?? DEFAULT_MIN_BRIDGE_LEVERAGE;
 
   // --- 1. Build the day list and dayMap -------------------------------------
   const holidayName = new Map<ISODateString, string>();
@@ -142,7 +216,7 @@ export function calculatePlan(input: EngineInput): EngineOutput {
     const runStart = i;
     let hasAnchor = false;
     while (i < days.length && isFree(days[i].type)) {
-      if (days[i].type === "publicHoliday" || days[i].type === "companyClosure") hasAnchor = true;
+      if (isWeekdayAnchor(days[i], workSchedule.workDays)) hasAnchor = true;
       i++;
     }
     if (hasAnchor) anchors.push({ start: runStart, end: i - 1 });
@@ -168,7 +242,9 @@ export function calculatePlan(input: EngineInput): EngineOutput {
   const bestFor = (ai: number, aj: number) =>
     bestInterval(
       days,
+      workSchedule.workDays,
       consume,
+      minBridgeLeverage,
       leftBoundFor(ai),
       anchors[ai].start,
       anchors[aj].end,
@@ -193,11 +269,11 @@ export function calculatePlan(input: EngineInput): EngineOutput {
       const c2 = clusters[k + 1];
       const fused = bestFor(c1.ai, c2.aj);
       if (!fused) continue;
-      const parts = Math.max(c1.best ? c1.best.leva : 0, c2.best ? c2.best.leva : 0);
-      if (fused.leva >= parts && fused.leva > pickScore) {
+      const partStacco = Math.max(c1.best ? c1.best.stacco : 0, c2.best ? c2.best.stacco : 0);
+      if (fused.stacco > partStacco && fused.stacco > pickScore) {
         pick = k;
         pickBest = fused;
-        pickScore = fused.leva;
+        pickScore = fused.stacco;
       }
     }
     if (pick >= 0) {

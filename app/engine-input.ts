@@ -62,5 +62,6 @@ export function buildEngineInput(config: UserConfig, today = new Date()): Engine
     publicHolidays: buildPublicHolidays(windowStart, windowEnd, config.patronSaintDate),
     daysOff,
     totalVacationDays: config.totalVacationDays,
+    minBridgeLeverage: config.minBridgeLeverage,
   };
 }
