@@ -1,21 +1,24 @@
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import { FlatCompat } from "@eslint/eslintrc";
+import nextCoreWebVitals from "eslint-config-next/core-web-vitals";
+import nextTypescript from "eslint-config-next/typescript";
 import tsPlugin from "@typescript-eslint/eslint-plugin";
 import tsParser from "@typescript-eslint/parser";
 import importPlugin from "eslint-plugin-import";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
+const disabledReactRules = Object.fromEntries(
+  nextCoreWebVitals
+    .flatMap((entry) => Object.keys(entry.rules ?? {}))
+    .filter((ruleName) => ruleName.startsWith("react/"))
+    .map((ruleName) => [ruleName, "off"])
+);
 
 /** @type {import('eslint').Linter.Config[]} */
 const config = [
   // Next.js app config (excludes engine/)
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+  ...nextCoreWebVitals,
+  ...nextTypescript,
+  {
+    rules: disabledReactRules,
+  },
 
   // Engine-specific: ban next and react imports
   {

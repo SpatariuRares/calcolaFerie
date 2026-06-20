@@ -1,7 +1,5 @@
+import { VacationPlanner } from "./vacation-planner";
+
 export default function Home() {
-  return (
-    <main>
-      <h1>CalcolaFerie</h1>
-    </main>
-  );
+  return <VacationPlanner />;
 }

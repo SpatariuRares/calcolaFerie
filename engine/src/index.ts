@@ -11,8 +11,8 @@ export type {
   BridgeOpportunity,
   EngineOutput,
   UserConfig,
-} from './types.js';
-export { computeEaster, getItalianPublicHolidays, getPublicHolidaysForWindow } from './holidays.js';
+} from "./types";
+export { computeEaster, getItalianPublicHolidays, getPublicHolidaysForWindow } from "./holidays";
 
 import type {
   ISODateString,
@@ -21,16 +21,16 @@ import type {
   EngineInput,
   EngineOutput,
   BridgeOpportunity,
-} from './types.js';
+} from "./types";
 
 const CAP = 9; // max workday extension scanned on either edge of an anchor
 
 function pad(n: number): string {
-  return String(n).padStart(2, '0');
+  return String(n).padStart(2, "0");
 }
 
 function isoToUTC(iso: ISODateString): Date {
-  return new Date(iso + 'T00:00:00Z');
+  return new Date(iso + "T00:00:00Z");
 }
 
 function utcToISO(d: Date): ISODateString {
@@ -45,7 +45,7 @@ interface Day {
 }
 
 function isFree(type: DayType): boolean {
-  return type === 'weekend' || type === 'publicHoliday' || type === 'companyClosure';
+  return type === "weekend" || type === "publicHoliday" || type === "companyClosure";
 }
 
 /**
@@ -59,7 +59,7 @@ function bestInterval(
   leftBound: number,
   coverStart: number,
   coverEnd: number,
-  rightBound: number,
+  rightBound: number
 ) {
   let best: {
     start: number;
@@ -75,8 +75,8 @@ function bestInterval(
       const recommended: number[] = [];
       let holidayCount = 0;
       for (let i = s; i <= e; i++) {
-        if (days[i].type === 'workday') recommended.push(i);
-        else if (days[i].type === 'publicHoliday') holidayCount++;
+        if (days[i].type === "workday") recommended.push(i);
+        else if (days[i].type === "publicHoliday") holidayCount++;
       }
       const consumed = consume && recommended.length > 0 ? holidayCount : 0;
       const cost = recommended.length + consumed;
@@ -104,14 +104,15 @@ interface AnchorBlock {
 }
 
 export function calculatePlan(input: EngineInput): EngineOutput {
-  const { windowStart, windowEnd, workSchedule, publicHolidays, daysOff, totalVacationDays } = input;
+  const { windowStart, windowEnd, workSchedule, publicHolidays, daysOff, totalVacationDays } =
+    input;
   const consume = workSchedule.consumeHolidaysOnPublicHolidays;
 
   // --- 1. Build the day list and dayMap -------------------------------------
   const holidayName = new Map<ISODateString, string>();
   for (const h of publicHolidays) holidayName.set(h.date, h.name);
 
-  const offType = new Map<ISODateString, 'companyClosure' | 'mandatoryLeave'>();
+  const offType = new Map<ISODateString, "companyClosure" | "mandatoryLeave">();
   for (const o of daysOff) offType.set(o.date, o.type);
 
   const days: Day[] = [];
@@ -120,8 +121,8 @@ export function calculatePlan(input: EngineInput): EngineOutput {
   for (let d = new Date(start); d <= end; d.setUTCDate(d.getUTCDate() + 1)) {
     const iso = utcToISO(d);
     const weekday = d.getUTCDay() as WeekdayIndex;
-    let type: DayType = workSchedule.workDays.has(weekday) ? 'workday' : 'weekend';
-    if (holidayName.has(iso)) type = 'publicHoliday';
+    let type: DayType = workSchedule.workDays.has(weekday) ? "workday" : "weekend";
+    if (holidayName.has(iso)) type = "publicHoliday";
     const off = offType.get(iso);
     if (off) type = off;
     days.push({ iso, weekday, type, holidayName: holidayName.get(iso) });
@@ -141,7 +142,7 @@ export function calculatePlan(input: EngineInput): EngineOutput {
     const runStart = i;
     let hasAnchor = false;
     while (i < days.length && isFree(days[i].type)) {
-      if (days[i].type === 'publicHoliday' || days[i].type === 'companyClosure') hasAnchor = true;
+      if (days[i].type === "publicHoliday" || days[i].type === "companyClosure") hasAnchor = true;
       i++;
     }
     if (hasAnchor) anchors.push({ start: runStart, end: i - 1 });
@@ -165,9 +166,20 @@ export function calculatePlan(input: EngineInput): EngineOutput {
 
   type Cluster = { ai: number; aj: number; best: ReturnType<typeof bestInterval> };
   const bestFor = (ai: number, aj: number) =>
-    bestInterval(days, consume, leftBoundFor(ai), anchors[ai].start, anchors[aj].end, rightBoundFor(aj));
+    bestInterval(
+      days,
+      consume,
+      leftBoundFor(ai),
+      anchors[ai].start,
+      anchors[aj].end,
+      rightBoundFor(aj)
+    );
 
-  let clusters: Cluster[] = anchors.map((_, idx) => ({ ai: idx, aj: idx, best: bestFor(idx, idx) }));
+  const clusters: Cluster[] = anchors.map((_, idx) => ({
+    ai: idx,
+    aj: idx,
+    best: bestFor(idx, idx),
+  }));
 
   // --- 4. Agglomerative fusion: merge when fused leva >= both parts ----------
   let merged = true;
@@ -207,10 +219,10 @@ export function calculatePlan(input: EngineInput): EngineOutput {
     const fusedHolidayNames: string[] = [];
     for (let idx = b.start; idx <= b.end; idx++) {
       const day = days[idx];
-      if (day.type === 'publicHoliday') {
-        if (!anchorDay || anchorDay.type !== 'publicHoliday') anchorDay = day;
+      if (day.type === "publicHoliday") {
+        if (!anchorDay || anchorDay.type !== "publicHoliday") anchorDay = day;
         if (day.holidayName) fusedHolidayNames.push(day.holidayName);
-      } else if (day.type === 'companyClosure' && !anchorDay) {
+      } else if (day.type === "companyClosure" && !anchorDay) {
         anchorDay = day;
       }
     }
@@ -225,7 +237,7 @@ export function calculatePlan(input: EngineInput): EngineOutput {
       leva: b.leva,
       recommendedDays,
       explanation: {
-        anchorHolidayName: anchorDay.holidayName ?? 'Chiusura aziendale',
+        anchorHolidayName: anchorDay.holidayName ?? "Chiusura aziendale",
         anchorWeekday: anchorDay.weekday,
         costDays: b.cost,
         staccoDays: b.stacco,
@@ -233,14 +245,14 @@ export function calculatePlan(input: EngineInput): EngineOutput {
       },
     });
 
-    for (const iso of recommendedDays) dayMap.set(iso, 'recommendedLeave');
+    for (const iso of recommendedDays) dayMap.set(iso, "recommendedLeave");
   }
 
   opportunities.sort((a, b) => a.startDate.localeCompare(b.startDate));
 
   // --- 6. Budget -----------------------------------------------------------
   const mandatoryCount = daysOff.filter(
-    (o) => o.type === 'mandatoryLeave' && o.date >= windowStart && o.date <= windowEnd,
+    (o) => o.type === "mandatoryLeave" && o.date >= windowStart && o.date <= windowEnd
   ).length;
   const availableBudget = totalVacationDays - mandatoryCount;
 
