@@ -1,17 +1,60 @@
 "use client";
 
 import { useId, useRef, useState } from "react";
-import { type DayOff } from "@/engine/src/index";
+import { type DayOff, type DayType, type EngineInput, type EngineOutput } from "@/engine/src/index";
 import { calculateVacationPlan, type CalculationState } from "./calculate-vacation-plan";
 import styles from "./page.module.css";
 import { ResultsTable } from "./results-table";
 
 type DayOffRow = DayOff & { id: string };
+type CalendarDay = {
+  iso: string;
+  dayNumber: number;
+  type: DayType;
+  holidayName?: string;
+};
+type CalendarMonth = {
+  key: string;
+  label: string;
+  leadingBlankDays: number;
+  days: CalendarDay[];
+};
 
 const DAY_OFF_TYPE_LABELS: Record<DayOff["type"], string> = {
   companyClosure: "Chiusura aziendale — giorno gratuito",
   mandatoryLeave: "Giorno obbligatorio — scala dal budget",
 };
+
+const DAY_TYPE_LABELS: Record<DayType, string> = {
+  weekend: "Weekend",
+  publicHoliday: "Festivo",
+  companyClosure: "Chiusura",
+  mandatoryLeave: "Ferie obbligatorie",
+  recommendedLeave: "Ferie consigliate",
+  workday: "Lavorativo",
+};
+
+const CALENDAR_LEGEND: DayType[] = [
+  "recommendedLeave",
+  "publicHoliday",
+  "companyClosure",
+  "mandatoryLeave",
+  "weekend",
+  "workday",
+];
+
+const WEEKDAY_INITIALS = ["L", "M", "M", "G", "V", "S", "D"];
+
+const MONTH_FORMATTER = new Intl.DateTimeFormat("it-IT", {
+  month: "long",
+  year: "numeric",
+});
+
+const DAY_FORMATTER = new Intl.DateTimeFormat("it-IT", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+});
 
 function createDayOffRow(id: string, type: DayOff["type"] = "companyClosure"): DayOffRow {
   return {
@@ -28,39 +71,177 @@ function parseVacationDays(value: string): number | null {
   return parsed;
 }
 
-function ResultsPlaceholder({ calculation }: { calculation: CalculationState | null }) {
+function parseISODate(isoDate: string) {
+  return new Date(`${isoDate}T00:00:00`);
+}
+
+function dateToISO(date: Date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function getMondayFirstBlankDays(date: Date) {
+  return (date.getDay() + 6) % 7;
+}
+
+function buildCalendarMonths(input: EngineInput, output: EngineOutput): CalendarMonth[] {
+  const startDate = parseISODate(input.windowStart);
+  const endDate = parseISODate(input.windowEnd);
+  const holidayNames = new Map(input.publicHolidays.map((holiday) => [holiday.date, holiday.name]));
+  const months: CalendarMonth[] = [];
+  const cursor = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
+
+  while (cursor <= endDate) {
+    const year = cursor.getFullYear();
+    const month = cursor.getMonth();
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+    const days: CalendarDay[] = [];
+
+    for (let day = 1; day <= lastDay.getDate(); day++) {
+      const date = new Date(year, month, day);
+      const iso = dateToISO(date);
+      const type = output.dayMap.get(iso);
+
+      if (!type || iso < input.windowStart || iso > input.windowEnd) continue;
+
+      days.push({
+        iso,
+        dayNumber: day,
+        type,
+        holidayName: holidayNames.get(iso),
+      });
+    }
+
+    months.push({
+      key: `${year}-${month}`,
+      label: MONTH_FORMATTER.format(firstDay),
+      leadingBlankDays:
+        year === startDate.getFullYear() && month === startDate.getMonth()
+          ? getMondayFirstBlankDays(startDate)
+          : getMondayFirstBlankDays(firstDay),
+      days,
+    });
+    cursor.setMonth(cursor.getMonth() + 1);
+  }
+
+  return months;
+}
+
+function ResultsPanel({ calculation }: { calculation: CalculationState | null }) {
+  const output = calculation?.output;
+  const opportunities = output?.opportunities ?? [];
+  const bestOpportunity =
+    opportunities.length > 0
+      ? opportunities.reduce((best, opportunity) =>
+          opportunity.leva > best.leva ? opportunity : best
+        )
+      : null;
+
   return (
     <section className={styles.outputSection} aria-labelledby="results-title">
       <div className={styles.sectionHeader}>
-        <p className={styles.eyebrow}>Risultati</p>
-        <h2 id="results-title">Ponti consigliati</h2>
+        <div>
+          <p className={styles.eyebrow}>Risultati</p>
+          <h2 id="results-title">Ponti consigliati</h2>
+        </div>
       </div>
       {calculation ? (
-        <ResultsTable output={calculation.output} />
+        <>
+          <dl className={styles.summaryGrid}>
+            <div>
+              <dt>Budget utile</dt>
+              <dd>{output?.availableBudget ?? 0}</dd>
+            </div>
+            <div>
+              <dt>Opportunità</dt>
+              <dd>{opportunities.length}</dd>
+            </div>
+            <div>
+              <dt>Miglior leva</dt>
+              <dd>{bestOpportunity ? `${bestOpportunity.leva.toFixed(1)}×` : "0×"}</dd>
+            </div>
+          </dl>
+          <ResultsTable output={calculation.output} />
+        </>
       ) : (
-        <p className={styles.mutedText}>Compila il form e premi Calcola per vedere la tabella.</p>
+        <div className={styles.emptyState}>
+          <strong>Nessun calcolo avviato</strong>
+          <span>Inserisci il budget e premi Calcola per vedere le occasioni ordinate.</span>
+        </div>
       )}
     </section>
   );
 }
 
-function CalendarPlaceholder({ calculation }: { calculation: CalculationState | null }) {
+function CalendarView({ calculation }: { calculation: CalculationState | null }) {
+  const months = calculation ? buildCalendarMonths(calculation.input, calculation.output) : [];
+
   return (
     <section className={styles.outputSection} aria-labelledby="calendar-title">
       <div className={styles.sectionHeader}>
-        <p className={styles.eyebrow}>Calendario</p>
-        <h2 id="calendar-title">Vista annuale</h2>
+        <div>
+          <p className={styles.eyebrow}>Calendario</p>
+          <h2 id="calendar-title">Vista annuale</h2>
+        </div>
       </div>
-      {calculation ? (
-        <div className={styles.placeholder}>
-          <strong>{calculation.output.dayMap.size}</strong>
-          <span>
-            giorni classificati dal {calculation.input.windowStart} al {calculation.input.windowEnd}
-            .
+
+      <div className={styles.legend} aria-label="Legenda calendario">
+        {CALENDAR_LEGEND.map((type) => (
+          <span className={styles.legendItem} key={type}>
+            <span className={`${styles.legendSwatch} ${styles[`dayCell_${type}`]}`} />
+            {DAY_TYPE_LABELS[type]}
           </span>
+        ))}
+      </div>
+
+      {calculation ? (
+        <div className={styles.calendarList}>
+          {months.map((month) => (
+            <article className={styles.monthBlock} key={month.key}>
+              <h3>{month.label}</h3>
+              <div className={styles.weekdayGrid} aria-hidden="true">
+                {WEEKDAY_INITIALS.map((weekday, index) => (
+                  <span key={`${weekday}-${index}`}>{weekday}</span>
+                ))}
+              </div>
+              <div className={styles.monthGrid}>
+                {Array.from({ length: month.leadingBlankDays }).map((_, index) => (
+                  <span className={styles.blankDay} key={`blank-${index}`} />
+                ))}
+                {month.days.map((day) => {
+                  const label = [
+                    DAY_FORMATTER.format(parseISODate(day.iso)),
+                    DAY_TYPE_LABELS[day.type],
+                    day.holidayName,
+                  ]
+                    .filter(Boolean)
+                    .join(" — ");
+
+                  return (
+                    <span
+                      aria-label={label}
+                      className={`${styles.dayCell} ${styles[`dayCell_${day.type}`]}`}
+                      key={day.iso}
+                      title={label}
+                    >
+                      {day.dayNumber}
+                    </span>
+                  );
+                })}
+              </div>
+            </article>
+          ))}
         </div>
       ) : (
-        <p className={styles.mutedText}>Il calendario riceverà i dati dopo il primo calcolo.</p>
+        <div className={styles.emptyState}>
+          <strong>Calendario pronto dopo il calcolo</strong>
+          <span>
+            La vista annuale userà colori diversi per festivi, chiusure e ferie consigliate.
+          </span>
+        </div>
       )}
     </section>
   );
@@ -113,16 +294,23 @@ export function VacationPlanner() {
   return (
     <main className={styles.pageShell}>
       <section className={styles.hero} aria-labelledby="page-title">
-        <p className={styles.eyebrow}>Planner ferie</p>
-        <h1 id="page-title">CalcolaFerie</h1>
+        <div>
+          <p className={styles.eyebrow}>Planner ferie</p>
+          <h1 id="page-title">CalcolaFerie</h1>
+        </div>
         <p>
-          Inserisci budget, chiusure e patrono locale. Il calcolo parte solo quando premi il
-          pulsante.
+          Trova i ponti migliori nei prossimi 12 mesi, distinguendo ferie da spendere, chiusure
+          aziendali e giorni obbligatori.
         </p>
       </section>
 
       <div className={styles.toolLayout}>
         <form className={styles.formPanel} onSubmit={handleSubmit}>
+          <div className={styles.panelHeader}>
+            <p className={styles.eyebrow}>Input</p>
+            <h2>Scenario</h2>
+          </div>
+
           <div className={styles.fieldGroup}>
             <label className={styles.label} htmlFor={budgetId}>
               Giorni di ferie disponibili
@@ -231,8 +419,8 @@ export function VacationPlanner() {
         </form>
 
         <div className={styles.outputStack}>
-          <ResultsPlaceholder calculation={calculation} />
-          <CalendarPlaceholder calculation={calculation} />
+          <ResultsPanel calculation={calculation} />
+          <CalendarView calculation={calculation} />
         </div>
       </div>
     </main>
