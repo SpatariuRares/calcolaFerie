@@ -28,7 +28,7 @@
 }
 
 .summaryGrid {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(92px, 1fr));
 
   div {
     gap: 2px;
@@ -37,6 +37,28 @@
     padding: 10px;
     background: #f7faf8;
   }
+}
+
+.summaryWarning {
+  border-color: #e8aa88;
+  background: #fff4ed;
+
+  dt,
+  dd {
+    color: #96351c;
+  }
+}
+
+.budgetWarning {
+  margin: 0;
+  border: 1px solid #e8aa88;
+  border-radius: 8px;
+  padding: 9px 10px;
+  background: #fff4ed;
+  color: #96351c;
+  font-size: 0.9rem;
+  font-weight: 750;
+  line-height: 1.35;
 }
 
 .resultsView {
@@ -53,6 +75,44 @@
   border-radius: 8px;
   padding: 12px;
   background: $surface;
+  cursor: pointer;
+
+  &:focus-visible {
+    @include focus;
+  }
+}
+
+.opportunitySelector {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+  color: $strong;
+  cursor: pointer;
+  font-weight: 850;
+  line-height: 1.25;
+
+  span {
+    @include heading;
+    min-width: 0;
+    font-size: 1.05rem;
+  }
+}
+
+.selectionBox {
+  display: inline-flex;
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #8fb7a0;
+  border-radius: 4px;
+  background: $surface;
+  color: $green;
+  font-size: 0.78rem;
+  font-weight: 900;
+  line-height: 1;
 }
 
 .opportunityCardHeader h3 {
@@ -60,6 +120,12 @@
   color: $strong;
   font-size: 1.05rem;
   line-height: 1.25;
+}
+
+.opportunitySelected {
+  border-color: #89bea3;
+  background: #f1faf5;
+  box-shadow: inset 4px 0 0 #16724f;
 }
 
 .opportunityMetrics {
@@ -93,7 +159,8 @@
 }
 
 .levaBadge,
-.budgetChip {
+.budgetChip,
+.selectedChip {
   display: inline-flex;
   width: max-content;
   max-width: 100%;
@@ -114,9 +181,15 @@
   }
 }
 
-.budgetChip {
+.budgetChip,
+.selectedChip {
   background: #ffe1d8;
   color: #96351c;
+}
+
+.selectedChip {
+  background: #d8f1e3;
+  color: #0b5b35;
 }
 
 .desktopTableWrap {
@@ -125,7 +198,7 @@
 
 .resultsTable {
   width: 100%;
-  min-width: 780px;
+  min-width: 860px;
   border-collapse: collapse;
   color: #253126;
   font-size: 0.88rem;
@@ -157,6 +230,23 @@
       background: #fbfcfd;
     }
 
+    tr[role="button"] {
+      cursor: pointer;
+
+      &:focus-visible {
+        outline: 3px solid $focus;
+        outline-offset: -3px;
+      }
+    }
+
+    .selectedTableRow {
+      background: #f1faf5;
+
+      &:hover {
+        background: #e9f6ef;
+      }
+    }
+
     tr:last-child {
       th,
       td {
@@ -165,10 +255,27 @@
     }
   }
 
-  td:nth-child(2),
   td:nth-child(3),
-  td:nth-child(4) {
+  td:nth-child(4),
+  td:nth-child(5) {
     text-align: center;
+  }
+
+  td:first-child {
+    text-align: center;
+
+    input {
+      width: 18px;
+      height: 18px;
+      accent-color: $green;
+      cursor: pointer;
+    }
+  }
+
+  td:last-child {
+    display: grid;
+    gap: 5px;
+    align-items: start;
   }
 }
 

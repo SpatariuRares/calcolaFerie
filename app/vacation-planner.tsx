@@ -7,10 +7,11 @@ import {
   CALENDAR_LEGEND,
   DAY_TYPE_LABELS,
   getCalendarDayLabel,
+  isSelectableVacationDay,
 } from "./calendar-model";
 import { calculateVacationPlan, type CalculationState } from "./calculate-vacation-plan";
 import styles from "./page.module.scss";
-import { ResultsTable } from "./results-table";
+import { getSelectedOpportunityCost, ResultsTable } from "./results-table";
 
 type DayOffRow = DayOff & { id: string };
 
@@ -36,9 +37,21 @@ function parseVacationDays(value: string): number | null {
   return parsed;
 }
 
-function ResultsPanel({ calculation }: { calculation: CalculationState | null }) {
+function ResultsPanel({
+  calculation,
+  onToggleOpportunity,
+  selectedOpportunityIds,
+}: {
+  calculation: CalculationState | null;
+  onToggleOpportunity: (opportunityId: string) => void;
+  selectedOpportunityIds: Set<string>;
+}) {
   const output = calculation?.output;
   const opportunities = output?.opportunities ?? [];
+  const selectedOpportunityCost = output
+    ? getSelectedOpportunityCost(output.opportunities, selectedOpportunityIds)
+    : 0;
+  const remainingBudget = output ? output.availableBudget - selectedOpportunityCost : 0;
   const bestOpportunity =
     opportunities.length > 0
       ? opportunities.reduce((best, opportunity) =>
@@ -62,6 +75,14 @@ function ResultsPanel({ calculation }: { calculation: CalculationState | null })
               <dd>{output?.availableBudget ?? 0}</dd>
             </div>
             <div>
+              <dt>Scalati</dt>
+              <dd>{selectedOpportunityCost}</dd>
+            </div>
+            <div className={remainingBudget < 0 ? styles.summaryWarning : undefined}>
+              <dt>Residuo</dt>
+              <dd>{remainingBudget}</dd>
+            </div>
+            <div>
               <dt>Opportunità</dt>
               <dd>{opportunities.length}</dd>
             </div>
@@ -70,7 +91,16 @@ function ResultsPanel({ calculation }: { calculation: CalculationState | null })
               <dd>{bestOpportunity ? `${bestOpportunity.leva.toFixed(1)}×` : "0×"}</dd>
             </div>
           </dl>
-          <ResultsTable output={calculation.output} />
+          {remainingBudget < 0 ? (
+            <p className={styles.budgetWarning}>
+              Le selezioni superano il budget disponibile di {Math.abs(remainingBudget)} giorni.
+            </p>
+          ) : null}
+          <ResultsTable
+            onToggleOpportunity={onToggleOpportunity}
+            output={calculation.output}
+            selectedOpportunityIds={selectedOpportunityIds}
+          />
         </>
       ) : (
         <div className={styles.emptyState}>
@@ -82,8 +112,19 @@ function ResultsPanel({ calculation }: { calculation: CalculationState | null })
   );
 }
 
-function CalendarView({ calculation }: { calculation: CalculationState | null }) {
+function CalendarView({
+  calculation,
+  onClearSelectedVacationDates,
+  onToggleVacationDate,
+  selectedVacationDates,
+}: {
+  calculation: CalculationState | null;
+  onClearSelectedVacationDates: () => void;
+  onToggleVacationDate: (isoDate: string) => void;
+  selectedVacationDates: Set<string>;
+}) {
   const months = calculation ? buildCalendarMonths(calculation.input, calculation.output) : [];
+  const sortedSelectedDates = [...selectedVacationDates].sort((a, b) => a.localeCompare(b));
 
   return (
     <section className={styles.outputSection} aria-labelledby="calendar-title">
@@ -101,42 +142,78 @@ function CalendarView({ calculation }: { calculation: CalculationState | null })
             {DAY_TYPE_LABELS[type]}
           </span>
         ))}
+        <span className={styles.legendItem}>
+          <span className={`${styles.legendSwatch} ${styles.dayCellSelected}`} />
+          Ferie selezionate
+        </span>
       </div>
 
       {calculation ? (
-        <div className={styles.calendarList}>
-          {months.map((month) => (
-            <article className={styles.monthBlock} key={month.key}>
-              <h3>{month.label}</h3>
-              <div className={styles.weekdayGrid} aria-hidden="true">
-                {WEEKDAY_INITIALS.map((weekday, index) => (
-                  <span key={`${weekday}-${index}`}>{weekday}</span>
-                ))}
-              </div>
-              <div className={styles.monthGrid}>
-                {Array.from({ length: month.leadingBlankDays }).map((_, index) => (
-                  <span className={styles.blankDay} key={`blank-${index}`} />
-                ))}
-                {month.days.map((day) => {
-                  const label = getCalendarDayLabel(day);
+        <>
+          <div className={styles.selectedVacationBar}>
+            <div>
+              <strong>{selectedVacationDates.size} giorni di ferie selezionati</strong>
+              <span>
+                {sortedSelectedDates.length > 0
+                  ? sortedSelectedDates.join(", ")
+                  : "Tocca un giorno lavorativo o consigliato nel calendario."}
+              </span>
+            </div>
+            {selectedVacationDates.size > 0 ? (
+              <button
+                className={styles.clearSelectionButton}
+                onClick={onClearSelectedVacationDates}
+                type="button"
+              >
+                Azzera
+              </button>
+            ) : null}
+          </div>
 
-                  return (
-                    <button
-                      aria-label={label}
-                      className={`${styles.dayCell} ${styles[`dayCell_${day.type}`]}`}
-                      data-tooltip={label}
-                      key={day.iso}
-                      title={label}
-                      type="button"
-                    >
-                      {day.dayNumber}
-                    </button>
-                  );
-                })}
-              </div>
-            </article>
-          ))}
-        </div>
+          <div className={styles.calendarList}>
+            {months.map((month) => (
+              <article className={styles.monthBlock} key={month.key}>
+                <h3>{month.label}</h3>
+                <div className={styles.weekdayGrid} aria-hidden="true">
+                  {WEEKDAY_INITIALS.map((weekday, index) => (
+                    <span key={`${weekday}-${index}`}>{weekday}</span>
+                  ))}
+                </div>
+                <div className={styles.monthGrid}>
+                  {Array.from({ length: month.leadingBlankDays }).map((_, index) => (
+                    <span className={styles.blankDay} key={`blank-${index}`} />
+                  ))}
+                  {month.days.map((day) => {
+                    const isSelectable = isSelectableVacationDay(day.type);
+                    const isSelected = selectedVacationDates.has(day.iso);
+                    const baseLabel = getCalendarDayLabel(day);
+                    const label = isSelected ? `${baseLabel} — Selezionata per ferie` : baseLabel;
+                    const selectedClassName = isSelected ? ` ${styles.dayCellSelected}` : "";
+                    const lockedClassName = isSelectable ? "" : ` ${styles.dayCellLocked}`;
+
+                    return (
+                      <button
+                        aria-disabled={!isSelectable}
+                        aria-label={label}
+                        aria-pressed={isSelectable ? isSelected : undefined}
+                        className={`${styles.dayCell} ${styles[`dayCell_${day.type}`]}${selectedClassName}${lockedClassName}`}
+                        data-tooltip={label}
+                        key={day.iso}
+                        onClick={() => {
+                          if (isSelectable) onToggleVacationDate(day.iso);
+                        }}
+                        title={label}
+                        type="button"
+                      >
+                        {day.dayNumber}
+                      </button>
+                    );
+                  })}
+                </div>
+              </article>
+            ))}
+          </div>
+        </>
       ) : (
         <div className={styles.emptyState}>
           <strong>Calendario pronto dopo il calcolo</strong>
@@ -157,6 +234,10 @@ export function VacationPlanner() {
   const [dayOffRows, setDayOffRows] = useState<DayOffRow[]>([createDayOffRow("day-off-0")]);
   const [patronSaintDate, setPatronSaintDate] = useState("");
   const [calculation, setCalculation] = useState<CalculationState | null>(null);
+  const [selectedVacationDates, setSelectedVacationDates] = useState<Set<string>>(() => new Set());
+  const [selectedOpportunityIds, setSelectedOpportunityIds] = useState<Set<string>>(
+    () => new Set()
+  );
 
   const parsedVacationDays = parseVacationDays(totalVacationDays);
   const canCalculate = parsedVacationDays !== null;
@@ -175,10 +256,36 @@ export function VacationPlanner() {
     );
   }
 
+  function toggleVacationDate(isoDate: string) {
+    setSelectedVacationDates((dates) => {
+      const nextDates = new Set(dates);
+      if (nextDates.has(isoDate)) {
+        nextDates.delete(isoDate);
+      } else {
+        nextDates.add(isoDate);
+      }
+      return nextDates;
+    });
+  }
+
+  function toggleOpportunity(opportunityId: string) {
+    setSelectedOpportunityIds((ids) => {
+      const nextIds = new Set(ids);
+      if (nextIds.has(opportunityId)) {
+        nextIds.delete(opportunityId);
+      } else {
+        nextIds.add(opportunityId);
+      }
+      return nextIds;
+    });
+  }
+
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (parsedVacationDays === null) return;
 
+    setSelectedVacationDates(new Set());
+    setSelectedOpportunityIds(new Set());
     setCalculation(
       calculateVacationPlan({
         totalVacationDays: parsedVacationDays,
@@ -321,8 +428,17 @@ export function VacationPlanner() {
         </form>
 
         <div className={styles.outputStack}>
-          <ResultsPanel calculation={calculation} />
-          <CalendarView calculation={calculation} />
+          <ResultsPanel
+            calculation={calculation}
+            onToggleOpportunity={toggleOpportunity}
+            selectedOpportunityIds={selectedOpportunityIds}
+          />
+          <CalendarView
+            calculation={calculation}
+            onClearSelectedVacationDates={() => setSelectedVacationDates(new Set())}
+            onToggleVacationDate={toggleVacationDate}
+            selectedVacationDates={selectedVacationDates}
+          />
         </div>
       </div>
     </main>

@@ -1,6 +1,11 @@
 import { describe, expect, it } from "vitest";
 import type { BridgeOpportunity } from "@/engine/src/index";
-import { formatDateRange, formatExplanation, getLevaTier } from "./results-table";
+import {
+  formatDateRange,
+  formatExplanation,
+  getLevaTier,
+  getSelectedOpportunityCost,
+} from "./results-table";
 
 function opportunity(overrides: Partial<BridgeOpportunity>): BridgeOpportunity {
   return {
@@ -72,5 +77,15 @@ describe("results table formatting", () => {
     expect(getLevaTier(4)).toBe("high");
     expect(getLevaTier(2.5)).toBe("medium");
     expect(getLevaTier(2.49)).toBe("low");
+  });
+
+  it("sums the vacation cost for selected bridge opportunities", () => {
+    const opportunities = [
+      opportunity({ id: "bridge-1", costDays: 1 }),
+      opportunity({ id: "bridge-2", costDays: 3 }),
+      opportunity({ id: "bridge-3", costDays: 2 }),
+    ];
+
+    expect(getSelectedOpportunityCost(opportunities, new Set(["bridge-1", "bridge-3"]))).toBe(3);
   });
 });

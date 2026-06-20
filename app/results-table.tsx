@@ -88,19 +88,55 @@ function getLevaClassName(leva: number) {
   return `${styles.levaBadge} ${styles[`levaBadge_${tier}`]}`;
 }
 
+export function getSelectedOpportunityCost(
+  opportunities: BridgeOpportunity[],
+  selectedOpportunityIds: Set<string>
+) {
+  return opportunities.reduce(
+    (total, opportunity) =>
+      selectedOpportunityIds.has(opportunity.id) ? total + opportunity.costDays : total,
+    0
+  );
+}
+
+type ResultsSelectionProps = {
+  onToggleOpportunity: (opportunityId: string) => void;
+  selectedOpportunityIds: Set<string>;
+};
+
 function OpportunityCard({
   opportunity,
   availableBudget,
+  isSelected,
+  onToggleOpportunity,
 }: {
   opportunity: BridgeOpportunity;
   availableBudget: number;
-}) {
+  isSelected: boolean;
+} & ResultsSelectionProps) {
   const isOverBudget = opportunity.costDays > availableBudget;
 
   return (
-    <article className={styles.opportunityCard}>
+    <article
+      aria-pressed={isSelected}
+      className={`${styles.opportunityCard}${isSelected ? ` ${styles.opportunitySelected}` : ""}`}
+      onClick={() => onToggleOpportunity(opportunity.id)}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          onToggleOpportunity(opportunity.id);
+        }
+      }}
+      role="button"
+      tabIndex={0}
+    >
       <div className={styles.opportunityCardHeader}>
-        <h3>{formatDateRange(opportunity.startDate, opportunity.endDate)}</h3>
+        <span className={styles.opportunitySelector}>
+          <span aria-hidden="true" className={styles.selectionBox}>
+            {isSelected ? "✓" : ""}
+          </span>
+          <span>{formatDateRange(opportunity.startDate, opportunity.endDate)}</span>
+        </span>
         <span className={getLevaClassName(opportunity.leva)}>{opportunity.leva.toFixed(1)}×</span>
       </div>
 
@@ -118,6 +154,7 @@ function OpportunityCard({
       <p className={styles.explanationText}>{formatExplanation(opportunity)}</p>
 
       {isOverBudget ? <span className={styles.budgetChip}>Fuori budget</span> : null}
+      {isSelected ? <span className={styles.selectedChip}>Selezionato</span> : null}
     </article>
   );
 }
@@ -125,27 +162,62 @@ function OpportunityCard({
 function OpportunityRow({
   opportunity,
   availableBudget,
+  isSelected,
+  onToggleOpportunity,
 }: {
   opportunity: BridgeOpportunity;
   availableBudget: number;
-}) {
+  isSelected: boolean;
+} & ResultsSelectionProps) {
   const isOverBudget = opportunity.costDays > availableBudget;
+  const dateRange = formatDateRange(opportunity.startDate, opportunity.endDate);
 
   return (
-    <tr>
-      <th scope="row">{formatDateRange(opportunity.startDate, opportunity.endDate)}</th>
+    <tr
+      aria-label={`${isSelected ? "Deseleziona" : "Seleziona"} ponte ${dateRange}`}
+      aria-pressed={isSelected}
+      className={isSelected ? styles.selectedTableRow : undefined}
+      onClick={() => onToggleOpportunity(opportunity.id)}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          onToggleOpportunity(opportunity.id);
+        }
+      }}
+      role="button"
+      tabIndex={0}
+    >
+      <td>
+        <input
+          aria-label={`Seleziona ponte ${dateRange}`}
+          checked={isSelected}
+          onChange={() => onToggleOpportunity(opportunity.id)}
+          onClick={(event) => event.stopPropagation()}
+          type="checkbox"
+        />
+      </td>
+      <th scope="row">{dateRange}</th>
       <td>{opportunity.staccoDays}</td>
       <td>{opportunity.costDays}</td>
       <td>
         <span className={getLevaClassName(opportunity.leva)}>{opportunity.leva.toFixed(1)}×</span>
       </td>
       <td>{formatExplanation(opportunity)}</td>
-      <td>{isOverBudget ? <span className={styles.budgetChip}>Fuori budget</span> : null}</td>
+      <td>
+        {isSelected ? <span className={styles.selectedChip}>Scalato</span> : null}
+        {isOverBudget ? <span className={styles.budgetChip}>Fuori budget</span> : null}
+      </td>
     </tr>
   );
 }
 
-export function ResultsTable({ output }: { output: EngineOutput }) {
+export function ResultsTable({
+  onToggleOpportunity,
+  output,
+  selectedOpportunityIds,
+}: {
+  output: EngineOutput;
+} & ResultsSelectionProps) {
   if (output.opportunities.length === 0) {
     return (
       <div className={styles.emptyState}>
@@ -161,8 +233,11 @@ export function ResultsTable({ output }: { output: EngineOutput }) {
         {output.opportunities.map((opportunity) => (
           <OpportunityCard
             availableBudget={output.availableBudget}
+            isSelected={selectedOpportunityIds.has(opportunity.id)}
             key={opportunity.id}
+            onToggleOpportunity={onToggleOpportunity}
             opportunity={opportunity}
+            selectedOpportunityIds={selectedOpportunityIds}
           />
         ))}
       </div>
@@ -171,6 +246,7 @@ export function ResultsTable({ output }: { output: EngineOutput }) {
         <table className={styles.resultsTable}>
           <thead>
             <tr>
+              <th scope="col">Scegli</th>
               <th scope="col">Periodo</th>
               <th scope="col">Giorni stacco</th>
               <th scope="col">Ferie da usare</th>
@@ -183,8 +259,11 @@ export function ResultsTable({ output }: { output: EngineOutput }) {
             {output.opportunities.map((opportunity) => (
               <OpportunityRow
                 availableBudget={output.availableBudget}
+                isSelected={selectedOpportunityIds.has(opportunity.id)}
                 key={opportunity.id}
+                onToggleOpportunity={onToggleOpportunity}
                 opportunity={opportunity}
+                selectedOpportunityIds={selectedOpportunityIds}
               />
             ))}
           </tbody>

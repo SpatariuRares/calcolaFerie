@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { DayType, EngineInput, EngineOutput } from "@/engine/src/index";
-import { buildCalendarMonths, getCalendarDayLabel } from "./calendar-model";
+import { buildCalendarMonths, getCalendarDayLabel, isSelectableVacationDay } from "./calendar-model";
 
 function baseInput(overrides: Partial<EngineInput> = {}): EngineInput {
   return {
@@ -83,5 +83,14 @@ describe("calendar model", () => {
         holidayName: "Ferragosto",
       })
     ).toBe("15 agosto 2026 — Festivo — Ferragosto");
+  });
+
+  it("allows vacation selection only on days that can consume vacation", () => {
+    expect(isSelectableVacationDay("workday")).toBe(true);
+    expect(isSelectableVacationDay("recommendedLeave")).toBe(true);
+    expect(isSelectableVacationDay("publicHoliday")).toBe(false);
+    expect(isSelectableVacationDay("weekend")).toBe(false);
+    expect(isSelectableVacationDay("companyClosure")).toBe(false);
+    expect(isSelectableVacationDay("mandatoryLeave")).toBe(false);
   });
 });

@@ -64,6 +64,10 @@ export function getCalendarDayLabel(day: CalendarDay) {
     .join(" — ");
 }
 
+export function isSelectableVacationDay(type: DayType) {
+  return type === "workday" || type === "recommendedLeave";
+}
+
 export function buildCalendarMonths(input: EngineInput, output: EngineOutput): CalendarMonth[] {
   const startDate = parseISODate(input.windowStart);
   const endDate = parseISODate(input.windowEnd);
