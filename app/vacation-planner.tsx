@@ -4,6 +4,7 @@ import { useId, useRef, useState } from "react";
 import { type DayOff } from "@/engine/src/index";
 import { calculateVacationPlan, type CalculationState } from "./calculate-vacation-plan";
 import styles from "./page.module.css";
+import { ResultsTable } from "./results-table";
 
 type DayOffRow = DayOff & { id: string };
 
@@ -35,12 +36,7 @@ function ResultsPlaceholder({ calculation }: { calculation: CalculationState | n
         <h2 id="results-title">Ponti consigliati</h2>
       </div>
       {calculation ? (
-        <div className={styles.placeholder}>
-          <strong>{calculation.output.opportunities.length}</strong>
-          <span>
-            opportunità calcolate. Budget residuo: {calculation.output.availableBudget} giorni.
-          </span>
-        </div>
+        <ResultsTable output={calculation.output} />
       ) : (
         <p className={styles.mutedText}>Compila il form e premi Calcola per vedere la tabella.</p>
       )}
