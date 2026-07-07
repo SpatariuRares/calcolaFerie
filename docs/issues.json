@@ -295,58 +295,58 @@
     "id": 9,
     "slug": "09-newsletter-signup",
     "title": "Newsletter Signup",
-    "status": "open",
+    "status": "closed",
     "labels": [],
     "blocked_by": [1, "11b", 13],
     "test_files": ["tests/ui/09-newsletter-signup.spec.ts", "tests/api/09-newsletter-api.spec.ts"],
     "summary": "Set up a minimal newsletter signup for users who have already seen a useful result. Collect confirmed interest via Buttondown (double opt-in). No Supabase in V1.",
     "acceptance_criteria": [
       {
-        "done": false,
+        "done": true,
         "text": "Email widget appears only after first \"Calcola\" press."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Consent checkbox is required; submit button is disabled without it."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Privacy policy is linked from the consent area."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Submit calls `POST /api/newsletter-signup` without a page reload."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Server route validates email and consent before contacting Buttondown."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Buttondown API key is server-only and never exposed via `NEXT_PUBLIC_`."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Buttondown signup uses double opt-in."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Successful request shows \"Controlla la tua email per confermare l'iscrizione.\""
       },
       {
-        "done": false,
+        "done": true,
         "text": "Duplicate/already subscribed responses do not crash the UI."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Unsubscribe is handled by Buttondown links, not custom app logic."
       },
       {
-        "done": false,
+        "done": true,
         "text": "No newsletter/provider calls are made from `engine/` — only from the Next.js app layer."
       },
       {
-        "done": false,
+        "done": true,
         "text": "No Supabase dependency added for V1."
       }
     ]

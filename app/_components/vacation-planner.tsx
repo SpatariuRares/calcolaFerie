@@ -13,6 +13,7 @@ import {
 import { calculateVacationPlan, type CalculationState } from "../_lib/calculate-vacation-plan";
 import styles from "../styles/app.module.scss";
 import { getSelectedOpportunityCost, ResultsTable } from "./results-table";
+import { NewsletterConsentText } from "./newsletter-consent-text";
 import {
   CONFIG_STORAGE_KEY,
   getInitialUserConfig,
@@ -21,6 +22,7 @@ import {
 } from "../_lib/user-config-url";
 
 type DayOffRow = DayOff & { id: string };
+type NewsletterStatus = "idle" | "success" | "error";
 
 const DAY_OFF_TYPE_LABELS: Record<DayOff["type"], string> = {
   companyClosure: "Chiusura aziendale — giorno gratuito",
@@ -242,6 +244,92 @@ function CalendarView({
   );
 }
 
+function NewsletterSignup({ isVisible }: { isVisible: boolean }) {
+  const emailId = useId();
+  const consentId = useId();
+  const [email, setEmail] = useState("");
+  const [hasConsent, setHasConsent] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [status, setStatus] = useState<NewsletterStatus>("idle");
+  const canSubmit = email.trim() !== "" && hasConsent && !isSubmitting;
+
+  if (!isVisible) return null;
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!canSubmit) return;
+
+    setIsSubmitting(true);
+    setStatus("idle");
+
+    try {
+      const response = await fetch("/api/newsletter-signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, consent: hasConsent }),
+      });
+
+      setStatus(response.ok ? "success" : "error");
+    } catch {
+      setStatus("error");
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
+  return (
+    <form className={styles.newsletterPanel} onSubmit={handleSubmit}>
+      <div className={styles.panelHeader}>
+        <p className={styles.eyebrow}>Newsletter</p>
+        <h2>Aggiornamenti utili</h2>
+      </div>
+
+      <div className={styles.fieldGroup}>
+        <label className={styles.label} htmlFor={emailId}>
+          Email
+        </label>
+        <input
+          id={emailId}
+          autoComplete="email"
+          className={styles.input}
+          inputMode="email"
+          name="email"
+          onChange={(event) => setEmail(event.target.value)}
+          type="email"
+          value={email}
+        />
+      </div>
+
+      <label className={styles.checkboxLine} htmlFor={consentId}>
+        <input
+          id={consentId}
+          checked={hasConsent}
+          onChange={(event) => setHasConsent(event.target.checked)}
+          type="checkbox"
+        />
+        <span>
+          <NewsletterConsentText />
+        </span>
+      </label>
+
+      <button className={styles.primaryButton} disabled={!canSubmit} type="submit">
+        {isSubmitting ? "Invio..." : "Iscrivimi"}
+      </button>
+
+      {status === "success" ? (
+        <p className={styles.shareStatus} role="status">
+          Controlla la tua email per confermare l'iscrizione.
+        </p>
+      ) : null}
+      {status === "error" ? (
+        <p className={styles.formError} role="alert">
+          Iscrizione non riuscita. Riprova tra poco.
+        </p>
+      ) : null}
+    </form>
+  );
+}
+
 export function VacationPlanner() {
   const budgetId = useId();
   const patronId = useId();
@@ -410,30 +498,31 @@ export function VacationPlanner() {
       </section>
 
       <div className={styles.toolLayout}>
-        <form className={styles.formPanel} onSubmit={handleSubmit}>
-          <div className={styles.panelHeader}>
-            <p className={styles.eyebrow}>Input</p>
-            <h2>Scenario</h2>
-          </div>
+        <div className={styles.formColumn}>
+          <form className={styles.formPanel} onSubmit={handleSubmit}>
+            <div className={styles.panelHeader}>
+              <p className={styles.eyebrow}>Input</p>
+              <h2>Scenario</h2>
+            </div>
 
-          <div className={styles.fieldGroup}>
-            <label className={styles.label} htmlFor={budgetId}>
-              Giorni di ferie disponibili
-            </label>
-            <input
-              id={budgetId}
-              className={styles.input}
-              inputMode="numeric"
-              min="0"
-              name="totalVacationDays"
-              onChange={(event) => setTotalVacationDays(event.target.value)}
-              placeholder="es. 20"
-              required
-              step="1"
-              type="number"
-              value={totalVacationDays}
-            />
-          </div>
+            <div className={styles.fieldGroup}>
+              <label className={styles.label} htmlFor={budgetId}>
+                Giorni di ferie disponibili
+              </label>
+              <input
+                id={budgetId}
+                className={styles.input}
+                inputMode="numeric"
+                min="0"
+                name="totalVacationDays"
+                onChange={(event) => setTotalVacationDays(event.target.value)}
+                placeholder="es. 20"
+                required
+                step="1"
+                type="number"
+                value={totalVacationDays}
+              />
+            </div>
 
           <fieldset className={styles.fieldset}>
             <legend>Chiusure e giorni obbligati</legend>
@@ -528,12 +617,15 @@ export function VacationPlanner() {
               </button>
             ) : null}
           </div>
-          {shareStatus ? (
-            <p className={styles.shareStatus} role="status">
-              {shareStatus}
-            </p>
-          ) : null}
-        </form>
+            {shareStatus ? (
+              <p className={styles.shareStatus} role="status">
+                {shareStatus}
+              </p>
+            ) : null}
+          </form>
+
+          <NewsletterSignup isVisible={calculation !== null} />
+        </div>
 
         <div className={styles.outputStack}>
           <ResultsPanel

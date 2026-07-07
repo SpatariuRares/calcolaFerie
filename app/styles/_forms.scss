@@ -155,6 +155,43 @@
   line-height: 1.35;
 }
 
+.checkboxLine {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 9px;
+  align-items: start;
+  color: #34423a;
+  font-size: 0.9rem;
+  line-height: 1.45;
+
+  &:has(input:focus-visible) {
+    @include focus;
+    border-radius: 6px;
+  }
+
+  input {
+    width: 17px;
+    height: 17px;
+    margin: 2px 0 0;
+    accent-color: #16724f;
+  }
+
+  a {
+    color: $accent;
+    font-weight: 800;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+  }
+}
+
+.formError {
+  margin: -6px 0 0;
+  color: #96351c;
+  font-size: 0.9rem;
+  font-weight: 750;
+  line-height: 1.35;
+}
+
 @include at(540px) {
   .segmentedControl {
     grid-template-columns: 1fr 1fr;

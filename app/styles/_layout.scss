@@ -133,11 +133,14 @@
 }
 
 .formPanel,
+.newsletterPanel,
 .outputSection {
   @include panel;
 }
 
 .formPanel,
+.formColumn,
+.newsletterPanel,
 .fieldGroup,
 .fieldset,
 .dayOffList,
@@ -150,6 +153,14 @@
 
 .formPanel {
   gap: 18px;
+}
+
+.formColumn {
+  gap: 14px;
+}
+
+.newsletterPanel {
+  gap: 14px;
 }
 
 .fieldGroup {
@@ -210,12 +221,13 @@
     align-items: start;
   }
 
-  .formPanel {
+  .formColumn {
     position: sticky;
     top: 20px;
   }
 
   .formPanel,
+  .newsletterPanel,
   .outputSection {
     padding: 20px;
   }
