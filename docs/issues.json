@@ -255,38 +255,38 @@
     "id": 8,
     "slug": "08-persistence-localstorage-url",
     "title": "Persistence: localStorage & URL Sharing",
-    "status": "open",
+    "status": "closed",
     "labels": [],
     "blocked_by": [5, 13],
     "test_files": ["tests/ui/08-persistence.spec.ts"],
     "summary": "Persist `UserConfig` across sessions via `localStorage` and generate a shareable URL so users (and HR managers) can share a pre-filled plan.",
     "acceptance_criteria": [
       {
-        "done": false,
+        "done": true,
         "text": "After pressing \"Calcola\", config is saved to `localStorage['calcolaferie_config']`."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Reloading the page restores the form with saved values."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Corrupt/missing localStorage value is silently ignored — form starts empty."
       },
       {
-        "done": false,
+        "done": true,
         "text": "\"Copia link\" button appears post-calculation and copies a valid URL to clipboard."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Opening the copied URL on a different browser pre-fills the form correctly."
       },
       {
-        "done": false,
+        "done": true,
         "text": "URL params take precedence over localStorage when both are present."
       },
       {
-        "done": false,
+        "done": true,
         "text": "`serializeConfig` and `deserializeConfig` are pure functions tested in `engine/` (or a `lib/` utility)."
       }
     ]
