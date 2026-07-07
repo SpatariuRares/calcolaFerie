@@ -215,38 +215,38 @@
     "id": 7,
     "slug": "07-calendar-view-ui",
     "title": "Calendar View UI",
-    "status": "open",
+    "status": "closed",
     "labels": [],
     "blocked_by": [6, 13],
     "test_files": ["tests/ui/07-calendar-view.spec.ts"],
     "summary": "Render a 12-month rolling calendar (from today to today + 12 months) where every day is colour-coded by its `DayType` from `EngineOutput.dayMap`.",
     "acceptance_criteria": [
       {
-        "done": false,
+        "done": true,
         "text": "12 months render correctly starting from today's date."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Each day square uses the correct colour for its `DayType`."
       },
       {
-        "done": false,
+        "done": true,
         "text": "`recommendedLeave` days (from winning `BridgeOpportunity.recommendedDays`) appear green."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Legend is visible without scrolling on first load."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Tooltip/popover on tap/hover shows day type and holiday name when `DayType === 'publicHoliday'`."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Calendar renders correctly at 390px with no horizontal overflow."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Empty/pre-calculation state is handled gracefully (no errors, placeholder shown)."
       }
     ]

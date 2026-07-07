@@ -27,13 +27,13 @@ A day can only have one `DayType` — the engine's `dayMap` is the single source
 
 ## Acceptance criteria
 
-- [ ] 12 months render correctly starting from today's date.
-- [ ] Each day square uses the correct colour for its `DayType`.
-- [ ] `recommendedLeave` days (from winning `BridgeOpportunity.recommendedDays`) appear green.
-- [ ] Legend is visible without scrolling on first load.
-- [ ] Tooltip/popover on tap/hover shows day type and holiday name when `DayType === 'publicHoliday'`.
-- [ ] Calendar renders correctly at 390px with no horizontal overflow.
-- [ ] Empty/pre-calculation state is handled gracefully (no errors, placeholder shown).
+- [x] 12 months render correctly starting from today's date.
+- [x] Each day square uses the correct colour for its `DayType`.
+- [x] `recommendedLeave` days (from winning `BridgeOpportunity.recommendedDays`) appear green.
+- [x] Legend is visible without scrolling on first load.
+- [x] Tooltip/popover on tap/hover shows day type and holiday name when `DayType === 'publicHoliday'`.
+- [x] Calendar renders correctly at 390px with no horizontal overflow.
+- [x] Empty/pre-calculation state is handled gracefully (no errors, placeholder shown).
 
 ## Blocked by
 
