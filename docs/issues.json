@@ -1,0 +1,689 @@
+[
+  {
+    "id": 1,
+    "slug": "01-project-setup",
+    "title": "Project Setup & Tooling",
+    "status": "closed",
+    "labels": [],
+    "blocked_by": [],
+    "test_files": [],
+    "summary": "Bootstrap the monorepo structure for CalcolaFerie. Two concerns must be separable from day one: the framework-agnostic engine and the Next.js app. Set up tooling so both can be developed and tested independently.",
+    "acceptance_criteria": [
+      {
+        "done": true,
+        "text": "`engine/` directory exists at repo root with its own `tsconfig.json` (no Next.js lib)."
+      },
+      {
+        "done": true,
+        "text": "Vitest is configured and runs tests in `engine/` with `pnpm test`."
+      },
+      {
+        "done": true,
+        "text": "`next dev` starts without errors on a blank `/` route."
+      },
+      {
+        "done": true,
+        "text": "An ESLint rule (or path alias restriction) prevents `engine/` from importing Next.js or React."
+      },
+      {
+        "done": true,
+        "text": "`README.md` documents the two-layer structure and how to run tests vs. the dev server."
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "slug": "02-engine-types-holidays",
+    "title": "Engine: Types & Italian Holidays",
+    "status": "open",
+    "labels": [],
+    "blocked_by": [
+      1,
+      13
+    ],
+    "test_files": [
+      "tests/engine/02-engine-types-holidays.spec.ts"
+    ],
+    "summary": "Define the complete TypeScript domain model for the engine and provide the Italian public holiday dataset for a rolling 12-month window.",
+    "acceptance_criteria": [
+      {
+        "done": false,
+        "text": "All types exported from `engine/types.ts` with no React/Next.js imports."
+      },
+      {
+        "done": false,
+        "text": "`getItalianPublicHolidays(2026)` returns exactly the 11 fixed Italian national holidays with correct dates."
+      },
+      {
+        "done": false,
+        "text": "`computeEaster(2025)` returns `\"2025-04-20\"`, `computeEaster(2026)` returns `\"2026-04-05\"`."
+      },
+      {
+        "done": false,
+        "text": "`getPublicHolidaysForWindow` correctly spans Dec 2026 → Dec 2027 without duplicates."
+      },
+      {
+        "done": false,
+        "text": "`calculatePlan` stub exported from `engine/index.ts`."
+      },
+      {
+        "done": false,
+        "text": "`vitest run` passes on type-only smoke tests."
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "slug": "03-calculate-plan-algorithm",
+    "title": "Engine: calculatePlan Algorithm",
+    "status": "open",
+    "labels": [],
+    "blocked_by": [
+      2,
+      13
+    ],
+    "test_files": [
+      "tests/engine/03-calculate-plan.spec.ts"
+    ],
+    "summary": "Implement `calculatePlan(input: EngineInput): EngineOutput` — the core engine. Replace the stub from #02 with a working algorithm.",
+    "acceptance_criteria": [
+      {
+        "done": false,
+        "text": "`calculatePlan` returns correct `opportunities` and `dayMap` for a minimal input (single national holiday on a Thursday → 1-day Friday bridge, leva 4.0, staccoDays 4)."
+      },
+      {
+        "done": false,
+        "text": "Easter + Pasquetta fuse into one opportunity by default (fused leva ≥ individual)."
+      },
+      {
+        "done": false,
+        "text": "Two holidays where split leva > fused leva → engine returns two separate opportunities."
+      },
+      {
+        "done": false,
+        "text": "`availableBudget` equals `totalVacationDays` minus mandatory leave days count."
+      },
+      {
+        "done": false,
+        "text": "`companyClosure` days do not appear in `recommendedDays` and do not affect `availableBudget`."
+      },
+      {
+        "done": false,
+        "text": "An opportunity with `costDays` exceeding `availableBudget` is still present in output."
+      },
+      {
+        "done": false,
+        "text": "All days in `dayMap` within the window have a `DayType` assigned."
+      },
+      {
+        "done": false,
+        "text": "Days outside `[windowStart, windowEnd]` produce no opportunities."
+      },
+      {
+        "done": false,
+        "text": "Patron saint date passed in `publicHolidays` is treated identically to a national holiday."
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "slug": "04-engine-test-suite",
+    "title": "Engine: Test Suite",
+    "status": "open",
+    "labels": [],
+    "blocked_by": [
+      3,
+      13
+    ],
+    "test_files": [
+      "tests/engine/04-engine-full-suite.spec.ts"
+    ],
+    "summary": "Write the full test suite for `calculatePlan`. Tests live in `engine/` and run with Vitest. Test only the public contract — `EngineInput` in, `EngineOutput` out. No mocking of internals.",
+    "acceptance_criteria": [
+      {
+        "done": false,
+        "text": "All 14 test cases pass."
+      },
+      {
+        "done": false,
+        "text": "`vitest run` exits 0 with no skipped tests."
+      },
+      {
+        "done": false,
+        "text": "No test imports any internal engine helper — only `calculatePlan` and public types."
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "slug": "05-input-form-ui",
+    "title": "Input Form UI",
+    "status": "open",
+    "labels": [],
+    "blocked_by": [
+      1,
+      2,
+      13
+    ],
+    "test_files": [
+      "tests/ui/05-input-form.spec.ts"
+    ],
+    "summary": "Build the input form for the tool page (`/`). The form collects the user's `UserConfig` and triggers `calculatePlan` when the user presses \"Calcola\". No reactive recalculation — calculation happens only on button press.",
+    "acceptance_criteria": [
+      {
+        "done": false,
+        "text": "All four fields render and accept valid input on mobile (390px viewport)."
+      },
+      {
+        "done": false,
+        "text": "Toggle between `companyClosure` and `mandatoryLeave` per date entry works correctly."
+      },
+      {
+        "done": false,
+        "text": "\"Calcola\" button is disabled when `totalVacationDays` is empty."
+      },
+      {
+        "done": false,
+        "text": "Pressing \"Calcola\" calls `calculatePlan` with correct `EngineInput` (verified via console or a test spy)."
+      },
+      {
+        "done": false,
+        "text": "Patron saint date, when set, appears in `publicHolidays` passed to engine with `kind: 'patron'`."
+      },
+      {
+        "done": false,
+        "text": "Form is accessible: labels associated with inputs, keyboard navigable."
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "slug": "06-results-table-ui",
+    "title": "Results Table UI",
+    "status": "open",
+    "labels": [],
+    "blocked_by": [
+      3,
+      5,
+      13
+    ],
+    "test_files": [
+      "tests/ui/06-results-table.spec.ts"
+    ],
+    "summary": "Render the list of `BridgeOpportunity` items returned by `calculatePlan`. Sorted chronologically by `startDate`. Each row shows the opportunity's efficiency and assembles the Italian explanation from `ExplanationData`.",
+    "acceptance_criteria": [
+      {
+        "done": false,
+        "text": "All opportunities from engine output render in chronological order."
+      },
+      {
+        "done": false,
+        "text": "\"Fuori budget\" chip appears on rows where `costDays > availableBudget`."
+      },
+      {
+        "done": false,
+        "text": "Italian explanation phrase is correct for single-holiday, fused, and zero-cost cases."
+      },
+      {
+        "done": false,
+        "text": "Leva badge colour matches tier correctly."
+      },
+      {
+        "done": false,
+        "text": "Renders correctly at 390px (mobile) and 1024px (desktop)."
+      },
+      {
+        "done": false,
+        "text": "Empty state shown when `opportunities` is empty."
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "slug": "07-calendar-view-ui",
+    "title": "Calendar View UI",
+    "status": "open",
+    "labels": [],
+    "blocked_by": [
+      6,
+      13
+    ],
+    "test_files": [
+      "tests/ui/07-calendar-view.spec.ts"
+    ],
+    "summary": "Render a 12-month rolling calendar (from today to today + 12 months) where every day is colour-coded by its `DayType` from `EngineOutput.dayMap`.",
+    "acceptance_criteria": [
+      {
+        "done": false,
+        "text": "12 months render correctly starting from today's date."
+      },
+      {
+        "done": false,
+        "text": "Each day square uses the correct colour for its `DayType`."
+      },
+      {
+        "done": false,
+        "text": "`recommendedLeave` days (from winning `BridgeOpportunity.recommendedDays`) appear green."
+      },
+      {
+        "done": false,
+        "text": "Legend is visible without scrolling on first load."
+      },
+      {
+        "done": false,
+        "text": "Tooltip/popover on tap/hover shows day type and holiday name when `DayType === 'publicHoliday'`."
+      },
+      {
+        "done": false,
+        "text": "Calendar renders correctly at 390px with no horizontal overflow."
+      },
+      {
+        "done": false,
+        "text": "Empty/pre-calculation state is handled gracefully (no errors, placeholder shown)."
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "slug": "08-persistence-localstorage-url",
+    "title": "Persistence: localStorage & URL Sharing",
+    "status": "open",
+    "labels": [],
+    "blocked_by": [
+      5,
+      13
+    ],
+    "test_files": [
+      "tests/ui/08-persistence.spec.ts"
+    ],
+    "summary": "Persist `UserConfig` across sessions via `localStorage` and generate a shareable URL so users (and HR managers) can share a pre-filled plan.",
+    "acceptance_criteria": [
+      {
+        "done": false,
+        "text": "After pressing \"Calcola\", config is saved to `localStorage['calcolaferie_config']`."
+      },
+      {
+        "done": false,
+        "text": "Reloading the page restores the form with saved values."
+      },
+      {
+        "done": false,
+        "text": "Corrupt/missing localStorage value is silently ignored — form starts empty."
+      },
+      {
+        "done": false,
+        "text": "\"Copia link\" button appears post-calculation and copies a valid URL to clipboard."
+      },
+      {
+        "done": false,
+        "text": "Opening the copied URL on a different browser pre-fills the form correctly."
+      },
+      {
+        "done": false,
+        "text": "URL params take precedence over localStorage when both are present."
+      },
+      {
+        "done": false,
+        "text": "`serializeConfig` and `deserializeConfig` are pure functions tested in `engine/` (or a `lib/` utility)."
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "slug": "09-newsletter-signup",
+    "title": "Newsletter Signup",
+    "status": "open",
+    "labels": [],
+    "blocked_by": [
+      1,
+      11,
+      13
+    ],
+    "test_files": [
+      "tests/ui/09-newsletter-signup.spec.ts",
+      "tests/api/09-newsletter-api.spec.ts"
+    ],
+    "summary": "Set up a minimal newsletter signup for users who have already seen a useful result. Collect confirmed interest via Buttondown (double opt-in). No Supabase in V1.",
+    "acceptance_criteria": [
+      {
+        "done": false,
+        "text": "Email widget appears only after first \"Calcola\" press."
+      },
+      {
+        "done": false,
+        "text": "Consent checkbox is required; submit button is disabled without it."
+      },
+      {
+        "done": false,
+        "text": "Privacy policy is linked from the consent area."
+      },
+      {
+        "done": false,
+        "text": "Submit calls `POST /api/newsletter-signup` without a page reload."
+      },
+      {
+        "done": false,
+        "text": "Server route validates email and consent before contacting Buttondown."
+      },
+      {
+        "done": false,
+        "text": "Buttondown API key is server-only and never exposed via `NEXT_PUBLIC_`."
+      },
+      {
+        "done": false,
+        "text": "Buttondown signup uses double opt-in."
+      },
+      {
+        "done": false,
+        "text": "Successful request shows \"Controlla la tua email per confermare l'iscrizione.\""
+      },
+      {
+        "done": false,
+        "text": "Duplicate/already subscribed responses do not crash the UI."
+      },
+      {
+        "done": false,
+        "text": "Unsubscribe is handled by Buttondown links, not custom app logic."
+      },
+      {
+        "done": false,
+        "text": "No newsletter/provider calls are made from `engine/` — only from the Next.js app layer."
+      },
+      {
+        "done": false,
+        "text": "No Supabase dependency added for V1."
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "slug": "10-engine-boundary-and-date-refactor",
+    "title": "Engine Boundary & Date Refactor",
+    "status": "open",
+    "labels": [],
+    "blocked_by": [
+      8,
+      9,
+      13
+    ],
+    "test_files": [
+      "tests/engine/10-engine-boundary.spec.ts"
+    ],
+    "summary": "Architectural hardening of the engine/app seam and date handling. Remove inconsistent deep `@/engine/src/*` imports and mixed UTC/local date math. Pure refactor — no change to user-visible behaviour.",
+    "acceptance_criteria": [
+      {
+        "done": false,
+        "text": "One date module; no `pad`/ISO↔Date conversion duplicated across files."
+      },
+      {
+        "done": false,
+        "text": "All date math in `app` and `engine` is UTC — no `getDay`/`new Date(y,m,d)` local calls."
+      },
+      {
+        "done": false,
+        "text": "No deep `@/engine/src/*` imports remain; app imports the engine only via `@engine`."
+      },
+      {
+        "done": false,
+        "text": "Single engine alias `@engine` → `engine/src/index.ts`, shared by `tsconfig.json`."
+      },
+      {
+        "done": false,
+        "text": "`index.ts` is a barrel only; `calculatePlan` lives in `planner.ts`."
+      },
+      {
+        "done": false,
+        "text": "`bridge.ts` has direct unit tests for the validation branches."
+      },
+      {
+        "done": false,
+        "text": "`engine` is no longer in `tsconfig.json` `exclude`; `next build` type-checks engine source."
+      },
+      {
+        "done": false,
+        "text": "Engine output carries locale-neutral keys; Italian strings live only in the UI layer."
+      },
+      {
+        "done": false,
+        "text": "`pnpm test` and `pnpm build` stay green after every step."
+      }
+    ]
+  },
+  {
+    "id": "11a",
+    "slug": "11-branded-iso-date-string",
+    "title": "Branded ISODateString Type",
+    "status": "open",
+    "labels": [],
+    "blocked_by": [
+      10,
+      8,
+      13
+    ],
+    "test_files": [
+      "tests/engine/11a-branded-iso-date.spec.ts"
+    ],
+    "summary": "Make `ISODateString` a branded type with a single validating constructor at the input boundary, so a malformed date string can't reach the engine. Split out of #10.",
+    "acceptance_criteria": [
+      {
+        "done": false,
+        "text": "`ISODateString` is branded; a plain `string` is not assignable without going through the constructor."
+      },
+      {
+        "done": false,
+        "text": "`isoDate` rejects malformed input (`\"\"`, `\"2026-13-40\"`, `\"not-a-date\"`)."
+      },
+      {
+        "done": false,
+        "text": "`buildEngineInput` validates every externally-sourced date and never forwards an invalid value."
+      },
+      {
+        "done": false,
+        "text": "Unit tests cover valid pass-through, each rejection case, and the boundary."
+      },
+      {
+        "done": false,
+        "text": "`pnpm test` and `pnpm build` stay green."
+      }
+    ]
+  },
+  {
+    "id": "11b",
+    "slug": "11-privacy-policy",
+    "title": "Privacy Policy",
+    "status": "open",
+    "labels": [],
+    "blocked_by": [
+      1,
+      13
+    ],
+    "test_files": [
+      "tests/ui/11b-privacy-policy.spec.ts"
+    ],
+    "summary": "Add a minimal privacy policy covering V1 data collection: email address for newsletter updates. Required before publishing the newsletter signup.",
+    "acceptance_criteria": [
+      {
+        "done": false,
+        "text": "A privacy policy page exists and is reachable in the app."
+      },
+      {
+        "done": false,
+        "text": "Newsletter consent text links to the privacy policy."
+      },
+      {
+        "done": false,
+        "text": "Policy names the collected data and the purpose of collection."
+      },
+      {
+        "done": false,
+        "text": "Policy states that signup is based on explicit consent."
+      },
+      {
+        "done": false,
+        "text": "Policy names Buttondown as the newsletter provider."
+      },
+      {
+        "done": false,
+        "text": "Policy explains unsubscribe through email unsubscribe links."
+      },
+      {
+        "done": false,
+        "text": "Policy includes a contact method for privacy requests."
+      },
+      {
+        "done": false,
+        "text": "No newsletter signup form is published without this page linked."
+      }
+    ]
+  },
+  {
+    "id": "12a",
+    "slug": "12-affiliate-monetization",
+    "title": "Affiliate Monetisation",
+    "status": "open",
+    "labels": [],
+    "blocked_by": [
+      1,
+      6,
+      13
+    ],
+    "test_files": [
+      "tests/ui/12a-affiliate.spec.ts"
+    ],
+    "summary": "Add contextual Travelpayouts affiliate links to each bridge opportunity. Dates-only deep-link (no destination field in V1). No cookies set by us, no GA, no cookie banner.",
+    "acceptance_criteria": [
+      {
+        "done": false,
+        "text": "Each bridge opportunity row renders a single affiliate CTA."
+      },
+      {
+        "done": false,
+        "text": "CTA URL is a Travelpayouts deep-link with check-in/check-out from `startDate`/`endDate`."
+      },
+      {
+        "done": false,
+        "text": "No destination field added in V1 (dates-only deep-link)."
+      },
+      {
+        "done": false,
+        "text": "Deep-link builder is a pure helper in the app layer, unit-tested."
+      },
+      {
+        "done": false,
+        "text": "Affiliate/marker ID is read from a `NEXT_PUBLIC_` env var."
+      },
+      {
+        "done": false,
+        "text": "No affiliate, monetisation, or network code added to `engine/`."
+      },
+      {
+        "done": false,
+        "text": "An affiliate-disclosure line is visible near each CTA."
+      },
+      {
+        "done": false,
+        "text": "`app/privacy/page.tsx` gains an affiliate-links section."
+      },
+      {
+        "done": false,
+        "text": "No Google Analytics added."
+      },
+      {
+        "done": false,
+        "text": "No display-ad script added."
+      },
+      {
+        "done": false,
+        "text": "No cookie banner / consent-management script added."
+      },
+      {
+        "done": false,
+        "text": "We set no tracking cookies from our own domain."
+      }
+    ]
+  },
+  {
+    "id": "12b",
+    "slug": "12-affiliate-TODO-manuale",
+    "title": "Affiliate Setup (manual checklist)",
+    "status": "open",
+    "labels": [
+      "manual"
+    ],
+    "blocked_by": [],
+    "test_files": [],
+    "summary": "Manual steps required by the repo owner to activate Travelpayouts affiliate: create account, configure marker ID, add legal disclosure, verify deep-links.",
+    "acceptance_criteria": [
+      {
+        "done": false,
+        "text": "Travelpayouts account created."
+      },
+      {
+        "done": false,
+        "text": "Marker ID configured in `.env.local` as `NEXT_PUBLIC_TRAVELPAYOUTS_MARKER`."
+      },
+      {
+        "done": false,
+        "text": "Deep-link verified in production with a real click."
+      },
+      {
+        "done": false,
+        "text": "Legal affiliate disclosure reviewed and approved."
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "slug": "13-test-infrastructure",
+    "title": "Test Infrastructure: Playwright E2E + TDD Gate",
+    "status": "closed",
+    "labels": [
+      "infrastructure"
+    ],
+    "blocked_by": [
+      1
+    ],
+    "test_files": [
+      "tests/smoke/golden-path.spec.ts"
+    ],
+    "summary": "Set up Playwright E2E infrastructure and enforce TDD gate: AI writes spec from acceptance_criteria (red), implements until green, cannot commit until smoke passes. Three commands: pnpm test (vitest), pnpm test:e2e (Playwright full), pnpm test:smoke (vitest + golden path). Chrome MCP used only when Playwright fails — console.log as primary debug signal.",
+    "acceptance_criteria": [
+      {
+        "done": true,
+        "text": "Playwright installed and configured (`playwright.config.ts` at repo root)."
+      },
+      {
+        "done": true,
+        "text": "`tests/` directory structured as `tests/engine/`, `tests/ui/`, `tests/api/`, `tests/smoke/`."
+      },
+      {
+        "done": true,
+        "text": "`pnpm test` runs vitest engine tests only."
+      },
+      {
+        "done": true,
+        "text": "`pnpm test:e2e` runs full Playwright suite (all `tests/ui/` + `tests/api/` specs)."
+      },
+      {
+        "done": true,
+        "text": "`pnpm test:smoke` runs vitest + `tests/smoke/golden-path.spec.ts` only."
+      },
+      {
+        "done": true,
+        "text": "Pre-commit hook runs `pnpm test:smoke`; commit blocked if it fails."
+      },
+      {
+        "done": true,
+        "text": "Golden path smoke: fill 10 vacation days → press Calcola → at least one result row visible."
+      },
+      {
+        "done": true,
+        "text": "Each issue in `issues.json` has a `test_files` array pointing to its spec(s)."
+      },
+      {
+        "done": true,
+        "text": "AI workflow documented: write spec red → implement → green → commit allowed."
+      }
+    ]
+  }
+]

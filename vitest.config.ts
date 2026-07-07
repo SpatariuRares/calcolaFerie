@@ -3,8 +3,19 @@ import { fileURLToPath, URL } from "node:url";
 
 export default defineConfig({
   test: {
+    globals: true,
     include: ["engine/tests/**/*.test.ts", "app/**/*.test.ts"],
-    environment: "node",
+    environmentMatchGlobs: [
+      ["engine/tests/**", "node"],
+      ["app/**", "jsdom"],
+    ],
+    setupFiles: ["./tests/setup/jest-dom.ts"],
+    coverage: {
+      provider: "v8",
+      include: ["engine/src/**", "app/_lib/**", "app/_components/**"],
+      exclude: ["**/*.test.ts", "**/*.spec.ts"],
+      reporter: ["text", "html"],
+    },
   },
   resolve: {
     alias: {
