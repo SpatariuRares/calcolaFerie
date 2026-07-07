@@ -297,7 +297,7 @@
     "title": "Newsletter Signup",
     "status": "open",
     "labels": [],
-    "blocked_by": [1, 11, 13],
+    "blocked_by": [1, "11b", 13],
     "test_files": ["tests/ui/09-newsletter-signup.spec.ts", "tests/api/09-newsletter-api.spec.ts"],
     "summary": "Set up a minimal newsletter signup for users who have already seen a useful result. Collect confirmed interest via Buttondown (double opt-in). No Supabase in V1.",
     "acceptance_criteria": [
@@ -435,42 +435,43 @@
     "id": "11b",
     "slug": "11-privacy-policy",
     "title": "Privacy Policy",
-    "status": "open",
+    "status": "closed",
     "labels": [],
     "blocked_by": [1, 13],
+    "missing_info_doc": "docs/issues/11-privacy-policy-missing-info.md",
     "test_files": ["tests/ui/11b-privacy-policy.spec.ts"],
     "summary": "Add a minimal privacy policy covering V1 data collection: email address for newsletter updates. Required before publishing the newsletter signup.",
     "acceptance_criteria": [
       {
-        "done": false,
+        "done": true,
         "text": "A privacy policy page exists and is reachable in the app."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Newsletter consent text links to the privacy policy."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Policy names the collected data and the purpose of collection."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Policy states that signup is based on explicit consent."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Policy names Buttondown as the newsletter provider."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Policy explains unsubscribe through email unsubscribe links."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Policy includes a contact method for privacy requests."
       },
       {
-        "done": false,
+        "done": true,
         "text": "No newsletter signup form is published without this page linked."
       }
     ]
