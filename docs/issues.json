@@ -35,39 +35,34 @@
     "id": 2,
     "slug": "02-engine-types-holidays",
     "title": "Engine: Types & Italian Holidays",
-    "status": "open",
+    "status": "closed",
     "labels": [],
-    "blocked_by": [
-      1,
-      13
-    ],
-    "test_files": [
-      "tests/engine/02-engine-types-holidays.spec.ts"
-    ],
+    "blocked_by": [1, 13],
+    "test_files": ["tests/engine/02-engine-types-holidays.spec.ts"],
     "summary": "Define the complete TypeScript domain model for the engine and provide the Italian public holiday dataset for a rolling 12-month window.",
     "acceptance_criteria": [
       {
-        "done": false,
+        "done": true,
         "text": "All types exported from `engine/types.ts` with no React/Next.js imports."
       },
       {
-        "done": false,
+        "done": true,
         "text": "`getItalianPublicHolidays(2026)` returns exactly the 11 fixed Italian national holidays with correct dates."
       },
       {
-        "done": false,
+        "done": true,
         "text": "`computeEaster(2025)` returns `\"2025-04-20\"`, `computeEaster(2026)` returns `\"2026-04-05\"`."
       },
       {
-        "done": false,
+        "done": true,
         "text": "`getPublicHolidaysForWindow` correctly spans Dec 2026 → Dec 2027 without duplicates."
       },
       {
-        "done": false,
+        "done": true,
         "text": "`calculatePlan` stub exported from `engine/index.ts`."
       },
       {
-        "done": false,
+        "done": true,
         "text": "`vitest run` passes on type-only smoke tests."
       }
     ]
@@ -76,51 +71,46 @@
     "id": 3,
     "slug": "03-calculate-plan-algorithm",
     "title": "Engine: calculatePlan Algorithm",
-    "status": "open",
+    "status": "closed",
     "labels": [],
-    "blocked_by": [
-      2,
-      13
-    ],
-    "test_files": [
-      "tests/engine/03-calculate-plan.spec.ts"
-    ],
+    "blocked_by": [2, 13],
+    "test_files": ["tests/engine/03-calculate-plan.spec.ts"],
     "summary": "Implement `calculatePlan(input: EngineInput): EngineOutput` — the core engine. Replace the stub from #02 with a working algorithm.",
     "acceptance_criteria": [
       {
-        "done": false,
+        "done": true,
         "text": "`calculatePlan` returns correct `opportunities` and `dayMap` for a minimal input (single national holiday on a Thursday → 1-day Friday bridge, leva 4.0, staccoDays 4)."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Easter + Pasquetta fuse into one opportunity by default (fused leva ≥ individual)."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Two holidays where split leva > fused leva → engine returns two separate opportunities."
       },
       {
-        "done": false,
+        "done": true,
         "text": "`availableBudget` equals `totalVacationDays` minus mandatory leave days count."
       },
       {
-        "done": false,
+        "done": true,
         "text": "`companyClosure` days do not appear in `recommendedDays` and do not affect `availableBudget`."
       },
       {
-        "done": false,
+        "done": true,
         "text": "An opportunity with `costDays` exceeding `availableBudget` is still present in output."
       },
       {
-        "done": false,
+        "done": true,
         "text": "All days in `dayMap` within the window have a `DayType` assigned."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Days outside `[windowStart, windowEnd]` produce no opportunities."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Patron saint date passed in `publicHolidays` is treated identically to a national holiday."
       }
     ]
@@ -129,27 +119,22 @@
     "id": 4,
     "slug": "04-engine-test-suite",
     "title": "Engine: Test Suite",
-    "status": "open",
+    "status": "closed",
     "labels": [],
-    "blocked_by": [
-      3,
-      13
-    ],
-    "test_files": [
-      "tests/engine/04-engine-full-suite.spec.ts"
-    ],
+    "blocked_by": [3, 13],
+    "test_files": ["tests/engine/04-engine-full-suite.spec.ts"],
     "summary": "Write the full test suite for `calculatePlan`. Tests live in `engine/` and run with Vitest. Test only the public contract — `EngineInput` in, `EngineOutput` out. No mocking of internals.",
     "acceptance_criteria": [
       {
-        "done": false,
+        "done": true,
         "text": "All 14 test cases pass."
       },
       {
-        "done": false,
+        "done": true,
         "text": "`vitest run` exits 0 with no skipped tests."
       },
       {
-        "done": false,
+        "done": true,
         "text": "No test imports any internal engine helper — only `calculatePlan` and public types."
       }
     ]
@@ -158,40 +143,34 @@
     "id": 5,
     "slug": "05-input-form-ui",
     "title": "Input Form UI",
-    "status": "open",
+    "status": "closed",
     "labels": [],
-    "blocked_by": [
-      1,
-      2,
-      13
-    ],
-    "test_files": [
-      "tests/ui/05-input-form.spec.ts"
-    ],
+    "blocked_by": [1, 2, 13],
+    "test_files": ["tests/ui/05-input-form.spec.ts"],
     "summary": "Build the input form for the tool page (`/`). The form collects the user's `UserConfig` and triggers `calculatePlan` when the user presses \"Calcola\". No reactive recalculation — calculation happens only on button press.",
     "acceptance_criteria": [
       {
-        "done": false,
+        "done": true,
         "text": "All four fields render and accept valid input on mobile (390px viewport)."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Toggle between `companyClosure` and `mandatoryLeave` per date entry works correctly."
       },
       {
-        "done": false,
+        "done": true,
         "text": "\"Calcola\" button is disabled when `totalVacationDays` is empty."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Pressing \"Calcola\" calls `calculatePlan` with correct `EngineInput` (verified via console or a test spy)."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Patron saint date, when set, appears in `publicHolidays` passed to engine with `kind: 'patron'`."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Form is accessible: labels associated with inputs, keyboard navigable."
       }
     ]
@@ -200,40 +179,34 @@
     "id": 6,
     "slug": "06-results-table-ui",
     "title": "Results Table UI",
-    "status": "open",
+    "status": "closed",
     "labels": [],
-    "blocked_by": [
-      3,
-      5,
-      13
-    ],
-    "test_files": [
-      "tests/ui/06-results-table.spec.ts"
-    ],
+    "blocked_by": [3, 5, 13],
+    "test_files": ["tests/ui/06-results-table.spec.ts"],
     "summary": "Render the list of `BridgeOpportunity` items returned by `calculatePlan`. Sorted chronologically by `startDate`. Each row shows the opportunity's efficiency and assembles the Italian explanation from `ExplanationData`.",
     "acceptance_criteria": [
       {
-        "done": false,
+        "done": true,
         "text": "All opportunities from engine output render in chronological order."
       },
       {
-        "done": false,
+        "done": true,
         "text": "\"Fuori budget\" chip appears on rows where `costDays > availableBudget`."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Italian explanation phrase is correct for single-holiday, fused, and zero-cost cases."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Leva badge colour matches tier correctly."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Renders correctly at 390px (mobile) and 1024px (desktop)."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Empty state shown when `opportunities` is empty."
       }
     ]
@@ -244,13 +217,8 @@
     "title": "Calendar View UI",
     "status": "open",
     "labels": [],
-    "blocked_by": [
-      6,
-      13
-    ],
-    "test_files": [
-      "tests/ui/07-calendar-view.spec.ts"
-    ],
+    "blocked_by": [6, 13],
+    "test_files": ["tests/ui/07-calendar-view.spec.ts"],
     "summary": "Render a 12-month rolling calendar (from today to today + 12 months) where every day is colour-coded by its `DayType` from `EngineOutput.dayMap`.",
     "acceptance_criteria": [
       {
@@ -289,13 +257,8 @@
     "title": "Persistence: localStorage & URL Sharing",
     "status": "open",
     "labels": [],
-    "blocked_by": [
-      5,
-      13
-    ],
-    "test_files": [
-      "tests/ui/08-persistence.spec.ts"
-    ],
+    "blocked_by": [5, 13],
+    "test_files": ["tests/ui/08-persistence.spec.ts"],
     "summary": "Persist `UserConfig` across sessions via `localStorage` and generate a shareable URL so users (and HR managers) can share a pre-filled plan.",
     "acceptance_criteria": [
       {
@@ -334,15 +297,8 @@
     "title": "Newsletter Signup",
     "status": "open",
     "labels": [],
-    "blocked_by": [
-      1,
-      11,
-      13
-    ],
-    "test_files": [
-      "tests/ui/09-newsletter-signup.spec.ts",
-      "tests/api/09-newsletter-api.spec.ts"
-    ],
+    "blocked_by": [1, 11, 13],
+    "test_files": ["tests/ui/09-newsletter-signup.spec.ts", "tests/api/09-newsletter-api.spec.ts"],
     "summary": "Set up a minimal newsletter signup for users who have already seen a useful result. Collect confirmed interest via Buttondown (double opt-in). No Supabase in V1.",
     "acceptance_criteria": [
       {
@@ -401,14 +357,8 @@
     "title": "Engine Boundary & Date Refactor",
     "status": "open",
     "labels": [],
-    "blocked_by": [
-      8,
-      9,
-      13
-    ],
-    "test_files": [
-      "tests/engine/10-engine-boundary.spec.ts"
-    ],
+    "blocked_by": [8, 9, 13],
+    "test_files": ["tests/engine/10-engine-boundary.spec.ts"],
     "summary": "Architectural hardening of the engine/app seam and date handling. Remove inconsistent deep `@/engine/src/*` imports and mixed UTC/local date math. Pure refactor — no change to user-visible behaviour.",
     "acceptance_criteria": [
       {
@@ -455,14 +405,8 @@
     "title": "Branded ISODateString Type",
     "status": "open",
     "labels": [],
-    "blocked_by": [
-      10,
-      8,
-      13
-    ],
-    "test_files": [
-      "tests/engine/11a-branded-iso-date.spec.ts"
-    ],
+    "blocked_by": [10, 8, 13],
+    "test_files": ["tests/engine/11a-branded-iso-date.spec.ts"],
     "summary": "Make `ISODateString` a branded type with a single validating constructor at the input boundary, so a malformed date string can't reach the engine. Split out of #10.",
     "acceptance_criteria": [
       {
@@ -493,13 +437,8 @@
     "title": "Privacy Policy",
     "status": "open",
     "labels": [],
-    "blocked_by": [
-      1,
-      13
-    ],
-    "test_files": [
-      "tests/ui/11b-privacy-policy.spec.ts"
-    ],
+    "blocked_by": [1, 13],
+    "test_files": ["tests/ui/11b-privacy-policy.spec.ts"],
     "summary": "Add a minimal privacy policy covering V1 data collection: email address for newsletter updates. Required before publishing the newsletter signup.",
     "acceptance_criteria": [
       {
@@ -542,14 +481,8 @@
     "title": "Affiliate Monetisation",
     "status": "open",
     "labels": [],
-    "blocked_by": [
-      1,
-      6,
-      13
-    ],
-    "test_files": [
-      "tests/ui/12a-affiliate.spec.ts"
-    ],
+    "blocked_by": [1, 6, 13],
+    "test_files": ["tests/ui/12a-affiliate.spec.ts"],
     "summary": "Add contextual Travelpayouts affiliate links to each bridge opportunity. Dates-only deep-link (no destination field in V1). No cookies set by us, no GA, no cookie banner.",
     "acceptance_criteria": [
       {
@@ -607,9 +540,7 @@
     "slug": "12-affiliate-TODO-manuale",
     "title": "Affiliate Setup (manual checklist)",
     "status": "open",
-    "labels": [
-      "manual"
-    ],
+    "labels": ["manual"],
     "blocked_by": [],
     "test_files": [],
     "summary": "Manual steps required by the repo owner to activate Travelpayouts affiliate: create account, configure marker ID, add legal disclosure, verify deep-links.",
@@ -637,15 +568,9 @@
     "slug": "13-test-infrastructure",
     "title": "Test Infrastructure: Playwright E2E + TDD Gate",
     "status": "closed",
-    "labels": [
-      "infrastructure"
-    ],
-    "blocked_by": [
-      1
-    ],
-    "test_files": [
-      "tests/smoke/golden-path.spec.ts"
-    ],
+    "labels": ["infrastructure"],
+    "blocked_by": [1],
+    "test_files": ["tests/smoke/golden-path.spec.ts"],
     "summary": "Set up Playwright E2E infrastructure and enforce TDD gate: AI writes spec from acceptance_criteria (red), implements until green, cannot commit until smoke passes. Three commands: pnpm test (vitest), pnpm test:e2e (Playwright full), pnpm test:smoke (vitest + golden path). Chrome MCP used only when Playwright fails — console.log as primary debug signal.",
     "acceptance_criteria": [
       {

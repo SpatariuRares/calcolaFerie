@@ -8,8 +8,14 @@ Define the complete TypeScript domain model for the engine and provide the Itali
 // Decisions from session prototype — decision-rich subset, not runnable code
 
 type ISODateString = string; // "YYYY-MM-DD"
-type DayType = 'weekend' | 'publicHoliday' | 'companyClosure' | 'mandatoryLeave' | 'recommendedLeave' | 'workday';
-type PublicHolidayKind = 'national' | 'easter' | 'pasquetta' | 'patron';
+type DayType =
+  | "weekend"
+  | "publicHoliday"
+  | "companyClosure"
+  | "mandatoryLeave"
+  | "recommendedLeave"
+  | "workday";
+type PublicHolidayKind = "national" | "easter" | "pasquetta" | "patron";
 type WeekdayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6; // matches Date.getDay()
 
 interface WorkSchedule {
@@ -19,7 +25,7 @@ interface WorkSchedule {
 
 interface DayOff {
   date: ISODateString;
-  type: 'companyClosure' | 'mandatoryLeave';
+  type: "companyClosure" | "mandatoryLeave";
 }
 
 interface EngineInput {
@@ -77,12 +83,12 @@ Export a `calculatePlan(input: EngineInput): EngineOutput` stub that throws `'no
 
 ## Acceptance criteria
 
-- [ ] All types exported from `engine/types.ts` with no React/Next.js imports.
-- [ ] `getItalianPublicHolidays(2026)` returns exactly the 11 fixed Italian national holidays with correct dates.
-- [ ] `computeEaster(2025)` returns `"2025-04-20"`, `computeEaster(2026)` returns `"2026-04-05"`.
-- [ ] `getPublicHolidaysForWindow` correctly spans Dec 2026 → Dec 2027 without duplicates.
-- [ ] `calculatePlan` stub exported from `engine/index.ts`.
-- [ ] `vitest run` passes on type-only smoke tests.
+- [x] All types exported from `engine/types.ts` with no React/Next.js imports.
+- [x] `getItalianPublicHolidays(2026)` returns exactly the 11 fixed Italian national holidays with correct dates.
+- [x] `computeEaster(2025)` returns `"2025-04-20"`, `computeEaster(2026)` returns `"2026-04-05"`.
+- [x] `getPublicHolidaysForWindow` correctly spans Dec 2026 → Dec 2027 without duplicates.
+- [x] `calculatePlan` stub exported from `engine/index.ts`.
+- [x] `vitest run` passes on type-only smoke tests.
 
 ## Blocked by
 

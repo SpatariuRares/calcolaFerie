@@ -17,12 +17,12 @@ Build the input form for the tool page (`/`). The form collects the user's `User
 
 ## Acceptance criteria
 
-- [ ] All four fields render and accept valid input on mobile (390px viewport).
-- [ ] Toggle between `companyClosure` and `mandatoryLeave` per date entry works correctly.
-- [ ] "Calcola" button is disabled when `totalVacationDays` is empty.
-- [ ] Pressing "Calcola" calls `calculatePlan` with correct `EngineInput` (verified via console or a test spy).
-- [ ] Patron saint date, when set, appears in `publicHolidays` passed to engine with `kind: 'patron'`.
-- [ ] Form is accessible: labels associated with inputs, keyboard navigable.
+- [x] All four fields render and accept valid input on mobile (390px viewport).
+- [x] Toggle between `companyClosure` and `mandatoryLeave` per date entry works correctly.
+- [x] "Calcola" button is disabled when `totalVacationDays` is empty.
+- [x] Pressing "Calcola" calls `calculatePlan` with correct `EngineInput` (verified via console or a test spy).
+- [x] Patron saint date, when set, appears in `publicHolidays` passed to engine with `kind: 'patron'`.
+- [x] Form is accessible: labels associated with inputs, keyboard navigable.
 
 ## Blocked by
 

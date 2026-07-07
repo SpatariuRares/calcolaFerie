@@ -60,9 +60,9 @@ describe("isWeekdayAnchor", () => {
 });
 
 describe("isValidBridgeInterval", () => {
-  it("rejects an interval containing no workday to spend", () => {
+  it("accepts an already-free interval containing no workday to spend", () => {
     const d = days(["weekend", 6], ["publicHoliday", 0], ["weekend", 0]);
-    expect(isValidBridgeInterval(d, WORK, 0, 2, 1, 1)).toBe(false);
+    expect(isValidBridgeInterval(d, WORK, 0, 2, 1, 1)).toBe(true);
   });
 
   it("rejects a workday hanging past the right cover edge", () => {
@@ -93,13 +93,20 @@ describe("bestInterval", () => {
     expect(best).toEqual({ start: 0, end: 2, stacco: 3, cost: 1, leva: 3, recommended: [1] });
   });
 
-  it("returns null when no candidate clears the minimum leverage", () => {
-    const d = days(["weekend", 6], ["workday", 1], ["publicHoliday", 2]);
-    expect(bestInterval(d, WORK, false, 4, 0, 2, 2, 2)).toBeNull();
+  it("returns null when no paid candidate clears the minimum leverage", () => {
+    const d = days(["workday", 1]);
+    expect(bestInterval(d, WORK, false, 4, 0, 0, 0, 0)).toBeNull();
   });
 
-  it("returns null when there is no workday to spend (cost below 1)", () => {
+  it("returns a zero-cost interval when there is no workday to spend", () => {
     const d = days(["weekend", 6], ["publicHoliday", 0], ["weekend", 0]);
-    expect(bestInterval(d, WORK, false, 2, 0, 1, 1, 2)).toBeNull();
+    expect(bestInterval(d, WORK, false, 2, 0, 1, 1, 2)).toEqual({
+      start: 0,
+      end: 2,
+      stacco: 3,
+      cost: 0,
+      leva: 0,
+      recommended: [],
+    });
   });
 });

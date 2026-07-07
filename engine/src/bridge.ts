@@ -51,15 +51,6 @@ export function isValidBridgeInterval(
   coverStart: number,
   coverEnd: number
 ): boolean {
-  let hasRecommendedDay = false;
-  for (let i = start; i <= end; i++) {
-    if (days[i].type === "workday") {
-      hasRecommendedDay = true;
-      break;
-    }
-  }
-  if (!hasRecommendedDay) return false;
-
   if (days[start].type === "workday" && start < coverStart) {
     let leftRunEnd = start;
     while (leftRunEnd + 1 <= end && days[leftRunEnd + 1].type === "workday") leftRunEnd++;
@@ -114,10 +105,10 @@ export function bestInterval(
       }
       const consumed = consume && recommended.length > 0 ? holidayCount : 0;
       const cost = recommended.length + consumed;
-      if (cost < 1) continue; // no vacation spent -> not an opportunity
       const stacco = e - s + 1;
-      const leva = stacco / cost;
-      if (leva < minBridgeLeverage) continue;
+      const isZeroCost = cost === 0;
+      const leva = isZeroCost ? 0 : stacco / cost;
+      if (!isZeroCost && leva < minBridgeLeverage) continue;
 
       const isBetterByLength =
         best === null ||

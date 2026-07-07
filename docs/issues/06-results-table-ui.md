@@ -30,12 +30,12 @@ Weekday names in Italian. `costDays === 0` case: "Nessuna feria necessaria — b
 
 ## Acceptance criteria
 
-- [ ] All opportunities from engine output render in chronological order.
-- [ ] "Fuori budget" chip appears on rows where `costDays > availableBudget`.
-- [ ] Italian explanation phrase is correct for single-holiday, fused, and zero-cost cases.
-- [ ] Leva badge colour matches tier correctly.
-- [ ] Renders correctly at 390px (mobile) and 1024px (desktop).
-- [ ] Empty state shown when `opportunities` is empty.
+- [x] All opportunities from engine output render in chronological order.
+- [x] "Fuori budget" chip appears on rows where `costDays > availableBudget`.
+- [x] Italian explanation phrase is correct for single-holiday, fused, and zero-cost cases.
+- [x] Leva badge colour matches tier correctly.
+- [x] Renders correctly at 390px (mobile) and 1024px (desktop).
+- [x] Empty state shown when `opportunities` is empty.
 
 ## Blocked by
 

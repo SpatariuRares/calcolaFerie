@@ -24,15 +24,15 @@ Implement `calculatePlan(input: EngineInput): EngineOutput` — the core engine.
 
 ## Acceptance criteria
 
-- [ ] `calculatePlan` returns correct `opportunities` and `dayMap` for a minimal input (single national holiday on a Thursday → 1-day Friday bridge, leva 4.0, staccoDays 4).
-- [ ] Easter + Pasquetta fuse into one opportunity by default (fused leva ≥ individual).
-- [ ] Two holidays where split leva > fused leva → engine returns two separate opportunities.
-- [ ] `availableBudget` equals `totalVacationDays` minus mandatory leave days count.
-- [ ] `companyClosure` days do not appear in `recommendedDays` and do not affect `availableBudget`.
-- [ ] An opportunity with `costDays` exceeding `availableBudget` is still present in output.
-- [ ] All days in `dayMap` within the window have a `DayType` assigned.
-- [ ] Days outside `[windowStart, windowEnd]` produce no opportunities.
-- [ ] Patron saint date passed in `publicHolidays` is treated identically to a national holiday.
+- [x] `calculatePlan` returns correct `opportunities` and `dayMap` for a minimal input (single national holiday on a Thursday → 1-day Friday bridge, leva 4.0, staccoDays 4).
+- [x] Easter + Pasquetta fuse into one opportunity by default (fused leva ≥ individual).
+- [x] Two holidays where split leva > fused leva → engine returns two separate opportunities.
+- [x] `availableBudget` equals `totalVacationDays` minus mandatory leave days count.
+- [x] `companyClosure` days do not appear in `recommendedDays` and do not affect `availableBudget`.
+- [x] An opportunity with `costDays` exceeding `availableBudget` is still present in output.
+- [x] All days in `dayMap` within the window have a `DayType` assigned.
+- [x] Days outside `[windowStart, windowEnd]` produce no opportunities.
+- [x] Patron saint date passed in `publicHolidays` is treated identically to a national holiday.
 
 ## Blocked by
 
