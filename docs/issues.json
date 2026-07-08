@@ -1071,7 +1071,7 @@
     "id": "18e",
     "slug": "18e-registro-trattamenti-docs",
     "title": "Docs: registro trattamenti e TODO manuale compliance",
-    "status": "open",
+    "status": "closed",
     "labels": [
       "compliance",
       "ready-for-agent"
@@ -1081,16 +1081,46 @@
     "summary": "Registro dei trattamenti minimale (art. 30 GDPR) in docs/ per newsletter, analytics e affiliazione; creazione di docs/issues/18-compliance-TODO-manuale.md con i passi manuali del gestore (casella email, verifica Buttondown, DPF/DPA, commercialista/P.IVA), registrato in issues.json con label manual.",
     "acceptance_criteria": [
       {
-        "done": false,
+        "done": true,
         "text": "Registro trattamenti in docs/ copre newsletter, analytics e affiliazione con finalità, base giuridica, dati, destinatari, trasferimenti e conservazione."
       },
       {
-        "done": false,
+        "done": true,
         "text": "docs/issues/18-compliance-TODO-manuale.md esiste con i quattro blocchi di passi manuali."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Entry in docs/issues.json con label manual per il TODO manuale."
+      }
+    ]
+  },
+  {
+    "id": "18f",
+    "slug": "18-compliance-TODO-manuale",
+    "title": "Compliance Italia (manual checklist)",
+    "status": "open",
+    "labels": [
+      "manual"
+    ],
+    "blocked_by": [],
+    "test_files": [],
+    "summary": "Passi manuali del gestore per completare la compliance pre-lancio: casella privacy, verifica Buttondown/double opt-in, DPF/DPA dei provider, commercialista/P.IVA e conferma dati del titolare.",
+    "acceptance_criteria": [
+      {
+        "done": false,
+        "text": "Casella privacy@calcolaferie.it creata e verificata."
+      },
+      {
+        "done": false,
+        "text": "Buttondown verificato: nuovi iscritti non attivati fino alla conferma e timestamp di consenso disponibili."
+      },
+      {
+        "done": false,
+        "text": "Certificazioni DPF e DPA di Vercel e Buttondown verificati e archiviati."
+      },
+      {
+        "done": false,
+        "text": "Commercialista consultato; eventuale P.IVA configurata in NEXT_PUBLIC_PIVA; dati del titolare confermati nel registro."
       }
     ]
   }
