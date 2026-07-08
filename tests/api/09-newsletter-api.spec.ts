@@ -65,7 +65,7 @@ test.describe("POST /api/newsletter-signup", () => {
         Authorization: "Token server-secret",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email_address: "rares@example.com" }),
+      body: JSON.stringify({ email_address: "rares@example.com", type: "unactivated" }),
     });
   });
 

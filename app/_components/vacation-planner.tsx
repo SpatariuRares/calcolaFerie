@@ -654,6 +654,16 @@ export function VacationPlanner() {
       </div>
 
       <footer className={styles.pageFooter}>
+        <p style={{ margin: "0 0 12px 0", lineHeight: "1.6" }}>
+          Gestore: Spatariu Rares<br />
+          Email: <a href="mailto:privacy@calcolaferie.it">privacy@calcolaferie.it</a>
+          {process.env.NEXT_PUBLIC_PIVA && (
+            <>
+              <br />
+              P.IVA: {process.env.NEXT_PUBLIC_PIVA}
+            </>
+          )}
+        </p>
         <Link href="/privacy">Privacy</Link>
       </footer>
     </main>

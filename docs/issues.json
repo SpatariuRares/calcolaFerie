@@ -37,8 +37,13 @@
     "title": "Engine: Types & Italian Holidays",
     "status": "closed",
     "labels": [],
-    "blocked_by": [1, 13],
-    "test_files": ["tests/engine/02-engine-types-holidays.spec.ts"],
+    "blocked_by": [
+      1,
+      13
+    ],
+    "test_files": [
+      "tests/engine/02-engine-types-holidays.spec.ts"
+    ],
     "summary": "Define the complete TypeScript domain model for the engine and provide the Italian public holiday dataset for a rolling 12-month window.",
     "acceptance_criteria": [
       {
@@ -73,8 +78,13 @@
     "title": "Engine: calculatePlan Algorithm",
     "status": "closed",
     "labels": [],
-    "blocked_by": [2, 13],
-    "test_files": ["tests/engine/03-calculate-plan.spec.ts"],
+    "blocked_by": [
+      2,
+      13
+    ],
+    "test_files": [
+      "tests/engine/03-calculate-plan.spec.ts"
+    ],
     "summary": "Implement `calculatePlan(input: EngineInput): EngineOutput` — the core engine. Replace the stub from #02 with a working algorithm.",
     "acceptance_criteria": [
       {
@@ -121,8 +131,13 @@
     "title": "Engine: Test Suite",
     "status": "closed",
     "labels": [],
-    "blocked_by": [3, 13],
-    "test_files": ["tests/engine/04-engine-full-suite.spec.ts"],
+    "blocked_by": [
+      3,
+      13
+    ],
+    "test_files": [
+      "tests/engine/04-engine-full-suite.spec.ts"
+    ],
     "summary": "Write the full test suite for `calculatePlan`. Tests live in `engine/` and run with Vitest. Test only the public contract — `EngineInput` in, `EngineOutput` out. No mocking of internals.",
     "acceptance_criteria": [
       {
@@ -145,8 +160,14 @@
     "title": "Input Form UI",
     "status": "closed",
     "labels": [],
-    "blocked_by": [1, 2, 13],
-    "test_files": ["tests/ui/05-input-form.spec.ts"],
+    "blocked_by": [
+      1,
+      2,
+      13
+    ],
+    "test_files": [
+      "tests/ui/05-input-form.spec.ts"
+    ],
     "summary": "Build the input form for the tool page (`/`). The form collects the user's `UserConfig` and triggers `calculatePlan` when the user presses \"Calcola\". No reactive recalculation — calculation happens only on button press.",
     "acceptance_criteria": [
       {
@@ -181,8 +202,14 @@
     "title": "Results Table UI",
     "status": "closed",
     "labels": [],
-    "blocked_by": [3, 5, 13],
-    "test_files": ["tests/ui/06-results-table.spec.ts"],
+    "blocked_by": [
+      3,
+      5,
+      13
+    ],
+    "test_files": [
+      "tests/ui/06-results-table.spec.ts"
+    ],
     "summary": "Render the list of `BridgeOpportunity` items returned by `calculatePlan`. Sorted chronologically by `startDate`. Each row shows the opportunity's efficiency and assembles the Italian explanation from `ExplanationData`.",
     "acceptance_criteria": [
       {
@@ -217,8 +244,13 @@
     "title": "Calendar View UI",
     "status": "closed",
     "labels": [],
-    "blocked_by": [6, 13],
-    "test_files": ["tests/ui/07-calendar-view.spec.ts"],
+    "blocked_by": [
+      6,
+      13
+    ],
+    "test_files": [
+      "tests/ui/07-calendar-view.spec.ts"
+    ],
     "summary": "Render a 12-month rolling calendar (from today to today + 12 months) where every day is colour-coded by its `DayType` from `EngineOutput.dayMap`.",
     "acceptance_criteria": [
       {
@@ -257,8 +289,13 @@
     "title": "Persistence: localStorage & URL Sharing",
     "status": "closed",
     "labels": [],
-    "blocked_by": [5, 13],
-    "test_files": ["tests/ui/08-persistence.spec.ts"],
+    "blocked_by": [
+      5,
+      13
+    ],
+    "test_files": [
+      "tests/ui/08-persistence.spec.ts"
+    ],
     "summary": "Persist `UserConfig` across sessions via `localStorage` and generate a shareable URL so users (and HR managers) can share a pre-filled plan.",
     "acceptance_criteria": [
       {
@@ -297,8 +334,15 @@
     "title": "Newsletter Signup",
     "status": "closed",
     "labels": [],
-    "blocked_by": [1, "11b", 13],
-    "test_files": ["tests/ui/09-newsletter-signup.spec.ts", "tests/api/09-newsletter-api.spec.ts"],
+    "blocked_by": [
+      1,
+      "11b",
+      13
+    ],
+    "test_files": [
+      "tests/ui/09-newsletter-signup.spec.ts",
+      "tests/api/09-newsletter-api.spec.ts"
+    ],
     "summary": "Set up a minimal newsletter signup for users who have already seen a useful result. Collect confirmed interest via Buttondown (double opt-in). No Supabase in V1.",
     "acceptance_criteria": [
       {
@@ -357,8 +401,14 @@
     "title": "Engine Boundary & Date Refactor",
     "status": "closed",
     "labels": [],
-    "blocked_by": [8, 9, 13],
-    "test_files": ["tests/engine/10-engine-boundary.spec.ts"],
+    "blocked_by": [
+      8,
+      9,
+      13
+    ],
+    "test_files": [
+      "tests/engine/10-engine-boundary.spec.ts"
+    ],
     "summary": "Architectural hardening of the engine/app seam and date handling. Remove inconsistent deep `@/engine/src/*` imports and mixed UTC/local date math. Pure refactor — no change to user-visible behaviour.",
     "acceptance_criteria": [
       {
@@ -405,8 +455,14 @@
     "title": "Branded ISODateString Type",
     "status": "closed",
     "labels": [],
-    "blocked_by": [10, 8, 13],
-    "test_files": ["tests/engine/11a-branded-iso-date.spec.ts"],
+    "blocked_by": [
+      10,
+      8,
+      13
+    ],
+    "test_files": [
+      "tests/engine/11a-branded-iso-date.spec.ts"
+    ],
     "summary": "Make `ISODateString` a branded type with a single validating constructor at the input boundary, so a malformed date string can't reach the engine. Split out of #10.",
     "acceptance_criteria": [
       {
@@ -437,9 +493,14 @@
     "title": "Privacy Policy",
     "status": "closed",
     "labels": [],
-    "blocked_by": [1, 13],
+    "blocked_by": [
+      1,
+      13
+    ],
     "missing_info_doc": "docs/issues/11-privacy-policy-missing-info.md",
-    "test_files": ["tests/ui/11b-privacy-policy.spec.ts"],
+    "test_files": [
+      "tests/ui/11b-privacy-policy.spec.ts"
+    ],
     "summary": "Add a minimal privacy policy covering V1 data collection: email address for newsletter updates. Required before publishing the newsletter signup.",
     "acceptance_criteria": [
       {
@@ -482,8 +543,14 @@
     "title": "Affiliate Monetisation",
     "status": "open",
     "labels": [],
-    "blocked_by": [1, 6, 13],
-    "test_files": ["tests/ui/12a-affiliate.spec.ts"],
+    "blocked_by": [
+      1,
+      6,
+      13
+    ],
+    "test_files": [
+      "tests/ui/12a-affiliate.spec.ts"
+    ],
     "summary": "Add contextual Travelpayouts affiliate links to each bridge opportunity. Dates-only deep-link (no destination field in V1). No cookies set by us, no GA, no cookie banner.",
     "acceptance_criteria": [
       {
@@ -541,7 +608,9 @@
     "slug": "12-affiliate-TODO-manuale",
     "title": "Affiliate Setup (manual checklist)",
     "status": "open",
-    "labels": ["manual"],
+    "labels": [
+      "manual"
+    ],
     "blocked_by": [],
     "test_files": [],
     "summary": "Manual steps required by the repo owner to activate Travelpayouts affiliate: create account, configure marker ID, add legal disclosure, verify deep-links.",
@@ -569,9 +638,13 @@
     "slug": "14-seo-metadata",
     "title": "SEO: Metadata, Open Graph & Static Content",
     "status": "closed",
-    "labels": ["seo"],
+    "labels": [
+      "seo"
+    ],
     "blocked_by": [],
-    "test_files": ["tests/ui/14-seo-metadata.spec.ts"],
+    "test_files": [
+      "tests/ui/14-seo-metadata.spec.ts"
+    ],
     "post_impl_todos_doc": "docs/issues/14-seo-metadata.md",
     "summary": "Add rich metadata to `app/layout.tsx` (title, description, Open Graph, Twitter Card), a static OG image placeholder in `public/`, and a visible static text section in `app/page.tsx` targeting the keyword 'calcolatore ponti ferie'. This is the primary SEO foundation: Google sees both the metadata and static content on first crawl without needing JavaScript execution.",
     "acceptance_criteria": [
@@ -618,9 +691,13 @@
     "slug": "15-seo-sitemap-robots",
     "title": "SEO: sitemap.xml + robots.txt",
     "status": "closed",
-    "labels": ["seo"],
+    "labels": [
+      "seo"
+    ],
     "blocked_by": [],
-    "test_files": ["tests/ui/15-seo-sitemap-robots.spec.ts"],
+    "test_files": [
+      "tests/ui/15-seo-sitemap-robots.spec.ts"
+    ],
     "summary": "Add `app/sitemap.ts` and `app/robots.ts` using the Next.js built-in Metadata API. Generates `/sitemap.xml` with the two public routes (`/` and `/privacy`) and `/robots.txt` that permits indexing of public routes while blocking `/api/*`.",
     "acceptance_criteria": [
       {
@@ -663,7 +740,9 @@
     "title": "Vercel Analytics",
     "status": "closed",
     "labels": [],
-    "blocked_by": [14],
+    "blocked_by": [
+      14
+    ],
     "test_files": [],
     "summary": "Install `@vercel/analytics` and add the `<Analytics />` component to `app/layout.tsx`. Privacy-first, no cookie banner required. Enables traffic and pageview tracking from day one on Vercel.",
     "acceptance_criteria": [
@@ -690,7 +769,9 @@
     "slug": "17-cicd-deploy-pipeline",
     "title": "GitHub Actions: tag-based deploy to Vercel",
     "status": "closed",
-    "labels": ["infrastructure"],
+    "labels": [
+      "infrastructure"
+    ],
     "blocked_by": [],
     "test_files": [],
     "summary": "Create `.github/workflows/deploy.yml` that triggers on git tags matching `v*`, runs `pnpm test`, then `pnpm build`, then `vercel --prod`. Vercel auto-deploy from GitHub must be disabled in Vercel project settings so production releases are controlled exclusively by this pipeline. Preview deployments on branches remain active.",
@@ -730,9 +811,15 @@
     "slug": "13-test-infrastructure",
     "title": "Test Infrastructure: Playwright E2E + TDD Gate",
     "status": "closed",
-    "labels": ["infrastructure"],
-    "blocked_by": [1],
-    "test_files": ["tests/smoke/golden-path.spec.ts"],
+    "labels": [
+      "infrastructure"
+    ],
+    "blocked_by": [
+      1
+    ],
+    "test_files": [
+      "tests/smoke/golden-path.spec.ts"
+    ],
     "summary": "Set up Playwright E2E infrastructure and enforce TDD gate: AI writes spec from acceptance_criteria (red), implements until green, cannot commit until smoke passes. Three commands: pnpm test (vitest), pnpm test:e2e (Playwright full), pnpm test:smoke (vitest + golden path). Chrome MCP used only when Playwright fails — console.log as primary debug signal.",
     "acceptance_criteria": [
       {
@@ -770,6 +857,240 @@
       {
         "done": true,
         "text": "AI workflow documented: write spec red → implement → green → commit allowed."
+      }
+    ]
+  },
+  {
+    "id": 18,
+    "slug": "18-compliance-italia",
+    "title": "Compliance Italia: parti implementabili nel codice",
+    "status": "open",
+    "labels": [
+      "compliance",
+      "ready-for-agent"
+    ],
+    "blocked_by": [],
+    "test_files": [
+      "tests/ui/09-newsletter-signup.spec.ts",
+      "tests/ui/11b-privacy-policy.spec.ts",
+      "tests/ui/06-results-table.spec.ts"
+    ],
+    "summary": "Portare a livello di codice le lacune di compliance trovate in docs/TODO-compliance-italia.md: double opt-in forzato dalla route newsletter, informativa privacy completata (email contatto, formula DPF/SCC, localStorage esplicito), footer con identità gestore e slot P.IVA condizionale, disclaimer risultati, etichetta 'Link affiliato' per ogni CTA, registro trattamenti in docs/. I passi manuali restano al gestore in 18-compliance-TODO-manuale.md.",
+    "acceptance_criteria": [
+      {
+        "done": false,
+        "text": "La route newsletter invia `type: \"unactivated\"` nel payload verso Buttondown; test MSW asserisce il payload in uscita; casi esistenti restano verdi."
+      },
+      {
+        "done": false,
+        "text": "L'informativa privacy contiene `privacy@calcolaferie.it` nelle sezioni Titolare/contatto e Richieste privacy."
+      },
+      {
+        "done": false,
+        "text": "La sezione trasferimenti extra-SEE usa la formula \"EU–US Data Privacy Framework (o Standard Contractual Clauses come garanzia alternativa)\"."
+      },
+      {
+        "done": false,
+        "text": "L'informativa cita esplicitamente la chiave `calcolaferie_config`, il contenuto salvato e l'esenzione da consenso come memorizzazione tecnica."
+      },
+      {
+        "done": false,
+        "text": "Il footer del planner mostra nome del gestore ed email; la riga P.IVA compare solo se la variabile d'ambiente pubblica è impostata (test per entrambi i casi)."
+      },
+      {
+        "done": false,
+        "text": "Sotto i risultati compare un disclaimer: risultati indicativi, verificare festività locali e regole contrattuali."
+      },
+      {
+        "done": false,
+        "text": "Ogni CTA \"Prenota questi giorni\" ha l'etichetta \"Link affiliato\" visibile sia in vista tabella sia in vista card mobile."
+      },
+      {
+        "done": false,
+        "text": "Esiste in docs/ un registro dei trattamenti minimale conforme all'art. 30 GDPR (newsletter, analytics, affiliazione)."
+      },
+      {
+        "done": false,
+        "text": "Esiste docs/issues/18-compliance-TODO-manuale.md con i passi manuali rimanenti, formato analogo a 12-affiliate-TODO-manuale.md."
+      },
+      {
+        "done": false,
+        "text": "Nessuna modifica in engine/; `pnpm test` e `pnpm lint` passano."
+      }
+    ]
+  },
+  {
+    "id": "18a",
+    "slug": "18a-newsletter-double-opt-in",
+    "title": "Newsletter: double opt-in forzato dalla route",
+    "status": "closed",
+    "labels": [
+      "compliance",
+      "ready-for-agent"
+    ],
+    "blocked_by": [],
+    "test_files": [
+      "tests/ui/09-newsletter-signup.spec.ts"
+    ],
+    "summary": "La route di iscrizione garantisce il double opt-in a livello di codice: il payload verso Buttondown marca l'iscritto come non attivato, il provider invia l'email di conferma. Contratto verso il client invariato. La policy cita la conferma via email.",
+    "acceptance_criteria": [
+      {
+        "done": true,
+        "text": "Il payload verso il provider contiene il campo double opt-in oltre a `email_address`."
+      },
+      {
+        "done": true,
+        "text": "Test MSW intercetta la richiesta in uscita e asserisce il payload."
+      },
+      {
+        "done": true,
+        "text": "I casi esistenti (consenso mancante, email invalida, duplicato, API key assente) restano verdi senza modifiche."
+      },
+      {
+        "done": true,
+        "text": "L'informativa privacy cita la conferma via email nel flusso di iscrizione."
+      },
+      {
+        "done": true,
+        "text": "Nessuna modifica in engine/; pnpm test e pnpm lint passano."
+      }
+    ]
+  },
+  {
+    "id": "18b",
+    "slug": "18b-privacy-policy-compliance",
+    "title": "Privacy policy: recapito, trasferimenti, localStorage",
+    "status": "closed",
+    "labels": [
+      "compliance",
+      "ready-for-agent"
+    ],
+    "blocked_by": [],
+    "test_files": [
+      "tests/ui/11b-privacy-policy.spec.ts"
+    ],
+    "summary": "Completare l'informativa: email privacy@calcolaferie.it come recapito del titolare, formula 'EU–US Data Privacy Framework (o Standard Contractual Clauses come garanzia alternativa)' per i trasferimenti, menzione esplicita della chiave calcolaferie_config con contenuto ed esenzione da consenso.",
+    "acceptance_criteria": [
+      {
+        "done": true,
+        "text": "L'email privacy@calcolaferie.it compare nelle sezioni Titolare/contatto e Richieste privacy."
+      },
+      {
+        "done": true,
+        "text": "La sezione trasferimenti usa la formula DPF/SCC."
+      },
+      {
+        "done": true,
+        "text": "La chiave calcolaferie_config, il contenuto e l'esenzione da consenso sono citati."
+      },
+      {
+        "done": true,
+        "text": "Test jsdom sulla pagina privacy asseriscono la presenza dei tre testi."
+      },
+      {
+        "done": true,
+        "text": "pnpm test e pnpm lint passano."
+      }
+    ]
+  },
+  {
+    "id": "18c",
+    "slug": "18c-footer-gestore",
+    "title": "Footer: identità del gestore e slot P.IVA",
+    "status": "closed",
+    "labels": [
+      "compliance",
+      "ready-for-agent"
+    ],
+    "blocked_by": [],
+    "test_files": [
+      "tests/ui/18c-footer.spec.ts"
+    ],
+    "summary": "Il footer del planner espone nome del gestore, email di contatto e una riga P.IVA condizionale letta da variabile d'ambiente pubblica (renderizzata solo se impostata), per gli obblighi informativi del D.lgs 70/2003 e dell'art. 35 DPR 633/72.",
+    "acceptance_criteria": [
+      {
+        "done": true,
+        "text": "Il footer mostra nome del gestore ed email di contatto."
+      },
+      {
+        "done": true,
+        "text": "Senza variabile P.IVA impostata la riga P.IVA non è renderizzata (test)."
+      },
+      {
+        "done": true,
+        "text": "Con variabile P.IVA impostata la riga compare con il valore (test)."
+      },
+      {
+        "done": true,
+        "text": "Il link Privacy esistente resta funzionante."
+      },
+      {
+        "done": true,
+        "text": "pnpm test e pnpm lint passano."
+      }
+    ]
+  },
+  {
+    "id": "18d",
+    "slug": "18d-trasparenza-risultati",
+    "title": "Risultati: disclaimer ed etichetta affiliato per CTA",
+    "status": "open",
+    "labels": [
+      "compliance",
+      "ready-for-agent"
+    ],
+    "blocked_by": [],
+    "test_files": [
+      "tests/ui/06-results-table.spec.ts"
+    ],
+    "summary": "Disclaimer 'risultati indicativi' visibile insieme ai risultati ed etichetta 'Link affiliato' per ogni CTA di prenotazione, in vista tabella e card mobile, per la riconoscibilità al primo contatto richiesta dalle linee guida AGCM/IAP. Disclosure estesa e rel=sponsored invariati.",
+    "acceptance_criteria": [
+      {
+        "done": false,
+        "text": "Disclaimer visibile insieme ai risultati dopo il calcolo (test)."
+      },
+      {
+        "done": false,
+        "text": "Ogni CTA ha l'etichetta 'Link affiliato' in vista tabella (test)."
+      },
+      {
+        "done": false,
+        "text": "Ogni CTA ha l'etichetta 'Link affiliato' in vista card mobile (test)."
+      },
+      {
+        "done": false,
+        "text": "Disclosure estesa e rel=sponsored invariati."
+      },
+      {
+        "done": false,
+        "text": "pnpm test e pnpm lint passano."
+      }
+    ]
+  },
+  {
+    "id": "18e",
+    "slug": "18e-registro-trattamenti-docs",
+    "title": "Docs: registro trattamenti e TODO manuale compliance",
+    "status": "open",
+    "labels": [
+      "compliance",
+      "ready-for-agent"
+    ],
+    "blocked_by": [],
+    "test_files": [],
+    "summary": "Registro dei trattamenti minimale (art. 30 GDPR) in docs/ per newsletter, analytics e affiliazione; creazione di docs/issues/18-compliance-TODO-manuale.md con i passi manuali del gestore (casella email, verifica Buttondown, DPF/DPA, commercialista/P.IVA), registrato in issues.json con label manual.",
+    "acceptance_criteria": [
+      {
+        "done": false,
+        "text": "Registro trattamenti in docs/ copre newsletter, analytics e affiliazione con finalità, base giuridica, dati, destinatari, trasferimenti e conservazione."
+      },
+      {
+        "done": false,
+        "text": "docs/issues/18-compliance-TODO-manuale.md esiste con i quattro blocchi di passi manuali."
+      },
+      {
+        "done": false,
+        "text": "Entry in docs/issues.json con label manual per il TODO manuale."
       }
     ]
   }

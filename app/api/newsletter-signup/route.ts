@@ -49,7 +49,7 @@ export async function POST(request: Request) {
       Authorization: `Token ${apiKey}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ email_address: email }),
+    body: JSON.stringify({ email_address: email, type: "unactivated" }),
   });
 
   if (response.ok) return json(200, { ok: true });
