@@ -62,17 +62,17 @@ keys instead of Italian labels) but keeps the rendered UI text identical.
 
 ## Acceptance criteria
 
-- [ ] One date module; no `pad`/ISO↔Date conversion duplicated across files.
-- [ ] All date math in `app` and `engine` is UTC — no `getDay`/`new Date(y,m,d)` local calls.
-- [ ] No deep `@/engine/src/*` imports remain; app imports the engine only via `@engine`.
-- [ ] Single engine alias `@engine` → `engine/src/index.ts`, shared by `tsconfig.json`
+- [x] One date module; no `pad`/ISO↔Date conversion duplicated across files.
+- [x] All date math in `app` and `engine` is UTC — no `getDay`/`new Date(y,m,d)` local calls.
+- [x] No deep `@/engine/src/*` imports remain; app imports the engine only via `@engine`.
+- [x] Single engine alias `@engine` → `engine/src/index.ts`, shared by `tsconfig.json`
       and `vitest.config.ts`; the unused `@engine/*` mapping is removed.
-- [ ] `index.ts` is a barrel only; `calculatePlan` lives in `planner.ts`, bridge helpers
+- [x] `index.ts` is a barrel only; `calculatePlan` lives in `planner.ts`, bridge helpers
       in `bridge.ts` and are exported.
-- [ ] `bridge.ts` has direct unit tests for the validation branches.
-- [ ] `engine` is no longer in `tsconfig.json` `exclude`; `next build` type-checks engine source.
-- [ ] Engine output carries locale-neutral keys; Italian strings live only in the UI layer.
-- [ ] `pnpm test` and `pnpm build` stay green after every step.
+- [x] `bridge.ts` has direct unit tests for the validation branches.
+- [x] `engine` is no longer in `tsconfig.json` `exclude`; `next build` type-checks engine source.
+- [x] Engine output carries locale-neutral keys; Italian strings live only in the UI layer.
+- [x] `pnpm test` and `pnpm build` stay green after every step.
 
 (Branded `ISODateString` tracked separately in #11.)
 

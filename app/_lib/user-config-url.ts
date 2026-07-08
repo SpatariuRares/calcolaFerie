@@ -1,3 +1,4 @@
+import { isValidISODateString } from "@engine";
 import type { DayOff, ISODateString, UserConfig, WeekdayIndex, WorkSchedule } from "@engine";
 
 export const CONFIG_STORAGE_KEY = "calcolaferie_config";
@@ -16,26 +17,8 @@ const PARAM_TO_DAY_OFF_TYPE = {
   mandatory: "mandatoryLeave",
 } as const satisfies Record<string, DayOff["type"]>;
 
-const ISO_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
-
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
-}
-
-function isISODateString(value: unknown): value is string {
-  if (typeof value !== "string") return false;
-
-  const match = ISO_DATE_PATTERN.exec(value);
-  if (!match) return false;
-
-  const [, year, month, day] = match;
-  const parsedDate = new Date(`${value}T00:00:00Z`);
-
-  return (
-    parsedDate.getUTCFullYear() === Number(year) &&
-    parsedDate.getUTCMonth() + 1 === Number(month) &&
-    parsedDate.getUTCDate() === Number(day)
-  );
 }
 
 function parseBudget(value: unknown): number | null {
@@ -51,7 +34,7 @@ function parseBudget(value: unknown): number | null {
 
 function parseDayOff(value: unknown): DayOff | null {
   if (!isRecord(value)) return null;
-  if (!isISODateString(value.date)) return null;
+  if (!isValidISODateString(value.date)) return null;
   if (value.type !== "companyClosure" && value.type !== "mandatoryLeave") return null;
 
   return {
@@ -78,7 +61,7 @@ function parseISODateList(value: unknown): ISODateString[] | null {
 
   const dates = new Set<ISODateString>();
   for (const date of value) {
-    if (!isISODateString(date) || dates.has(date)) return null;
+    if (!isValidISODateString(date) || dates.has(date)) return null;
     dates.add(date);
   }
 
@@ -154,7 +137,9 @@ function normalizeUserConfig(value: unknown): PlannerConfig | null {
       : parseISODateList(value.selectedVacationDates);
   if (selectedVacationDates === null) return null;
 
-  if (value.patronSaintDate !== undefined && !isISODateString(value.patronSaintDate)) return null;
+  if (value.patronSaintDate !== undefined && !isValidISODateString(value.patronSaintDate)) {
+    return null;
+  }
 
   return {
     totalVacationDays,
@@ -173,7 +158,7 @@ function parseDayOffsParam(value: string | null): DayOff[] | null {
   for (const item of value.split(",")) {
     const [date, paramType, extra] = item.split(":");
     if (extra !== undefined) return null;
-    if (!isISODateString(date)) return null;
+    if (!isValidISODateString(date)) return null;
 
     const type = parseDayOffTypeParam(paramType);
     if (!type) return null;
@@ -212,7 +197,7 @@ function parseVacationDatesParam(value: string | null): ISODateString[] | null |
 
   const dates = new Set<ISODateString>();
   for (const date of value.split(",")) {
-    if (!isISODateString(date) || dates.has(date)) return null;
+    if (!isValidISODateString(date) || dates.has(date)) return null;
     dates.add(date);
   }
 
@@ -267,7 +252,7 @@ export function deserializeConfig(params: URLSearchParams): PlannerConfig | null
   if (!daysOff) return null;
 
   const patronSaintDate = params.get("patron");
-  if (patronSaintDate !== null && !isISODateString(patronSaintDate)) return null;
+  if (patronSaintDate !== null && !isValidISODateString(patronSaintDate)) return null;
 
   const workDays = parseWorkDaysParam(params.get("workDays"));
   if (workDays === null) return null;

@@ -1,5 +1,7 @@
 import type { ISODateString } from "./types";
 
+const ISO_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
+
 /**
  * Canonical date helpers. All arithmetic is UTC: an ISODateString is treated as
  * UTC midnight, so day/month math never drifts across DST or timezone boundaries.
@@ -21,6 +23,22 @@ export function isoToDate(iso: ISODateString): Date {
 
 export function dateToISO(d: Date): ISODateString {
   return toISO(d.getUTCFullYear(), d.getUTCMonth() + 1, d.getUTCDate());
+}
+
+export function isValidISODateString(value: unknown): value is ISODateString {
+  if (typeof value !== "string") return false;
+
+  const match = ISO_DATE_PATTERN.exec(value);
+  if (!match) return false;
+
+  const [, year, month, day] = match;
+  const parsedDate = isoToDate(value);
+
+  return (
+    parsedDate.getUTCFullYear() === Number(year) &&
+    parsedDate.getUTCMonth() + 1 === Number(month) &&
+    parsedDate.getUTCDate() === Number(day)
+  );
 }
 
 export function addDays(iso: ISODateString, days: number): ISODateString {

@@ -355,46 +355,46 @@
     "id": 10,
     "slug": "10-engine-boundary-and-date-refactor",
     "title": "Engine Boundary & Date Refactor",
-    "status": "open",
+    "status": "closed",
     "labels": [],
     "blocked_by": [8, 9, 13],
     "test_files": ["tests/engine/10-engine-boundary.spec.ts"],
     "summary": "Architectural hardening of the engine/app seam and date handling. Remove inconsistent deep `@/engine/src/*` imports and mixed UTC/local date math. Pure refactor — no change to user-visible behaviour.",
     "acceptance_criteria": [
       {
-        "done": false,
+        "done": true,
         "text": "One date module; no `pad`/ISO↔Date conversion duplicated across files."
       },
       {
-        "done": false,
+        "done": true,
         "text": "All date math in `app` and `engine` is UTC — no `getDay`/`new Date(y,m,d)` local calls."
       },
       {
-        "done": false,
+        "done": true,
         "text": "No deep `@/engine/src/*` imports remain; app imports the engine only via `@engine`."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Single engine alias `@engine` → `engine/src/index.ts`, shared by `tsconfig.json`."
       },
       {
-        "done": false,
+        "done": true,
         "text": "`index.ts` is a barrel only; `calculatePlan` lives in `planner.ts`."
       },
       {
-        "done": false,
+        "done": true,
         "text": "`bridge.ts` has direct unit tests for the validation branches."
       },
       {
-        "done": false,
+        "done": true,
         "text": "`engine` is no longer in `tsconfig.json` `exclude`; `next build` type-checks engine source."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Engine output carries locale-neutral keys; Italian strings live only in the UI layer."
       },
       {
-        "done": false,
+        "done": true,
         "text": "`pnpm test` and `pnpm build` stay green after every step."
       }
     ]
