@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <>
       <VacationPlanner />
-      <section aria-label="Informazioni sul calcolatore">
+      <section aria-label="Informazioni sul calcolatore" className="sr-only">
         <h2>Calcolatore ponti ferie italiane</h2>
         <p>
           Ottimizza le tue ferie sfruttando le festività italiane: inserisci il tuo budget di giorni

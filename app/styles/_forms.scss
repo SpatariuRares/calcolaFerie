@@ -113,11 +113,11 @@
 }
 
 .primaryButton {
-  background: $green;
+  background: $blue;
   color: $surface;
 
   &:hover:not(:disabled) {
-    background: #0b4c35;
+    background: #144a78;
   }
 
   &:disabled {

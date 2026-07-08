@@ -24,7 +24,8 @@
 
   h1 {
     @include heading;
-    color: #111b16;
+    color: #111820;
+    font-family: var(--font-display, Georgia, serif);
     font-size: 2.6rem;
     line-height: 0.98;
   }
@@ -212,6 +213,7 @@
     align-items: end;
 
     h1 {
+      font-family: var(--font-display, Georgia, serif);
       font-size: 4rem;
     }
   }
