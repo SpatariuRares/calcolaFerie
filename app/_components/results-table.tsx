@@ -6,6 +6,9 @@ import styles from "../styles/app.module.scss";
 const AFFILIATE_DISCLOSURE =
   "Link affiliato: se prenoti, riceviamo una commissione senza costi extra per te.";
 
+const RESULTS_DISCLAIMER =
+  "I risultati sono indicativi. Verifica le festività patronali e le norme del tuo contratto/datore di lavoro.";
+
 const MONTH_LABELS = [
   "gen",
   "feb",
@@ -119,16 +122,19 @@ function BookingCta({ opportunity }: { opportunity: BridgeOpportunity }) {
   const stop = (event: { stopPropagation: () => void }) => event.stopPropagation();
 
   return (
-    <a
-      className={styles.bookingCta}
-      href={href}
-      onClick={stop}
-      onKeyDown={stop}
-      rel="sponsored noopener noreferrer"
-      target="_blank"
-    >
-      Prenota questi giorni
-    </a>
+    <span className={styles.bookingCtaWrap}>
+      <span className={styles.affiliateLabel}>Link affiliato</span>
+      <a
+        className={styles.bookingCta}
+        href={href}
+        onClick={stop}
+        onKeyDown={stop}
+        rel="sponsored noopener noreferrer"
+        target="_blank"
+      >
+        Prenota questi giorni
+      </a>
+    </span>
   );
 }
 
@@ -309,6 +315,7 @@ export function ResultsTable({
         </table>
       </div>
 
+      <p className={styles.resultsDisclaimer}>{RESULTS_DISCLAIMER}</p>
       <p className={styles.affiliateDisclosure}>{AFFILIATE_DISCLOSURE}</p>
     </div>
   );

@@ -309,6 +309,26 @@
   white-space: nowrap;
 }
 
+.bookingCtaWrap {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+}
+
+.affiliateLabel {
+  font-size: 0.7rem;
+  color: #5d6971;
+  font-weight: 500;
+}
+
+.resultsDisclaimer {
+  margin: 10px 0 0;
+  color: #5d6971;
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
 .affiliateDisclosure {
   margin: 10px 0 0;
   color: #5d6971;

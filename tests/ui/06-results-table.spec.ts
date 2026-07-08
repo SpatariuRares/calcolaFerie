@@ -165,4 +165,26 @@ describe("results table UI", () => {
       screen.getByText("Prova ad aumentare il budget o ad aggiungere festività e chiusure nel periodo.")
     ).toBeInTheDocument();
   });
+
+  it("shows disclaimer text with results", () => {
+    renderResults(output([opportunity({})]));
+
+    expect(
+      screen.getByText(/I risultati sono indicativi/)
+    ).toBeInTheDocument();
+  });
+
+  it("shows 'Link affiliato' label next to CTA in desktop table view", () => {
+    const { container } = renderResults(output([opportunity({})]));
+    const tableRow = container.querySelector("tbody tr")!;
+
+    expect(within(tableRow).getByText("Link affiliato")).toBeInTheDocument();
+  });
+
+  it("shows 'Link affiliato' label next to CTA in mobile card view", () => {
+    const { container } = renderResults(output([opportunity({})]));
+    const card = container.querySelector("article[role='button']")!;
+
+    expect(within(card).getByText("Link affiliato")).toBeInTheDocument();
+  });
 });
