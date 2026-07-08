@@ -864,57 +864,59 @@
     "id": 18,
     "slug": "18-compliance-italia",
     "title": "Compliance Italia: parti implementabili nel codice",
-    "status": "open",
+    "status": "closed",
     "labels": [
       "compliance",
       "ready-for-agent"
     ],
     "blocked_by": [],
     "test_files": [
+      "tests/api/09-newsletter-api.spec.ts",
       "tests/ui/09-newsletter-signup.spec.ts",
       "tests/ui/11b-privacy-policy.spec.ts",
-      "tests/ui/06-results-table.spec.ts"
+      "tests/ui/06-results-table.spec.ts",
+      "tests/ui/18c-footer.spec.ts"
     ],
     "summary": "Portare a livello di codice le lacune di compliance trovate in docs/TODO-compliance-italia.md: double opt-in forzato dalla route newsletter, informativa privacy completata (email contatto, formula DPF/SCC, localStorage esplicito), footer con identità gestore e slot P.IVA condizionale, disclaimer risultati, etichetta 'Link affiliato' per ogni CTA, registro trattamenti in docs/. I passi manuali restano al gestore in 18-compliance-TODO-manuale.md.",
     "acceptance_criteria": [
       {
-        "done": false,
+        "done": true,
         "text": "La route newsletter invia `type: \"unactivated\"` nel payload verso Buttondown; test MSW asserisce il payload in uscita; casi esistenti restano verdi."
       },
       {
-        "done": false,
+        "done": true,
         "text": "L'informativa privacy contiene `privacy@calcolaferie.it` nelle sezioni Titolare/contatto e Richieste privacy."
       },
       {
-        "done": false,
+        "done": true,
         "text": "La sezione trasferimenti extra-SEE usa la formula \"EU–US Data Privacy Framework (o Standard Contractual Clauses come garanzia alternativa)\"."
       },
       {
-        "done": false,
+        "done": true,
         "text": "L'informativa cita esplicitamente la chiave `calcolaferie_config`, il contenuto salvato e l'esenzione da consenso come memorizzazione tecnica."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Il footer del planner mostra nome del gestore ed email; la riga P.IVA compare solo se la variabile d'ambiente pubblica è impostata (test per entrambi i casi)."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Sotto i risultati compare un disclaimer: risultati indicativi, verificare festività locali e regole contrattuali."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Ogni CTA \"Prenota questi giorni\" ha l'etichetta \"Link affiliato\" visibile sia in vista tabella sia in vista card mobile."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Esiste in docs/ un registro dei trattamenti minimale conforme all'art. 30 GDPR (newsletter, analytics, affiliazione)."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Esiste docs/issues/18-compliance-TODO-manuale.md con i passi manuali rimanenti, formato analogo a 12-affiliate-TODO-manuale.md."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Nessuna modifica in engine/; `pnpm test` e `pnpm lint` passano."
       }
     ]
@@ -1034,7 +1036,7 @@
     "id": "18d",
     "slug": "18d-trasparenza-risultati",
     "title": "Risultati: disclaimer ed etichetta affiliato per CTA",
-    "status": "open",
+    "status": "closed",
     "labels": [
       "compliance",
       "ready-for-agent"
@@ -1046,23 +1048,23 @@
     "summary": "Disclaimer 'risultati indicativi' visibile insieme ai risultati ed etichetta 'Link affiliato' per ogni CTA di prenotazione, in vista tabella e card mobile, per la riconoscibilità al primo contatto richiesta dalle linee guida AGCM/IAP. Disclosure estesa e rel=sponsored invariati.",
     "acceptance_criteria": [
       {
-        "done": false,
+        "done": true,
         "text": "Disclaimer visibile insieme ai risultati dopo il calcolo (test)."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Ogni CTA ha l'etichetta 'Link affiliato' in vista tabella (test)."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Ogni CTA ha l'etichetta 'Link affiliato' in vista card mobile (test)."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Disclosure estesa e rel=sponsored invariati."
       },
       {
-        "done": false,
+        "done": true,
         "text": "pnpm test e pnpm lint passano."
       }
     ]

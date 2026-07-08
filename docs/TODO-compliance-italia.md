@@ -47,7 +47,7 @@ un recapito diretto e stabile del titolare.
 
 - [ ] Creare una email dedicata (es. `privacy@calcolaferie.it` una volta attivo
       il dominio) e inserirla in `app/privacy/page.tsx` nelle sezioni
-      "Titolare e contatto" e "Richieste privacy".
+      "Titolare e contatto" e "Richieste privacy". -> Manualmente da fare
 - Rif: già segnalato in `docs/issues/11-privacy-policy-missing-info.md`.
 
 ### 2. Double opt-in newsletter (prova del consenso, art. 7(1) GDPR)
@@ -57,9 +57,9 @@ La policy e la issue #09 promettono double opt-in, ma la route inoltra solo
 
 - [ ] Attivare il double opt-in nelle impostazioni Buttondown alla creazione
       dell'account (verificare che i nuovi iscritti risultino `unactivated`
-      finché non confermano).
+      finché non confermano). -> Manualmente da fare
 - [ ] Verificare che Buttondown conservi timestamp di iscrizione e conferma
-      (serve come prova del consenso in caso di contestazione).
+      (serve come prova del consenso in caso di contestazione). -> Manualmente da fare
 
 ### 3. Trasferimenti extra-SEE (Capo V GDPR)
 
@@ -67,9 +67,9 @@ Buttondown e Vercel sono provider USA. La policy cita SCC/adeguatezza in modo
 generico.
 
 - [ ] Verificare la certificazione **EU–US Data Privacy Framework** di Vercel e
-      Buttondown su dataprivacyframework.gov.
+      Buttondown su dataprivacyframework.gov. -> Manualmente da fare
 - [ ] Accettare/archiviare i DPA (Data Processing Agreement) di entrambi i
-      provider (Vercel lo offre nel dashboard; Buttondown su richiesta/sito).
+      provider (Vercel lo offre nel dashboard; Buttondown su richiesta/sito). -> Manualmente da fare
 - [ ] Aggiornare la sezione "Trasferimenti fuori SEE" della policy con la
       formula consigliata: "EU–US Data Privacy Framework (o Standard
       Contractual Clauses come garanzia alternativa)" — il DPF è sotto ricorso
@@ -80,7 +80,7 @@ generico.
 I ricavi da affiliazione rendono il sito potenzialmente un'attività economica.
 
 - [ ] Decidere con un commercialista se l'attività è occasionale (nessuna
-      P.IVA) o abituale (apertura P.IVA, es. regime forfettario).
+      P.IVA) o abituale (apertura P.IVA, es. regime forfettario). -> Manualmente da fare con commercialista
 - [ ] Se P.IVA presente: esporla sul sito (obbligo art. 35, c.1 DPR 633/72) —
       tipicamente nel footer — insieme a nome e recapito del prestatore
       (art. 7 D.lgs 70/2003).

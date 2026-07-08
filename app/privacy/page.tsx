@@ -68,7 +68,8 @@ export default function PrivacyPage() {
           <h2>Finalita e basi giuridiche</h2>
           <p>
             Usiamo l'email della newsletter solo per inviarti aggiornamenti su CalcolaFerie e un
-            promemoria annuale quando il calendario delle festivita viene aggiornato. La base
+            promemoria annuale quando il calendario delle festivita viene aggiornato. L'iscrizione
+            richiede la conferma via email con double opt-in prima dell'attivazione. La base
             giuridica e il tuo consenso esplicito, che puoi ritirare in qualsiasi momento.
           </p>
           <p>
@@ -131,10 +132,11 @@ export default function PrivacyPage() {
         <section>
           <h2>Conservazione</h2>
           <p>
-            Conserviamo l'email della newsletter finche resti iscritto o finche serve a gestire la
-            lista. Vercel Web Analytics conserva le sessioni di visita per 24 ore e mostra metriche
-            aggregate. I dati locali del planner restano nel tuo browser finche non li cancelli dal
-            browser o modifichi le impostazioni salvate.
+            Conserviamo l'email della newsletter e lo stato della conferma double opt-in finche
+            resti iscritto o finche serve a gestire la lista. Vercel Web Analytics conserva le
+            sessioni di visita per 24 ore e mostra metriche aggregate. I dati locali del planner
+            restano nel tuo browser finche non li cancelli dal browser o modifichi le impostazioni
+            salvate.
           </p>
         </section>
 

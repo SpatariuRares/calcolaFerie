@@ -187,4 +187,18 @@ describe("results table UI", () => {
 
     expect(within(card).getByText("Link affiliato")).toBeInTheDocument();
   });
+
+  it("keeps the extended affiliate disclosure and sponsored link relation", () => {
+    renderResults(output([opportunity({})]));
+
+    expect(
+      screen.getByText(
+        "Link affiliato: se prenoti, riceviamo una commissione senza costi extra per te."
+      )
+    ).toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: "Prenota questi giorni" })[0]).toHaveAttribute(
+      "rel",
+      expect.stringContaining("sponsored")
+    );
+  });
 });

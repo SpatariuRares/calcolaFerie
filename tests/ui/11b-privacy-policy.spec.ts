@@ -53,6 +53,8 @@ describe("privacy policy", () => {
     expect(screen.getByText(/consenso esplicito/i)).toBeInTheDocument();
     expect(screen.getAllByText(/Buttondown/i)).toHaveLength(2);
     expect(screen.getByText(/unsubscribe/i)).toBeInTheDocument();
+    expect(screen.getByText(/conferma via email con double opt-in/i)).toBeInTheDocument();
+    expect(screen.getByText(/stato della conferma double opt-in/i)).toBeInTheDocument();
 
     const privacyRequests = screen.getByRole("heading", {
       name: "Richieste privacy",
