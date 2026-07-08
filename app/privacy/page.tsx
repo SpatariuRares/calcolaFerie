@@ -5,7 +5,7 @@ import styles from "../styles/app.module.scss";
 export const metadata: Metadata = {
   title: "Privacy policy | CalcolaFerie",
   description:
-    "Informativa privacy minimale di CalcolaFerie: newsletter e link di affiliazione.",
+    "Informativa privacy minimale di CalcolaFerie: newsletter, analytics e link di affiliazione.",
 };
 
 export default function PrivacyPage() {
@@ -20,13 +20,25 @@ export default function PrivacyPage() {
           <p className={styles.eyebrow}>Privacy</p>
           <h1 id="privacy-title">Privacy policy</h1>
           <p>
-            Questa informativa copre i due soli punti in cui CalcolaFerie tocca dati o servizi
-            esterni: la newsletter (aggiornamenti sul prodotto e un promemoria annuale quando sono
-            pronti il nuovo calendario e i dati sulle festivita) e i link di affiliazione per
-            prenotare i giorni dei ponti. Il calcolo dei ponti avviene nel tuo browser e non ci
-            invia alcun dato.
+            Questa informativa copre i soli punti in cui CalcolaFerie tocca dati o servizi esterni:
+            la newsletter (aggiornamenti sul prodotto e un promemoria annuale quando sono pronti il
+            nuovo calendario e i dati sulle festivita), le statistiche aggregate di visita e i link
+            di affiliazione per prenotare i giorni dei ponti. Il calcolo dei ponti avviene nel tuo
+            browser e non ci invia alcun dato.
           </p>
         </header>
+
+        <section>
+          <h2>Titolare e contatto</h2>
+          <p>
+            Il titolare del trattamento e il maintainer di CalcolaFerie, Spatariu Rares. Per
+            richieste privacy puoi usare il profilo GitHub{" "}
+            <a href="https://github.com/SpatariuRares" rel="noreferrer" target="_blank">
+              SpatariuRares
+            </a>
+            .
+          </p>
+        </section>
 
         <section>
           <h2>Dati raccolti</h2>
@@ -36,30 +48,58 @@ export default function PrivacyPage() {
             dell'iscrizione, i metadati tecnici del provider e i dati tecnici normalmente necessari
             per inviare email e gestire la lista.
           </p>
-        </section>
-
-        <section>
-          <h2>Perche li usiamo</h2>
           <p>
-            Usiamo questi dati per inviarti aggiornamenti su CalcolaFerie e, manualmente, un
-            promemoria annuale quando il calendario delle festivita viene aggiornato. Non usiamo
-            questi dati per creare un account, vendere contatti o alimentare un CRM separato.
+            Per le statistiche di visita riceviamo solo dati aggregati da Vercel Web Analytics. Il
+            calcolo dei ponti, il budget ferie, le date selezionate e le festivita inserite restano
+            nel browser; prima dell'invio ad Analytics rimuoviamo i parametri dall'URL.
           </p>
         </section>
 
         <section>
-          <h2>Base giuridica</h2>
+          <h2>Finalita e basi giuridiche</h2>
           <p>
-            L'iscrizione si basa sul tuo consenso esplicito: invii l'email solo dopo aver accettato
-            il trattamento dei dati dal form di iscrizione.
+            Usiamo l'email della newsletter solo per inviarti aggiornamenti su CalcolaFerie e un
+            promemoria annuale quando il calendario delle festivita viene aggiornato. La base
+            giuridica e il tuo consenso esplicito, che puoi ritirare in qualsiasi momento.
+          </p>
+          <p>
+            Usiamo statistiche aggregate di visita per capire quali pagine funzionano e migliorare
+            il servizio. La base giuridica e il legittimo interesse a misurare l'uso del sito con
+            dati minimizzati, senza cookie di terze parti e senza query string.
+          </p>
+          <p>
+            I link di affiliazione servono a sostenere il progetto. La base giuridica e il legittimo
+            interesse a monetizzare il servizio in modo trasparente; il click ti porta su servizi
+            esterni che trattano i dati secondo le rispettive informative.
           </p>
         </section>
 
         <section>
-          <h2>Provider newsletter</h2>
+          <h2>Destinatari e provider</h2>
           <p>
-            La lista email e gestita da Buttondown. Buttondown gestisce l'archiviazione degli
-            iscritti, la conferma dell'iscrizione, l'invio delle email e i link di disiscrizione.
+            Usiamo Buttondown per gestire la newsletter, Vercel per hosting e Web Analytics, e
+            Travelpayouts o il provider di prenotazione quando clicchi un link di affiliazione. Non
+            vendiamo dati personali a terzi.
+          </p>
+        </section>
+
+        <section>
+          <h2>Trasferimenti fuori SEE</h2>
+          <p>
+            Alcuni provider possono trattare dati fuori dallo Spazio Economico Europeo. Dove
+            necessario, il trasferimento deve basarsi su decisioni di adeguatezza, Standard
+            Contractual Clauses o altri strumenti previsti dal GDPR.
+          </p>
+        </section>
+
+        <section>
+          <h2>Statistiche di visita</h2>
+          <p>
+            Usiamo Vercel Web Analytics per capire, in forma aggregata, quali pagine vengono
+            visitate e migliorare il servizio. Vercel Analytics non usa cookie di terze parti:
+            identifica le visite tramite un hash della richiesta e scarta automaticamente le
+            sessioni dopo 24 ore. Prima dell'invio rimuoviamo i parametri dall'URL, cosi i link
+            condivisibili con budget o date non vengono trasmessi nelle statistiche.
           </p>
         </section>
 
@@ -80,6 +120,26 @@ export default function PrivacyPage() {
         </section>
 
         <section>
+          <h2>Conservazione</h2>
+          <p>
+            Conserviamo l'email della newsletter finche resti iscritto o finche serve a gestire la
+            lista. Vercel Web Analytics conserva le sessioni di visita per 24 ore e mostra metriche
+            aggregate. I dati locali del planner restano nel tuo browser finche non li cancelli dal
+            browser o modifichi le impostazioni salvate.
+          </p>
+        </section>
+
+        <section>
+          <h2>I tuoi diritti</h2>
+          <p>
+            Puoi chiedere accesso, rettifica, cancellazione, limitazione, portabilita dei dati,
+            opposizione al trattamento basato su legittimo interesse e ritiro del consenso alla
+            newsletter. Rispondiamo di norma entro un mese. Puoi anche presentare reclamo al Garante
+            per la protezione dei dati personali o all'autorita competente del tuo paese UE.
+          </p>
+        </section>
+
+        <section>
           <h2>Disiscrizione</h2>
           <p>
             Puoi disiscriverti in qualsiasi momento usando il link di unsubscribe presente in ogni
@@ -90,8 +150,7 @@ export default function PrivacyPage() {
         <section>
           <h2>Richieste privacy</h2>
           <p>
-            Per richieste sui dati o sulla privacy, contatta il maintainer del progetto dal profilo
-            GitHub{" "}
+            Per richieste sui dati o sulla privacy, contatta il maintainer dal profilo GitHub{" "}
             <a href="https://github.com/SpatariuRares" rel="noreferrer" target="_blank">
               SpatariuRares
             </a>

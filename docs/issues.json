@@ -617,7 +617,7 @@
     "id": 15,
     "slug": "15-seo-sitemap-robots",
     "title": "SEO: sitemap.xml + robots.txt",
-    "status": "open",
+    "status": "closed",
     "labels": ["seo"],
     "blocked_by": [],
     "test_files": ["tests/ui/15-seo-sitemap-robots.spec.ts"],
@@ -661,26 +661,26 @@
     "id": 16,
     "slug": "16-vercel-analytics",
     "title": "Vercel Analytics",
-    "status": "open",
+    "status": "closed",
     "labels": [],
     "blocked_by": [14],
     "test_files": [],
     "summary": "Install `@vercel/analytics` and add the `<Analytics />` component to `app/layout.tsx`. Privacy-first, no cookie banner required. Enables traffic and pageview tracking from day one on Vercel.",
     "acceptance_criteria": [
       {
-        "done": false,
+        "done": true,
         "text": "`@vercel/analytics` is in `dependencies` in `package.json`."
       },
       {
-        "done": false,
+        "done": true,
         "text": "`<Analytics />` is rendered in `app/layout.tsx` inside `<body>`."
       },
       {
-        "done": false,
+        "done": true,
         "text": "`pnpm build` exits 0."
       },
       {
-        "done": false,
+        "done": true,
         "text": "No cookie consent banner is added (Vercel Analytics is cookieless by default)."
       }
     ]
@@ -689,7 +689,7 @@
     "id": 17,
     "slug": "17-cicd-deploy-pipeline",
     "title": "GitHub Actions: tag-based deploy to Vercel",
-    "status": "open",
+    "status": "closed",
     "labels": ["infrastructure"],
     "blocked_by": [],
     "test_files": [],

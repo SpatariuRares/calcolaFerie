@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { VercelAnalytics } from "./_components/vercel-analytics";
 import "./globals.css";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "https://calcolaferie.it";
@@ -28,7 +29,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="it">
-      <body>{children}</body>
+      <body>
+        {children}
+        <VercelAnalytics />
+      </body>
     </html>
   );
 }
