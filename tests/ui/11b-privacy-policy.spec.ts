@@ -58,9 +58,37 @@ describe("privacy policy", () => {
       name: "Richieste privacy",
     }).parentElement;
     expect(privacyRequests).not.toBeNull();
+    expect(privacyRequests).toHaveTextContent("privacy@calcolaferie.it");
     expect(
       within(privacyRequests as HTMLElement).getByRole("link", { name: "SpatariuRares" })
     ).toHaveAttribute("href", "https://github.com/SpatariuRares");
+  });
+
+  it("states controller contact, transfer safeguards, and localStorage details", () => {
+    render(React.createElement(PrivacyPage));
+
+    const controllerContact = screen.getByRole("heading", {
+      name: "Titolare e contatto",
+    }).parentElement;
+    expect(controllerContact).not.toBeNull();
+    expect(controllerContact).toHaveTextContent("privacy@calcolaferie.it");
+
+    const transfers = screen.getByRole("heading", {
+      name: "Trasferimenti fuori SEE",
+    }).parentElement;
+    expect(transfers).not.toBeNull();
+    expect(transfers).toHaveTextContent(
+      "EU–US Data Privacy Framework (o Standard Contractual Clauses come garanzia alternativa)"
+    );
+
+    const collectedData = screen.getByRole("heading", { name: "Dati raccolti" }).parentElement;
+    expect(collectedData).not.toBeNull();
+    expect(collectedData).toHaveTextContent("calcolaferie_config");
+    expect(collectedData).toHaveTextContent("budget ferie");
+    expect(collectedData).toHaveTextContent("date di chiusura");
+    expect(collectedData).toHaveTextContent("patrono");
+    expect(collectedData).toHaveTextContent("esente da consenso");
+    expect(collectedData).toHaveTextContent("art. 5(3) della direttiva ePrivacy");
   });
 
   it("provides reusable newsletter consent text linked to the privacy policy", () => {

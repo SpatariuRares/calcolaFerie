@@ -32,7 +32,9 @@ export default function PrivacyPage() {
           <h2>Titolare e contatto</h2>
           <p>
             Il titolare del trattamento e il maintainer di CalcolaFerie, Spatariu Rares. Per
-            richieste privacy puoi usare il profilo GitHub{" "}
+            richieste privacy puoi scrivere a{" "}
+            <a href="mailto:privacy@calcolaferie.it">privacy@calcolaferie.it</a>. Il profilo GitHub
+            resta un canale aggiuntivo:{" "}
             <a href="https://github.com/SpatariuRares" rel="noreferrer" target="_blank">
               SpatariuRares
             </a>
@@ -52,6 +54,13 @@ export default function PrivacyPage() {
             Per le statistiche di visita riceviamo solo dati aggregati da Vercel Web Analytics. Il
             calcolo dei ponti, il budget ferie, le date selezionate e le festivita inserite restano
             nel browser; prima dell'invio ad Analytics rimuoviamo i parametri dall'URL.
+          </p>
+          <p>
+            Quando chiedi di salvare le impostazioni, usiamo il localStorage del browser con la
+            chiave <code>calcolaferie_config</code>. Contiene budget ferie, date di chiusura o ferie
+            obbligatorie, patrono e date di ferie selezionate. Questa e memorizzazione tecnica
+            richiesta dall'utente per ricordare la configurazione del planner, esente da consenso ai
+            sensi dell'art. 5(3) della direttiva ePrivacy.
           </p>
         </section>
 
@@ -87,8 +96,8 @@ export default function PrivacyPage() {
           <h2>Trasferimenti fuori SEE</h2>
           <p>
             Alcuni provider possono trattare dati fuori dallo Spazio Economico Europeo. Dove
-            necessario, il trasferimento deve basarsi su decisioni di adeguatezza, Standard
-            Contractual Clauses o altri strumenti previsti dal GDPR.
+            necessario, il trasferimento deve basarsi sull'EU–US Data Privacy Framework (o Standard
+            Contractual Clauses come garanzia alternativa).
           </p>
         </section>
 
@@ -150,7 +159,9 @@ export default function PrivacyPage() {
         <section>
           <h2>Richieste privacy</h2>
           <p>
-            Per richieste sui dati o sulla privacy, contatta il maintainer dal profilo GitHub{" "}
+            Per richieste sui dati o sulla privacy, scrivi a{" "}
+            <a href="mailto:privacy@calcolaferie.it">privacy@calcolaferie.it</a>. Puoi anche
+            contattare il maintainer dal profilo GitHub{" "}
             <a href="https://github.com/SpatariuRares" rel="noreferrer" target="_blank">
               SpatariuRares
             </a>
