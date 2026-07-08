@@ -403,30 +403,30 @@
     "id": "11a",
     "slug": "11-branded-iso-date-string",
     "title": "Branded ISODateString Type",
-    "status": "open",
+    "status": "closed",
     "labels": [],
     "blocked_by": [10, 8, 13],
     "test_files": ["tests/engine/11a-branded-iso-date.spec.ts"],
     "summary": "Make `ISODateString` a branded type with a single validating constructor at the input boundary, so a malformed date string can't reach the engine. Split out of #10.",
     "acceptance_criteria": [
       {
-        "done": false,
+        "done": true,
         "text": "`ISODateString` is branded; a plain `string` is not assignable without going through the constructor."
       },
       {
-        "done": false,
+        "done": true,
         "text": "`isoDate` rejects malformed input (`\"\"`, `\"2026-13-40\"`, `\"not-a-date\"`)."
       },
       {
-        "done": false,
+        "done": true,
         "text": "`buildEngineInput` validates every externally-sourced date and never forwards an invalid value."
       },
       {
-        "done": false,
+        "done": true,
         "text": "Unit tests cover valid pass-through, each rejection case, and the boundary."
       },
       {
-        "done": false,
+        "done": true,
         "text": "`pnpm test` and `pnpm build` stay green."
       }
     ]
@@ -561,6 +561,167 @@
       {
         "done": false,
         "text": "Legal affiliate disclosure reviewed and approved."
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "slug": "14-seo-metadata",
+    "title": "SEO: Metadata, Open Graph & Static Content",
+    "status": "closed",
+    "labels": ["seo"],
+    "blocked_by": [],
+    "test_files": ["tests/ui/14-seo-metadata.spec.ts"],
+    "post_impl_todos_doc": "docs/issues/14-seo-metadata.md",
+    "summary": "Add rich metadata to `app/layout.tsx` (title, description, Open Graph, Twitter Card), a static OG image placeholder in `public/`, and a visible static text section in `app/page.tsx` targeting the keyword 'calcolatore ponti ferie'. This is the primary SEO foundation: Google sees both the metadata and static content on first crawl without needing JavaScript execution.",
+    "acceptance_criteria": [
+      {
+        "done": true,
+        "text": "`<title>` is `CalcolaFerie — Calcolatore Ponti e Ferie Italiane`."
+      },
+      {
+        "done": true,
+        "text": "`<meta name='description'>` contains 'calcolatore ponti ferie' and is under 160 characters."
+      },
+      {
+        "done": true,
+        "text": "`og:title`, `og:description`, `og:image`, `og:url`, `og:type` are all present in the rendered HTML."
+      },
+      {
+        "done": true,
+        "text": "`og:image` points to an absolute URL of a 1200×630px image in `public/og-image.png`."
+      },
+      {
+        "done": true,
+        "text": "Twitter Card meta tags (`twitter:card`, `twitter:title`, `twitter:description`, `twitter:image`) are present."
+      },
+      {
+        "done": true,
+        "text": "`app/page.tsx` renders a visible static section (server-rendered, no JS required) with an H1 or H2 containing 'calcolatore ponti ferie'."
+      },
+      {
+        "done": true,
+        "text": "Static section includes a descriptive paragraph mentioning festività italiane and ottimizzare ferie."
+      },
+      {
+        "done": true,
+        "text": "Static content is visible in the HTML source without JavaScript execution."
+      },
+      {
+        "done": true,
+        "text": "`pnpm build` exits 0 with no metadata warnings."
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "slug": "15-seo-sitemap-robots",
+    "title": "SEO: sitemap.xml + robots.txt",
+    "status": "open",
+    "labels": ["seo"],
+    "blocked_by": [],
+    "test_files": ["tests/ui/15-seo-sitemap-robots.spec.ts"],
+    "summary": "Add `app/sitemap.ts` and `app/robots.ts` using the Next.js built-in Metadata API. Generates `/sitemap.xml` with the two public routes (`/` and `/privacy`) and `/robots.txt` that permits indexing of public routes while blocking `/api/*`.",
+    "acceptance_criteria": [
+      {
+        "done": false,
+        "text": "`GET /sitemap.xml` returns 200 with `Content-Type: application/xml`."
+      },
+      {
+        "done": false,
+        "text": "Sitemap contains entries for `/` and `/privacy` with absolute URLs using the production domain."
+      },
+      {
+        "done": false,
+        "text": "Sitemap entries include `lastModified` and `changeFrequency`."
+      },
+      {
+        "done": false,
+        "text": "`GET /robots.txt` returns 200 with `Content-Type: text/plain`."
+      },
+      {
+        "done": false,
+        "text": "`robots.txt` disallows `/api/` for all user agents."
+      },
+      {
+        "done": false,
+        "text": "`robots.txt` allows `/` and `/privacy` for all user agents."
+      },
+      {
+        "done": false,
+        "text": "`robots.txt` includes a `Sitemap:` directive pointing to the full sitemap URL."
+      },
+      {
+        "done": false,
+        "text": "`pnpm build` exits 0; no `/api/*` routes appear in the sitemap."
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "slug": "16-vercel-analytics",
+    "title": "Vercel Analytics",
+    "status": "open",
+    "labels": [],
+    "blocked_by": [14],
+    "test_files": [],
+    "summary": "Install `@vercel/analytics` and add the `<Analytics />` component to `app/layout.tsx`. Privacy-first, no cookie banner required. Enables traffic and pageview tracking from day one on Vercel.",
+    "acceptance_criteria": [
+      {
+        "done": false,
+        "text": "`@vercel/analytics` is in `dependencies` in `package.json`."
+      },
+      {
+        "done": false,
+        "text": "`<Analytics />` is rendered in `app/layout.tsx` inside `<body>`."
+      },
+      {
+        "done": false,
+        "text": "`pnpm build` exits 0."
+      },
+      {
+        "done": false,
+        "text": "No cookie consent banner is added (Vercel Analytics is cookieless by default)."
+      }
+    ]
+  },
+  {
+    "id": 17,
+    "slug": "17-cicd-deploy-pipeline",
+    "title": "GitHub Actions: tag-based deploy to Vercel",
+    "status": "open",
+    "labels": ["infrastructure"],
+    "blocked_by": [],
+    "test_files": [],
+    "summary": "Create `.github/workflows/deploy.yml` that triggers on git tags matching `v*`, runs `pnpm test`, then `pnpm build`, then `vercel --prod`. Vercel auto-deploy from GitHub must be disabled in Vercel project settings so production releases are controlled exclusively by this pipeline. Preview deployments on branches remain active.",
+    "acceptance_criteria": [
+      {
+        "done": false,
+        "text": "Workflow file exists at `.github/workflows/deploy.yml`."
+      },
+      {
+        "done": false,
+        "text": "Trigger is `push: tags: ['v*']` only — no trigger on branch push."
+      },
+      {
+        "done": false,
+        "text": "`pnpm test` runs before `pnpm build`; if tests fail, deploy step does not run."
+      },
+      {
+        "done": false,
+        "text": "`vercel --prod` is called with `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID` from GitHub Secrets."
+      },
+      {
+        "done": false,
+        "text": "`NEXT_PUBLIC_TRAVELPAYOUTS_MARKER` is passed as an env var in the build step (from GitHub Secrets)."
+      },
+      {
+        "done": false,
+        "text": "Vercel auto-deploy from GitHub is disabled in Vercel project settings (manual step documented in issue)."
+      },
+      {
+        "done": false,
+        "text": "Pushing `v0.1.0` tag triggers the workflow and results in a successful production deployment."
       }
     ]
   },
