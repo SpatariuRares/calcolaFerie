@@ -43,15 +43,15 @@ export function tryIsoDate(value: string): ISODateString | null {
 
 ### Acceptance criteria
 
-- [ ] `ISODateString` is branded; a plain `string` is not assignable without going
+- [x] `ISODateString` is branded; a plain `string` is not assignable without going
       through `isoDate` / `tryIsoDate`.
-- [ ] `isoDate` rejects malformed input (`""`, `"2026-13-40"`, `"not-a-date"`); the
+- [x] `isoDate` rejects malformed input (`""`, `"2026-13-40"`, `"not-a-date"`); the
       trusted UTC producers return `ISODateString` without re-validation.
-- [ ] `buildEngineInput` validates every externally-sourced date and never forwards an
+- [x] `buildEngineInput` validates every externally-sourced date and never forwards an
       invalid one to `calculatePlan`.
-- [ ] Unit tests cover valid pass-through, each rejection case, and the boundary
+- [x] Unit tests cover valid pass-through, each rejection case, and the boundary
       filtering in `buildEngineInput`.
-- [ ] `pnpm test` and `pnpm build` stay green.
+- [x] `pnpm test` and `pnpm build` stay green.
 
 ## Blocked by
 

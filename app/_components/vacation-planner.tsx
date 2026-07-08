@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
-import { type DayOff, type UserConfig } from "@engine";
+import { tryIsoDate, type DayOff, type ISODateString, type UserConfig } from "@engine";
 import {
   buildCalendarMonths,
   CALENDAR_LEGEND,
@@ -21,7 +21,7 @@ import {
   serializeConfig,
 } from "../_lib/user-config-url";
 
-type DayOffRow = DayOff & { id: string };
+type DayOffRow = Omit<DayOff, "date"> & { date: string; id: string };
 type NewsletterStatus = "idle" | "success" | "error";
 
 const DAY_OFF_TYPE_LABELS: Record<DayOff["type"], string> = {
@@ -417,15 +417,17 @@ export function VacationPlanner() {
   }
 
   function buildUserConfig(totalVacationDays: number): UserConfig {
+    const daysOff: DayOff[] = dayOffRows.flatMap(({ date, type }) => {
+      if (date === "") return [];
+      const iso = tryIsoDate(date);
+      return iso ? [{ date: iso, type }] : [];
+    });
+    const parsedPatronSaintDate = patronSaintDate ? tryIsoDate(patronSaintDate) : null;
+
     return {
       totalVacationDays,
-      daysOff: dayOffRows
-        .filter((row) => row.date !== "")
-        .map(({ date, type }) => ({
-          date,
-          type,
-        })),
-      ...(patronSaintDate ? { patronSaintDate } : {}),
+      daysOff,
+      ...(parsedPatronSaintDate ? { patronSaintDate: parsedPatronSaintDate } : {}),
     };
   }
 
@@ -438,9 +440,14 @@ export function VacationPlanner() {
   }
 
   function withSelectedVacationDates(config: UserConfig, dates: Set<string>): PlannerConfig {
-    const baseConfig: PlannerConfig = { ...(config as PlannerConfig) };
+    const baseConfig: PlannerConfig = { ...config };
     delete baseConfig.selectedVacationDates;
-    const selectedVacationDates = [...dates].sort((a, b) => a.localeCompare(b));
+    const selectedVacationDates = [...dates]
+      .flatMap((date): ISODateString[] => {
+        const iso = tryIsoDate(date);
+        return iso ? [iso] : [];
+      })
+      .sort((a, b) => a.localeCompare(b));
 
     return {
       ...baseConfig,

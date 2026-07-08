@@ -1,4 +1,5 @@
-export type ISODateString = string;
+declare const ISO_DATE_BRAND: unique symbol;
+export type ISODateString = string & { readonly [ISO_DATE_BRAND]: "ISODateString" };
 export type DayType =
   | 'weekend'
   | 'publicHoliday'

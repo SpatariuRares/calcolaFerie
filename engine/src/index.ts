@@ -20,7 +20,9 @@ export {
   addDays,
   isoToDate,
   dateToISO,
+  isoDate,
   isValidISODateString,
+  tryIsoDate,
   toISO,
   pad,
 } from "./date";

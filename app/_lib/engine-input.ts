@@ -2,6 +2,7 @@ import {
   addMonths,
   getPublicHolidaysForWindow,
   localToday,
+  tryIsoDate,
   type DayOff,
   type EngineInput,
   type ISODateString,
@@ -41,13 +42,17 @@ export function buildPublicHolidays(
 export function buildEngineInput(config: UserConfig, today = new Date()): EngineInput {
   const windowStart = localToday(today);
   const windowEnd = addMonths(windowStart, 12);
-  const daysOff: DayOff[] = config.daysOff.filter((dayOff) => dayOff.date !== "");
+  const daysOff: DayOff[] = config.daysOff.flatMap((dayOff) => {
+    const date = tryIsoDate(dayOff.date);
+    return date ? [{ date, type: dayOff.type }] : [];
+  });
+  const patronSaintDate = config.patronSaintDate ? tryIsoDate(config.patronSaintDate) : null;
 
   return {
     windowStart,
     windowEnd,
     workSchedule: getDefaultWorkSchedule(config.workSchedule),
-    publicHolidays: buildPublicHolidays(windowStart, windowEnd, config.patronSaintDate),
+    publicHolidays: buildPublicHolidays(windowStart, windowEnd, patronSaintDate ?? undefined),
     daysOff,
     totalVacationDays: config.totalVacationDays,
     minBridgeLeverage: config.minBridgeLeverage,

@@ -14,7 +14,7 @@ export function pad(n: number): string {
 }
 
 export function toISO(year: number, month: number, day: number): ISODateString {
-  return `${year}-${pad(month)}-${pad(day)}`;
+  return `${year}-${pad(month)}-${pad(day)}` as ISODateString;
 }
 
 export function isoToDate(iso: ISODateString): Date {
@@ -25,20 +25,37 @@ export function dateToISO(d: Date): ISODateString {
   return toISO(d.getUTCFullYear(), d.getUTCMonth() + 1, d.getUTCDate());
 }
 
-export function isValidISODateString(value: unknown): value is ISODateString {
-  if (typeof value !== "string") return false;
-
+export function isoDate(value: string): ISODateString {
   const match = ISO_DATE_PATTERN.exec(value);
-  if (!match) return false;
+  if (!match) {
+    throw new RangeError(`Invalid ISO date: ${JSON.stringify(value)}`);
+  }
 
   const [, year, month, day] = match;
-  const parsedDate = isoToDate(value);
+  const parsedDate = new Date(value + "T00:00:00Z");
 
-  return (
-    parsedDate.getUTCFullYear() === Number(year) &&
-    parsedDate.getUTCMonth() + 1 === Number(month) &&
-    parsedDate.getUTCDate() === Number(day)
-  );
+  if (
+    Number.isNaN(parsedDate.getTime()) ||
+    parsedDate.getUTCFullYear() !== Number(year) ||
+    parsedDate.getUTCMonth() + 1 !== Number(month) ||
+    parsedDate.getUTCDate() !== Number(day)
+  ) {
+    throw new RangeError(`Invalid ISO date: ${JSON.stringify(value)}`);
+  }
+
+  return value as ISODateString;
+}
+
+export function tryIsoDate(value: string): ISODateString | null {
+  try {
+    return isoDate(value);
+  } catch {
+    return null;
+  }
+}
+
+export function isValidISODateString(value: unknown): value is ISODateString {
+  return typeof value === "string" && tryIsoDate(value) !== null;
 }
 
 export function addDays(iso: ISODateString, days: number): ISODateString {

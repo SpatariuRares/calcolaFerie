@@ -1,4 +1,4 @@
-import { isValidISODateString } from "@engine";
+import { tryIsoDate } from "@engine";
 import type { DayOff, ISODateString, UserConfig, WeekdayIndex, WorkSchedule } from "@engine";
 
 export const CONFIG_STORAGE_KEY = "calcolaferie_config";
@@ -34,11 +34,13 @@ function parseBudget(value: unknown): number | null {
 
 function parseDayOff(value: unknown): DayOff | null {
   if (!isRecord(value)) return null;
-  if (!isValidISODateString(value.date)) return null;
+  if (typeof value.date !== "string") return null;
+  const date = tryIsoDate(value.date);
+  if (!date) return null;
   if (value.type !== "companyClosure" && value.type !== "mandatoryLeave") return null;
 
   return {
-    date: value.date,
+    date,
     type: value.type,
   };
 }
@@ -61,8 +63,10 @@ function parseISODateList(value: unknown): ISODateString[] | null {
 
   const dates = new Set<ISODateString>();
   for (const date of value) {
-    if (!isValidISODateString(date) || dates.has(date)) return null;
-    dates.add(date);
+    if (typeof date !== "string") return null;
+    const iso = tryIsoDate(date);
+    if (!iso || dates.has(iso)) return null;
+    dates.add(iso);
   }
 
   return [...dates].sort((a, b) => a.localeCompare(b));
@@ -137,14 +141,18 @@ function normalizeUserConfig(value: unknown): PlannerConfig | null {
       : parseISODateList(value.selectedVacationDates);
   if (selectedVacationDates === null) return null;
 
-  if (value.patronSaintDate !== undefined && !isValidISODateString(value.patronSaintDate)) {
-    return null;
-  }
+  const patronSaintDate =
+    value.patronSaintDate === undefined
+      ? undefined
+      : typeof value.patronSaintDate === "string"
+        ? tryIsoDate(value.patronSaintDate)
+        : null;
+  if (patronSaintDate === null) return null;
 
   return {
     totalVacationDays,
     daysOff,
-    ...(value.patronSaintDate ? { patronSaintDate: value.patronSaintDate } : {}),
+    ...(patronSaintDate ? { patronSaintDate } : {}),
     ...(workSchedule ? { workSchedule } : {}),
     ...(selectedVacationDates && selectedVacationDates.length > 0 ? { selectedVacationDates } : {}),
   };
@@ -158,12 +166,13 @@ function parseDayOffsParam(value: string | null): DayOff[] | null {
   for (const item of value.split(",")) {
     const [date, paramType, extra] = item.split(":");
     if (extra !== undefined) return null;
-    if (!isValidISODateString(date)) return null;
+    const iso = tryIsoDate(date);
+    if (!iso) return null;
 
     const type = parseDayOffTypeParam(paramType);
     if (!type) return null;
 
-    dayOffs.push({ date, type });
+    dayOffs.push({ date: iso, type });
   }
 
   return dayOffs;
@@ -197,8 +206,9 @@ function parseVacationDatesParam(value: string | null): ISODateString[] | null |
 
   const dates = new Set<ISODateString>();
   for (const date of value.split(",")) {
-    if (!isValidISODateString(date) || dates.has(date)) return null;
-    dates.add(date);
+    const iso = tryIsoDate(date);
+    if (!iso || dates.has(iso)) return null;
+    dates.add(iso);
   }
 
   return [...dates].sort((a, b) => a.localeCompare(b));
@@ -252,7 +262,8 @@ export function deserializeConfig(params: URLSearchParams): PlannerConfig | null
   if (!daysOff) return null;
 
   const patronSaintDate = params.get("patron");
-  if (patronSaintDate !== null && !isValidISODateString(patronSaintDate)) return null;
+  const parsedPatronSaintDate = patronSaintDate === null ? null : tryIsoDate(patronSaintDate);
+  if (patronSaintDate !== null && !parsedPatronSaintDate) return null;
 
   const workDays = parseWorkDaysParam(params.get("workDays"));
   if (workDays === null) return null;
@@ -272,7 +283,7 @@ export function deserializeConfig(params: URLSearchParams): PlannerConfig | null
   return {
     totalVacationDays: budget,
     daysOff,
-    ...(patronSaintDate ? { patronSaintDate } : {}),
+    ...(parsedPatronSaintDate ? { patronSaintDate: parsedPatronSaintDate } : {}),
     ...(Object.keys(workSchedule).length > 0 ? { workSchedule } : {}),
     ...(selectedVacationDates && selectedVacationDates.length > 0 ? { selectedVacationDates } : {}),
   };

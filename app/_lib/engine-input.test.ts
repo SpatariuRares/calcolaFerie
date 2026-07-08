@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import type { EngineOutput } from "@engine";
+import { isoDate, type EngineOutput, type ISODateString } from "@engine";
 import { calculateVacationPlan } from "./calculate-vacation-plan";
 import { buildEngineInput } from "./engine-input";
 
@@ -9,8 +9,8 @@ describe("buildEngineInput", () => {
       {
         totalVacationDays: 20,
         daysOff: [
-          { date: "2026-08-14", type: "companyClosure" },
-          { date: "2026-12-24", type: "mandatoryLeave" },
+          { date: isoDate("2026-08-14"), type: "companyClosure" },
+          { date: isoDate("2026-12-24"), type: "mandatoryLeave" },
         ],
       },
       new Date("2026-06-20T12:00:00")
@@ -32,7 +32,7 @@ describe("buildEngineInput", () => {
       {
         totalVacationDays: 10,
         daysOff: [],
-        patronSaintDate: "2026-06-24",
+        patronSaintDate: isoDate("2026-06-24"),
       },
       new Date("2026-06-20T12:00:00")
     );
@@ -44,19 +44,37 @@ describe("buildEngineInput", () => {
     });
   });
 
-  it("filters incomplete day-off rows before calling the engine", () => {
+  it("filters incomplete or malformed day-off rows before calling the engine", () => {
     const input = buildEngineInput(
       {
         totalVacationDays: 10,
         daysOff: [
-          { date: "", type: "companyClosure" },
-          { date: "2026-11-02", type: "mandatoryLeave" },
+          { date: "" as ISODateString, type: "companyClosure" },
+          { date: "not-a-date" as ISODateString, type: "companyClosure" },
+          { date: isoDate("2026-11-02"), type: "mandatoryLeave" },
         ],
       },
       new Date("2026-06-20T12:00:00")
     );
 
     expect(input.daysOff).toEqual([{ date: "2026-11-02", type: "mandatoryLeave" }]);
+  });
+
+  it("drops a malformed patron saint date at the app boundary", () => {
+    const input = buildEngineInput(
+      {
+        totalVacationDays: 10,
+        daysOff: [],
+        patronSaintDate: "2026-13-40" as ISODateString,
+      },
+      new Date("2026-06-20T12:00:00")
+    );
+
+    expect(input.publicHolidays).not.toContainEqual({
+      date: "2026-13-40",
+      key: "patron",
+      kind: "patron",
+    });
   });
 
   it("passes the built EngineInput to calculatePlan", () => {
@@ -70,8 +88,8 @@ describe("buildEngineInput", () => {
     const calculation = calculateVacationPlan(
       {
         totalVacationDays: 12,
-        daysOff: [{ date: "2026-12-24", type: "mandatoryLeave" }],
-        patronSaintDate: "2026-06-24",
+        daysOff: [{ date: isoDate("2026-12-24"), type: "mandatoryLeave" }],
+        patronSaintDate: isoDate("2026-06-24"),
       },
       new Date("2026-06-20T12:00:00"),
       runCalculatePlan

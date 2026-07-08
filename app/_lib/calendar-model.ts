@@ -6,11 +6,12 @@ import {
   type DayType,
   type EngineInput,
   type EngineOutput,
+  type ISODateString,
 } from "@engine";
 import { holidayLabel } from "./holiday-labels";
 
 export type CalendarDay = {
-  iso: string;
+  iso: ISODateString;
   dayNumber: number;
   type: DayType;
   holidayName?: string;
