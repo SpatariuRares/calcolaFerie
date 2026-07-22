@@ -414,19 +414,21 @@
 }
 
 .languageSwitcherLabel {
-  color: $muted;
+  color: $accent;
   font-size: 0.72rem;
-  font-weight: 700;
+  font-weight: 800;
+  letter-spacing: 0.08em;
   line-height: 1;
+  text-transform: uppercase;
 }
 
 .languageSwitcherOptions {
   display: inline-flex;
   width: $width-fit;
   padding: $padding-switcher;
-  border: 1px solid $border;
+  border: 1px solid #27313a;
   border-radius: $radius-pill;
-  background: rgba($surface, 0.72);
+  background: rgb(255 255 255 / 0.06);
 }
 
 .languageSwitcherButton {
@@ -435,7 +437,7 @@
   border: 0;
   border-radius: $radius-pill;
   background: transparent;
-  color: $muted;
+  color: #d8e0e5;
   cursor: pointer;
   font: inherit;
   font-size: 0.78rem;
@@ -447,8 +449,8 @@
     box-shadow 150ms ease;
 
   &:hover {
-    color: $accent;
-    background: rgba($accent, 0.08);
+    color: #fff;
+    background: rgb(255 255 255 / 0.1);
   }
 
   &:focus-visible {
@@ -457,13 +459,13 @@
 }
 
 .languageSwitcherButtonActive {
-  background: $accent;
-  color: #fff;
-  box-shadow: 0 1px 3px rgba($strong, 0.18);
+  background: #f0c66f;
+  color: #111820;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.22);
 
   &:hover {
-    background: $accent;
-    color: #fff;
+    background: #f0c66f;
+    color: #111820;
   }
 }
 

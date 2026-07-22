@@ -83,7 +83,13 @@
 .calendarList {
   display: grid;
   gap: 12px;
-  grid-template-columns: repeat(auto-fill, minmax($calendar-column-min-width, 1fr));
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@include at($breakpoint-fields) {
+  .calendarList {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 .monthBlock {
@@ -139,7 +145,7 @@
   border-radius: $radius-day;
   border: 1px solid token($days, workday, 3);
   color: $strong;
-  cursor: help;
+  cursor: pointer;
   font-size: 0.72rem;
   font-weight: 800;
   font-family: inherit;
@@ -199,7 +205,7 @@
 }
 
 .dayCellLocked {
-  cursor: help;
+  cursor: default;
 }
 
 .dayCellPast {
