@@ -5,7 +5,7 @@
 .opportunityMetrics {
   display: grid;
   gap: 8px;
-  margin: 0;
+  margin: $margin-reset;
 
   div {
     display: grid;
@@ -19,7 +19,7 @@
   }
 
   dd {
-    margin: 0;
+    margin: $margin-reset;
     color: #14221a;
     font-size: 1.35rem;
     font-weight: 850;
@@ -28,13 +28,13 @@
 }
 
 .summaryGrid {
-  grid-template-columns: repeat(auto-fit, minmax(92px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax($summary-column-min-width, 1fr));
 
   div {
     gap: 2px;
     border: 1px solid $border;
-    border-radius: 8px;
-    padding: 10px;
+    border-radius: $radius-panel;
+    padding: $padding-summary;
     background: #f7faf8;
   }
 }
@@ -50,10 +50,10 @@
 }
 
 .budgetWarning {
-  margin: 0;
+  margin: $margin-reset;
   border: 1px solid #e8aa88;
-  border-radius: 8px;
-  padding: 9px 10px;
+  border-radius: $radius-panel;
+  padding: $padding-segment;
   background: #fff4ed;
   color: #96351c;
   font-size: 0.9rem;
@@ -61,8 +61,80 @@
   line-height: 1.35;
 }
 
+.bestPonte {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  border: 1px solid #d8c7bf;
+  border-left: 4px solid $accent;
+  border-radius: $radius-feature;
+  padding: $padding-panel;
+  background: linear-gradient(180deg, #fbf1ec 0%, #f7ede7 100%);
+}
+
+.bestPonteLeva {
+  display: grid;
+  gap: 2px;
+  justify-items: center;
+  border-radius: $radius-feature;
+  padding: $padding-emphasis;
+  background: $accent;
+  color: #fff;
+
+  strong {
+    font-family: var(--font-display, Georgia, serif);
+    font-size: 2.1rem;
+    font-weight: 700;
+    line-height: 0.9;
+  }
+
+  span {
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.9;
+  }
+}
+
+.bestPonteBody {
+  @include stack(4px);
+  min-width: $width-zero;
+}
+
+.bestPonteEyebrow {
+  margin: $margin-reset;
+  color: $accent;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.bestPonteRange {
+  margin: $margin-reset;
+  color: $strong;
+  font-family: var(--font-display, Georgia, serif);
+  font-size: 1.5rem;
+  line-height: 1.05;
+  text-transform: capitalize;
+}
+
+.bestPonteMeta {
+  margin: $margin-reset;
+  color: #5a4a43;
+  font-size: 0.9rem;
+  line-height: 1.4;
+
+  b {
+    color: #3a1913;
+    font-weight: 800;
+  }
+}
+
 .resultsView {
-  min-width: 0;
+  min-width: $width-zero;
 }
 
 .mobileResultsList {
@@ -72,8 +144,8 @@
 .opportunityCard {
   @include stack(12px);
   border: 1px solid $border;
-  border-radius: 8px;
-  padding: 12px;
+  border-radius: $radius-panel;
+  padding: $padding-card;
   background: $surface;
   cursor: pointer;
 
@@ -84,7 +156,7 @@
 
 .opportunitySelector {
   display: inline-flex;
-  min-width: 0;
+  min-width: $width-zero;
   align-items: center;
   gap: 8px;
   color: $strong;
@@ -94,20 +166,20 @@
 
   span {
     @include heading;
-    min-width: 0;
+    min-width: $width-zero;
     font-size: 1.05rem;
   }
 }
 
 .selectionBox {
   display: inline-flex;
-  width: 18px;
-  height: 18px;
+  width: $selection-mark-size;
+  height: $selection-mark-size;
   flex: 0 0 auto;
   align-items: center;
   justify-content: center;
   border: 1px solid #8fb7a0;
-  border-radius: 4px;
+  border-radius: $radius-selection;
   background: $surface;
   color: $green;
   font-size: 0.78rem;
@@ -133,8 +205,8 @@
 
   div {
     gap: 3px;
-    border-radius: 6px;
-    padding: 8px;
+    border-radius: $radius-control;
+    padding: $padding-compact;
     background: #eef4f1;
   }
 
@@ -152,7 +224,7 @@
 }
 
 .explanationText {
-  margin: 0;
+  margin: $margin-reset;
   color: #34423a;
   font-size: 0.93rem;
   line-height: 1.45;
@@ -162,12 +234,12 @@
 .budgetChip,
 .selectedChip {
   display: inline-flex;
-  width: max-content;
-  max-width: 100%;
+  width: $width-max-content;
+  max-width: $width-full;
   align-items: center;
   justify-content: center;
-  border-radius: 999px;
-  padding: 4px 8px;
+  border-radius: $radius-pill;
+  padding: $padding-result-chip;
   font-size: 0.76rem;
   font-weight: 850;
   line-height: 1.1;
@@ -196,9 +268,26 @@
   display: none;
 }
 
+.selectedTableWrap {
+  overflow-x: auto;
+  border: 1px solid #e2e8ed;
+  border-radius: $radius-panel;
+
+  .resultsTable {
+    min-width: $selected-table-min-width;
+  }
+
+  tfoot th,
+  tfoot td {
+    background: #f6f8fa;
+    color: $strong;
+    font-weight: 850;
+  }
+}
+
 .resultsTable {
-  width: 100%;
-  min-width: 860px;
+  width: $width-full;
+  min-width: $results-table-min-width;
   border-collapse: collapse;
   color: #253126;
   font-size: 0.88rem;
@@ -206,7 +295,7 @@
   th,
   td {
     border-bottom: 1px solid #e2e8ed;
-    padding: 10px;
+    padding: $padding-summary;
     text-align: left;
     vertical-align: top;
   }
@@ -265,17 +354,18 @@
     text-align: center;
 
     input {
-      width: 18px;
-      height: 18px;
+      width: $selection-mark-size;
+      height: $selection-mark-size;
       accent-color: $green;
       cursor: pointer;
     }
   }
 
-  td:nth-child(7) {
+  td.bookingCell {
     display: grid;
     gap: 5px;
     align-items: start;
+    white-space: normal;
   }
 }
 
@@ -283,11 +373,11 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: max-content;
-  max-width: 100%;
+  width: $width-max-content;
+  max-width: $width-full;
   border: 1px solid #16724f;
-  border-radius: 999px;
-  padding: 7px 14px;
+  border-radius: $radius-pill;
+  padding: $padding-booking-cta;
   background: $green;
   color: #fff;
   font-size: 0.84rem;
@@ -323,14 +413,14 @@
 }
 
 .resultsDisclaimer {
-  margin: 10px 0 0;
+  margin: $margin-note;
   color: #5d6971;
   font-size: 0.78rem;
   line-height: 1.4;
 }
 
 .affiliateDisclosure {
-  margin: 10px 0 0;
+  margin: $margin-note;
   color: #5d6971;
   font-size: 0.78rem;
   line-height: 1.4;
@@ -338,11 +428,11 @@
 
 .emptyState {
   @include stack(5px);
-  min-height: 96px;
+  min-height: $height-empty-state;
   align-content: center;
   border: 2px dashed #ccc7b8;
-  border-radius: 8px;
-  padding: 16px;
+  border-radius: $radius-panel;
+  padding: $padding-panel;
   background: #f5f1e8;
   color: #34423a;
 
@@ -357,7 +447,7 @@
   }
 }
 
-@include at(768px) {
+@include at($breakpoint-table) {
   .mobileResultsList {
     display: none;
   }
@@ -366,6 +456,6 @@
     display: block;
     overflow-x: auto;
     border: 1px solid #e2e8ed;
-    border-radius: 8px;
+    border-radius: $radius-panel;
   }
 }

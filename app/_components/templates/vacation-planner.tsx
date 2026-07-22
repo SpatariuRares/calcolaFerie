@@ -1,20 +1,25 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { tryIsoDate, type DayOff, type ISODateString, type UserConfig } from "@engine";
+import { isoToDate, tryIsoDate, type DayOff, type ISODateString, type UserConfig } from "@engine";
 import { calculateVacationPlan, type CalculationState } from "../../_lib/calculate-vacation-plan";
+import { buildSelectableVacationDates } from "../../_lib/calendar-model";
 import {
   CONFIG_STORAGE_KEY,
+  MAX_VACATION_DAYS,
   getInitialUserConfig,
   type PlannerConfig,
   serializeConfig,
+  serializeStoredConfig,
 } from "../../_lib/user-config-url";
+import { useAppTranslations } from "../../_lib/use-app-i18n";
 import styles from "../../styles/app.module.scss";
 import type { DayOffRow } from "../planner-types";
-import { CalendarView } from "../organisms/calendar-view";
+import { buildSelectedRanges, CalendarView } from "../organisms/calendar-view";
 import { NewsletterSignup } from "../organisms/newsletter-signup";
 import { PlannerForm } from "../organisms/planner-form";
 import { ResultsPanel } from "../organisms/results-panel";
+import { SelectedVacationsTable } from "../organisms/selected-vacations-table";
 import { SiteFooter } from "../organisms/site-footer";
 import { SiteHeader } from "../organisms/site-header";
 
@@ -38,7 +43,7 @@ function createDayOffRows(dayOffs: DayOff[]): DayOffRow[] {
 function parseVacationDays(value: string): number | null {
   if (value.trim() === "") return null;
   const parsed = Number(value);
-  if (!Number.isInteger(parsed) || parsed < 0) return null;
+  if (!Number.isInteger(parsed) || parsed < 0 || parsed > MAX_VACATION_DAYS) return null;
   return parsed;
 }
 
@@ -51,8 +56,11 @@ function readStoredConfig(): string | null {
 }
 
 export function VacationPlanner() {
+  const t = useAppTranslations("planner");
   const nextDayOffId = useRef(1);
+  const currentYear = new Date().getFullYear();
   const [totalVacationDays, setTotalVacationDays] = useState("");
+  const [planningYear, setPlanningYear] = useState(currentYear);
   const [dayOffRows, setDayOffRows] = useState<DayOffRow[]>([createDayOffRow("day-off-0")]);
   const [patronSaintDate, setPatronSaintDate] = useState("");
   const [calculation, setCalculation] = useState<CalculationState | null>(null);
@@ -129,15 +137,50 @@ export function VacationPlanner() {
   }
 
   function toggleOpportunity(opportunityId: string) {
-    setSelectedOpportunityIds((ids) => {
-      const nextIds = new Set(ids);
-      if (nextIds.has(opportunityId)) {
-        nextIds.delete(opportunityId);
+    const opportunities = calculation?.output.opportunities ?? [];
+    const opportunity = opportunities.find((item) => item.id === opportunityId);
+
+    const nextIds = new Set(selectedOpportunityIds);
+    const isSelecting = !nextIds.has(opportunityId);
+    if (isSelecting) {
+      nextIds.add(opportunityId);
+    } else {
+      nextIds.delete(opportunityId);
+    }
+    setSelectedOpportunityIds(nextIds);
+
+    if (!opportunity) return;
+
+    const nextDates = new Set(selectedVacationDates);
+    if (isSelecting) {
+      opportunity.recommendedDays.forEach((date) => nextDates.add(date));
+    } else {
+      const daysStillNeeded = new Set(
+        opportunities
+          .filter((item) => item.id !== opportunityId && nextIds.has(item.id))
+          .flatMap((item) => item.recommendedDays)
+      );
+      opportunity.recommendedDays.forEach((date) => {
+        if (!daysStillNeeded.has(date)) nextDates.delete(date);
+      });
+    }
+
+    setSelectedVacationDates(nextDates);
+    saveSelectedVacationDates(nextDates);
+  }
+
+  function setVacationDateRange(isoDates: string[], shouldSelect: boolean) {
+    if (isoDates.length === 0) return;
+    const nextDates = new Set(selectedVacationDates);
+    isoDates.forEach((date) => {
+      if (shouldSelect) {
+        nextDates.add(date);
       } else {
-        nextIds.add(opportunityId);
+        nextDates.delete(date);
       }
-      return nextIds;
     });
+    setSelectedVacationDates(nextDates);
+    saveSelectedVacationDates(nextDates);
   }
 
   function buildUserConfig(totalVacationDays: number): UserConfig {
@@ -157,7 +200,7 @@ export function VacationPlanner() {
 
   function saveUserConfig(config: PlannerConfig) {
     try {
-      window.localStorage.setItem(CONFIG_STORAGE_KEY, JSON.stringify(config));
+      window.localStorage.setItem(CONFIG_STORAGE_KEY, serializeStoredConfig(config));
     } catch {
       // Storage can be unavailable in private contexts; calculation should still work.
     }
@@ -198,7 +241,10 @@ export function VacationPlanner() {
     setShareStatus("");
     setSubmittedConfig(config);
     saveUserConfig(config);
-    setCalculation(calculateVacationPlan(config));
+    const yearStart = tryIsoDate(`${planningYear}-01-01`);
+    const calculationDate =
+      planningYear === currentYear || !yearStart ? new Date() : isoToDate(yearStart);
+    setCalculation(calculateVacationPlan(config, calculationDate));
   }
 
   async function handleCopyLink() {
@@ -209,9 +255,9 @@ export function VacationPlanner() {
 
     try {
       await navigator.clipboard.writeText(link);
-      setShareStatus("Link copiato");
+      setShareStatus(t("form.linkCopied"));
     } catch {
-      setShareStatus("Copia non riuscita");
+      setShareStatus(t("form.copyFailed"));
     }
   }
 
@@ -223,16 +269,19 @@ export function VacationPlanner() {
         <div className={styles.formColumn}>
           <PlannerForm
             canCalculate={canCalculate}
+            currentYear={currentYear}
             dayOffRows={dayOffRows}
             onAddDayOff={addDayOff}
             onCopyLink={handleCopyLink}
             onDayOffDateChange={updateDayOffDate}
             onDayOffTypeChange={updateDayOffType}
             onPatronSaintDateChange={setPatronSaintDate}
+            onPlanningYearChange={setPlanningYear}
             onRemoveDayOff={removeDayOff}
             onSubmit={handleSubmit}
             onTotalVacationDaysChange={setTotalVacationDays}
             patronSaintDate={patronSaintDate}
+            planningYear={planningYear}
             shareStatus={shareStatus}
             submittedConfig={submittedConfig}
             totalVacationDays={totalVacationDays}
@@ -254,9 +303,18 @@ export function VacationPlanner() {
               setSelectedVacationDates(nextDates);
               saveSelectedVacationDates(nextDates);
             }}
+            onSelectVacationDateRange={setVacationDateRange}
             onToggleVacationDate={toggleVacationDate}
             selectedVacationDates={selectedVacationDates}
           />
+          {calculation ? (
+            <SelectedVacationsTable
+              ranges={buildSelectedRanges(
+                buildSelectableVacationDates(calculation.input, calculation.output),
+                selectedVacationDates
+              )}
+            />
+          ) : null}
         </div>
       </div>
 

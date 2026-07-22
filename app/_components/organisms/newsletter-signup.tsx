@@ -3,9 +3,11 @@
 import { useId, useState, type FormEvent } from "react";
 import { NewsletterConsentText } from "../atoms/newsletter-consent-text";
 import type { NewsletterStatus } from "../planner-types";
+import { useAppTranslations } from "../../_lib/use-app-i18n";
 import styles from "../../styles/app.module.scss";
 
 export function NewsletterSignup({ isVisible }: { isVisible: boolean }) {
+  const t = useAppTranslations("newsletter");
   const emailId = useId();
   const consentId = useId();
   const [email, setEmail] = useState("");
@@ -41,13 +43,13 @@ export function NewsletterSignup({ isVisible }: { isVisible: boolean }) {
   return (
     <form className={styles.newsletterPanel} onSubmit={handleSubmit}>
       <div className={styles.panelHeader}>
-        <p className={styles.eyebrow}>Newsletter</p>
-        <h2>Aggiornamenti utili</h2>
+        <p className={styles.eyebrow}>{t("eyebrow")}</p>
+        <h2>{t("title")}</h2>
       </div>
 
       <div className={styles.fieldGroup}>
         <label className={styles.label} htmlFor={emailId}>
-          Email
+          {t("email")}
         </label>
         <input
           id={emailId}
@@ -74,17 +76,17 @@ export function NewsletterSignup({ isVisible }: { isVisible: boolean }) {
       </label>
 
       <button className={styles.primaryButton} disabled={!canSubmit} type="submit">
-        {isSubmitting ? "Invio..." : "Iscrivimi"}
+        {isSubmitting ? t("submitting") : t("subscribe")}
       </button>
 
       {status === "success" ? (
         <p className={styles.shareStatus} role="status">
-          Controlla la tua email per confermare l'iscrizione.
+          {t("success")}
         </p>
       ) : null}
       {status === "error" ? (
         <p className={styles.formError} role="alert">
-          Iscrizione non riuscita. Riprova tra poco.
+          {t("error")}
         </p>
       ) : null}
     </form>

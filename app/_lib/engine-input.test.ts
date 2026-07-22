@@ -4,7 +4,7 @@ import { calculateVacationPlan } from "./calculate-vacation-plan";
 import { buildEngineInput } from "./engine-input";
 
 describe("buildEngineInput", () => {
-  it("builds the rolling 12-month window and preserves user days off", () => {
+  it("builds a window ending 31 January of the next year and preserves user days off", () => {
     const input = buildEngineInput(
       {
         totalVacationDays: 20,
@@ -17,7 +17,7 @@ describe("buildEngineInput", () => {
     );
 
     expect(input.windowStart).toBe("2026-06-20");
-    expect(input.windowEnd).toBe("2027-06-20");
+    expect(input.windowEnd).toBe("2027-01-31");
     expect(input.totalVacationDays).toBe(20);
     expect(input.daysOff).toEqual([
       { date: "2026-08-14", type: "companyClosure" },

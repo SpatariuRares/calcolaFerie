@@ -1,7 +1,8 @@
 import {
-  addMonths,
   getPublicHolidaysForWindow,
+  isoToDate,
   localToday,
+  toISO,
   tryIsoDate,
   type DayOff,
   type EngineInput,
@@ -41,7 +42,9 @@ export function buildPublicHolidays(
 
 export function buildEngineInput(config: UserConfig, today = new Date()): EngineInput {
   const windowStart = localToday(today);
-  const windowEnd = addMonths(windowStart, 12);
+  // La finestra copre l'anno corrente più gennaio dell'anno prossimo (fino al 31/01),
+  // così i ponti mostrati non sconfinano oltre gennaio dell'anno successivo.
+  const windowEnd = toISO(isoToDate(windowStart).getUTCFullYear() + 1, 1, 31);
   const daysOff: DayOff[] = config.daysOff.flatMap((dayOff) => {
     const date = tryIsoDate(dayOff.date);
     return date ? [{ date, type: dayOff.type }] : [];

@@ -4,22 +4,15 @@ import tsPlugin from "@typescript-eslint/eslint-plugin";
 import tsParser from "@typescript-eslint/parser";
 import importPlugin from "eslint-plugin-import";
 
-const disabledReactRules = Object.fromEntries(
-  nextCoreWebVitals
-    .flatMap((entry) => Object.keys(entry.rules ?? {}))
-    .filter((ruleName) => ruleName.startsWith("react/"))
-    .map((ruleName) => [ruleName, "off"])
-);
-
 /** @type {import('eslint').Linter.Config[]} */
 const config = [
+  {
+    ignores: ["coverage/**", "playwright-report/**", "test-results/**"],
+  },
+
   // Next.js app config (excludes engine/)
   ...nextCoreWebVitals,
   ...nextTypescript,
-  {
-    rules: disabledReactRules,
-  },
-
   // Engine-specific: ban next and react imports
   {
     files: ["engine/**/*.ts"],

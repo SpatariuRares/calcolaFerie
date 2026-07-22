@@ -80,7 +80,7 @@ describe("results table UI", () => {
       )
     );
 
-    expect(screen.getAllByText("Fuori budget")).toHaveLength(2);
+    expect(screen.getByText("Fuori budget")).toBeInTheDocument();
   });
 
   it("assembles single-holiday, fused, and zero-cost Italian explanations", () => {
@@ -129,11 +129,11 @@ describe("results table UI", () => {
 
     expect(
       screen.getAllByText("Ferragosto cade sabato → 1 giorno di ferie = 4 giorni di stacco")
-    ).toHaveLength(2);
+    ).toHaveLength(1);
     expect(
       screen.getAllByText("Natale + Santo Stefano → 2 giorni di ferie = 4 giorni di stacco")
-    ).toHaveLength(2);
-    expect(screen.getAllByText("Nessuna feria necessaria — blocco già libero")).toHaveLength(2);
+    ).toHaveLength(1);
+    expect(screen.getAllByText("Nessuna feria necessaria — blocco già libero")).toHaveLength(1);
   });
 
   it("applies the expected leva badge tier classes", () => {

@@ -57,11 +57,29 @@ describe("input form UI", () => {
     setMobileViewport();
   });
 
+  it("shows only the required vacation budget before opening advanced search", async () => {
+    const user = userEvent.setup();
+    render(React.createElement(VacationPlanner));
+
+    const budgetInput = screen.getByLabelText("Giorni di ferie disponibili");
+    const yearSelect = screen.getByLabelText("Anno");
+    const advancedSearch = screen.getByText("Ricerca avanzata").closest("details");
+
+    expect(budgetInput).toBeRequired();
+    expect(yearSelect).toHaveValue(String(new Date().getFullYear()));
+    expect(advancedSearch).not.toHaveAttribute("open");
+    expect(screen.getByRole("button", { name: "Calcola" })).toBeDisabled();
+
+    await user.click(screen.getByText("Ricerca avanzata"));
+    expect(advancedSearch).toHaveAttribute("open");
+  });
+
   it("renders accessible mobile inputs and keeps Calcola disabled until the budget is filled", async () => {
     const user = userEvent.setup();
     render(React.createElement(VacationPlanner));
 
     const budgetInput = screen.getByLabelText("Giorni di ferie disponibili");
+    await user.click(screen.getByText("Ricerca avanzata"));
     const dayOffDateInput = screen.getByLabelText("Data 1");
     const patronInput = screen.getByLabelText("Festività del tuo patrono locale (opzionale)");
     const calculateButton = screen.getByRole("button", { name: "Calcola" });
@@ -74,6 +92,8 @@ describe("input form UI", () => {
 
     await user.tab();
     expect(budgetInput).toHaveFocus();
+    await user.tab();
+    expect(screen.getByLabelText("Anno")).toHaveFocus();
     await user.tab();
     expect(screen.getByRole("button", { name: "Rimuovi" })).toHaveFocus();
     await user.tab();
@@ -102,6 +122,13 @@ describe("input form UI", () => {
 
   it("submits form values as EngineInput and includes the patron saint holiday", async () => {
     const user = userEvent.setup();
+    const patronDate = new Date();
+    patronDate.setDate(patronDate.getDate() + 30);
+    const patronDateIso = [
+      patronDate.getFullYear(),
+      String(patronDate.getMonth() + 1).padStart(2, "0"),
+      String(patronDate.getDate()).padStart(2, "0"),
+    ].join("-");
     render(React.createElement(VacationPlanner));
 
     await user.type(screen.getByLabelText("Giorni di ferie disponibili"), "20");
@@ -109,7 +136,7 @@ describe("input form UI", () => {
     await user.click(screen.getByLabelText("Giorno obbligatorio — scala dal budget"));
     await user.type(
       screen.getByLabelText("Festività del tuo patrono locale (opzionale)"),
-      "2026-07-20"
+      patronDateIso
     );
     await user.click(screen.getByRole("button", { name: "Calcola" }));
 
@@ -119,9 +146,22 @@ describe("input form UI", () => {
     expect(input.totalVacationDays).toBe(20);
     expect(input.daysOff).toEqual([{ date: "2026-08-14", type: "mandatoryLeave" }]);
     expect(input.publicHolidays).toContainEqual({
-      date: "2026-07-20",
+      date: patronDateIso,
       key: "patron",
       kind: "patron",
     });
+  });
+
+  it("calculates a future year from its first day", async () => {
+    const user = userEvent.setup();
+    const nextYear = new Date().getFullYear() + 1;
+    render(React.createElement(VacationPlanner));
+
+    await user.type(screen.getByLabelText("Giorni di ferie disponibili"), "20");
+    await user.selectOptions(screen.getByLabelText("Anno"), String(nextYear));
+    await user.click(screen.getByRole("button", { name: "Calcola" }));
+
+    await waitFor(() => expect(calculatePlanSpy).toHaveBeenCalledOnce());
+    expect(calculatePlanSpy.mock.calls[0][0].windowStart).toBe(`${nextYear}-01-01`);
   });
 });

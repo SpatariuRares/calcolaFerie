@@ -1,5 +1,6 @@
 import type { BridgeOpportunity } from "@engine";
-import { formatDateRange, formatExplanation } from "../../_lib/opportunity-display";
+import { formatDateRange } from "../../_lib/opportunity-display";
+import { useAppLocale, useAppTranslations } from "../../_lib/use-app-i18n";
 import styles from "../../styles/app.module.scss";
 import { BookingCta } from "./booking-cta";
 import { LevaBadge } from "./leva-badge";
@@ -15,12 +16,14 @@ export function OpportunityRow({
   isSelected: boolean;
   onToggleOpportunity: (opportunityId: string) => void;
 }) {
+  const t = useAppTranslations("results");
+  const locale = useAppLocale();
   const isOverBudget = opportunity.costDays > availableBudget;
-  const dateRange = formatDateRange(opportunity.startDate, opportunity.endDate);
+  const dateRange = formatDateRange(opportunity.startDate, opportunity.endDate, locale);
 
   return (
     <tr
-      aria-label={`${isSelected ? "Deseleziona" : "Seleziona"} ponte ${dateRange}`}
+      aria-label={t("bridgeAria", { action: t(isSelected ? "deselect" : "select"), dateRange })}
       aria-pressed={isSelected}
       className={isSelected ? styles.selectedTableRow : undefined}
       onClick={() => onToggleOpportunity(opportunity.id)}
@@ -35,7 +38,7 @@ export function OpportunityRow({
     >
       <td>
         <input
-          aria-label={`Seleziona ponte ${dateRange}`}
+          aria-label={t("selectBridgeAria", { dateRange })}
           checked={isSelected}
           onChange={() => onToggleOpportunity(opportunity.id)}
           onClick={(event) => event.stopPropagation()}
@@ -48,13 +51,21 @@ export function OpportunityRow({
       <td>
         <LevaBadge leva={opportunity.leva} />
       </td>
-      <td>{formatExplanation(opportunity)}</td>
+      <td aria-label={t("table.reason")}>-</td>
       <td>
-        {isSelected ? <span className={styles.selectedChip}>Scalato</span> : null}
-        {isOverBudget ? <span className={styles.budgetChip}>Fuori budget</span> : null}
+        {isSelected ? (
+          <span aria-label={t("selected")} className={styles.selectedChip} title={t("selected")}>
+            ✓
+          </span>
+        ) : null}
+        {isOverBudget ? (
+          <span aria-label={t("overBudget")} className={styles.budgetChip} title={t("overBudget")}>
+            !
+          </span>
+        ) : null}
       </td>
       <td className={styles.bookingCell} onClick={(event) => event.stopPropagation()}>
-        <BookingCta opportunity={opportunity} />
+        <BookingCta endDate={opportunity.endDate} startDate={opportunity.startDate} />
       </td>
     </tr>
   );

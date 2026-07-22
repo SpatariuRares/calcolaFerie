@@ -108,9 +108,12 @@ describe("persistence: localStorage and URL sharing", () => {
     });
 
     expect(JSON.parse(window.localStorage.getItem(CONFIG_STORAGE_KEY) ?? "{}")).toEqual({
-      totalVacationDays: 20,
-      daysOff: [{ date: "2026-08-14", type: "mandatoryLeave" }],
-      patronSaintDate: "2026-06-24",
+      version: 1,
+      config: {
+        totalVacationDays: 20,
+        daysOff: [{ date: "2026-08-14", type: "mandatoryLeave" }],
+        patronSaintDate: "2026-06-24",
+      },
     });
   });
 

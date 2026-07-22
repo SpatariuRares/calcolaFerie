@@ -1,5 +1,5 @@
 import { type BridgeOpportunity, type WeekdayIndex } from "@engine";
-import { COMPANY_CLOSURE_LABEL, holidayLabel } from "./holiday-labels";
+import { companyClosureLabel, holidayLabel, type HolidayTranslator } from "./holiday-labels";
 
 const MONTH_LABELS = [
   "gen",
@@ -14,6 +14,21 @@ const MONTH_LABELS = [
   "ott",
   "nov",
   "dic",
+];
+
+const EN_MONTH_LABELS = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
 ];
 
 const WEEKDAY_LABELS: Record<WeekdayIndex, string> = {
@@ -41,11 +56,18 @@ function vacationDayLabel(costDays: number) {
   return costDays === 1 ? "giorno" : "giorni";
 }
 
-export function formatDateRange(startDate: string, endDate: string) {
+export function formatSingleDay(isoDate: string, locale = "it") {
+  const { day, month } = parseISODateParts(isoDate);
+  const months = locale.toLowerCase().startsWith("it") ? MONTH_LABELS : EN_MONTH_LABELS;
+  return `${day} ${months[month - 1]}`;
+}
+
+export function formatDateRange(startDate: string, endDate: string, locale = "it") {
   const start = parseISODateParts(startDate);
   const end = parseISODateParts(endDate);
-  const startMonth = MONTH_LABELS[start.month - 1];
-  const endMonth = MONTH_LABELS[end.month - 1];
+  const months = locale.toLowerCase().startsWith("it") ? MONTH_LABELS : EN_MONTH_LABELS;
+  const startMonth = months[start.month - 1];
+  const endMonth = months[end.month - 1];
 
   if (start.year === end.year && start.month === end.month) {
     return `${start.day}–${end.day} ${endMonth}`;
@@ -58,28 +80,45 @@ export function formatDateRange(startDate: string, endDate: string) {
   return `${start.day} ${startMonth} ${start.year}–${end.day} ${endMonth} ${end.year}`;
 }
 
-export function formatExplanation(opportunity: BridgeOpportunity) {
+export function formatExplanation(
+  opportunity: BridgeOpportunity,
+  translate?: (key: string, values?: Record<string, string | number>) => string,
+  translateHoliday?: HolidayTranslator
+) {
   const { explanation } = opportunity;
   const costDays = explanation.costDays;
   const staccoDays = explanation.staccoDays;
 
   if (costDays === 0) {
-    return "Nessuna feria necessaria — blocco già libero";
+    return translate
+      ? translate("explanation.noLeave")
+      : "Nessuna feria necessaria — blocco già libero";
   }
 
   const costPhrase = `${costDays} ${vacationDayLabel(costDays)} di ferie`;
   const resultPhrase = `${costPhrase} = ${staccoDays} giorni di stacco`;
 
   if (explanation.fusedHolidayKeys && explanation.fusedHolidayKeys.length > 1) {
-    return `${explanation.fusedHolidayKeys.map(holidayLabel).join(" + ")} → ${resultPhrase}`;
+    const holidays = explanation.fusedHolidayKeys
+      .map((key) => holidayLabel(key, translateHoliday))
+      .join(" + ");
+    return translate
+      ? translate("explanation.fused", { holidays, result: resultPhrase })
+      : `${holidays} → ${resultPhrase}`;
   }
 
   const anchorLabel =
     explanation.anchorKind === "companyClosure"
-      ? COMPANY_CLOSURE_LABEL
-      : holidayLabel(explanation.anchorHolidayKey ?? "");
+      ? companyClosureLabel(translateHoliday)
+      : holidayLabel(explanation.anchorHolidayKey ?? "", translateHoliday);
 
-  return `${anchorLabel} cade ${WEEKDAY_LABELS[explanation.anchorWeekday]} → ${resultPhrase}`;
+  return translate
+    ? translate("explanation.anchored", {
+        anchor: anchorLabel,
+        weekday: WEEKDAY_LABELS[explanation.anchorWeekday],
+        result: resultPhrase,
+      })
+    : `${anchorLabel} cade ${WEEKDAY_LABELS[explanation.anchorWeekday]} → ${resultPhrase}`;
 }
 
 export function getLevaTier(leva: number): LevaTier {

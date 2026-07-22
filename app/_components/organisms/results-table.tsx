@@ -1,13 +1,8 @@
 import type { EngineOutput } from "@engine";
+import { useAppTranslations } from "../../_lib/use-app-i18n";
 import styles from "../../styles/app.module.scss";
 import { OpportunityCard } from "../molecules/opportunity-card";
 import { OpportunityRow } from "../molecules/opportunity-row";
-
-const AFFILIATE_DISCLOSURE =
-  "Link affiliato: se prenoti, riceviamo una commissione senza costi extra per te.";
-
-const RESULTS_DISCLAIMER =
-  "I risultati sono indicativi. Verifica le festività patronali e le norme del tuo contratto/datore di lavoro.";
 
 export function ResultsTable({
   onToggleOpportunity,
@@ -18,11 +13,13 @@ export function ResultsTable({
   onToggleOpportunity: (opportunityId: string) => void;
   selectedOpportunityIds: Set<string>;
 }) {
+  const t = useAppTranslations("results");
+
   if (output.opportunities.length === 0) {
     return (
       <div className={styles.emptyState}>
-        <strong>Nessun ponte trovato</strong>
-        <span>Prova ad aumentare il budget o ad aggiungere festività e chiusure nel periodo.</span>
+        <strong>{t("noResultsTitle")}</strong>
+        <span>{t("noResultsDescription")}</span>
       </div>
     );
   }
@@ -45,14 +42,14 @@ export function ResultsTable({
         <table className={styles.resultsTable}>
           <thead>
             <tr>
-              <th scope="col">Scegli</th>
-              <th scope="col">Periodo</th>
-              <th scope="col">Giorni stacco</th>
-              <th scope="col">Ferie da usare</th>
-              <th scope="col">Leva</th>
-              <th scope="col">Perché conviene</th>
-              <th scope="col">Budget</th>
-              <th scope="col">Prenota</th>
+              <th scope="col">{t("table.choose")}</th>
+              <th scope="col">{t("table.period")}</th>
+              <th scope="col">{t("table.breakDays")}</th>
+              <th scope="col">{t("table.leaveDays")}</th>
+              <th scope="col">{t("table.leverage")}</th>
+              <th scope="col">{t("table.reason")}</th>
+              <th scope="col">{t("summary.remaining")}</th>
+              <th scope="col">{t("table.book")}</th>
             </tr>
           </thead>
           <tbody>
@@ -69,8 +66,8 @@ export function ResultsTable({
         </table>
       </div>
 
-      <p className={styles.resultsDisclaimer}>{RESULTS_DISCLAIMER}</p>
-      <p className={styles.affiliateDisclosure}>{AFFILIATE_DISCLOSURE}</p>
+      <p className={styles.resultsDisclaimer}>{t("disclaimer")}</p>
+      <p className={styles.affiliateDisclosure}>{t("affiliateDisclosure")}</p>
     </div>
   );
 }

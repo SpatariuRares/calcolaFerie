@@ -1,5 +1,7 @@
 const BUTTONDOWN_SUBSCRIBERS_ENDPOINT = "https://api.buttondown.com/v1/subscribers";
 const EMAIL_PATTERN = /^[a-zA-Z0-9.'_%+\-!]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
+const MAX_BODY_BYTES = 2_048;
+const PROVIDER_TIMEOUT_MS = 8_000;
 
 type SignupPayload = {
   email?: unknown;
@@ -7,7 +9,10 @@ type SignupPayload = {
 };
 
 function json(status: number, body: Record<string, unknown>) {
-  return Response.json(body, { status });
+  return Response.json(body, {
+    status,
+    headers: { "Cache-Control": "no-store" },
+  });
 }
 
 function normalizeEmail(email: unknown) {
@@ -30,8 +35,16 @@ async function isDuplicateSubscriberResponse(response: Response) {
 export async function POST(request: Request) {
   let payload: SignupPayload;
 
+  if (!request.headers.get("content-type")?.toLowerCase().startsWith("application/json")) {
+    return json(415, { ok: false, error: "unsupported_media_type" });
+  }
+
   try {
-    payload = (await request.json()) as SignupPayload;
+    const body = await request.arrayBuffer();
+    if (body.byteLength > MAX_BODY_BYTES) {
+      return json(413, { ok: false, error: "payload_too_large" });
+    }
+    payload = JSON.parse(new TextDecoder().decode(body)) as SignupPayload;
   } catch {
     return json(400, { ok: false, error: "invalid_json" });
   }
@@ -43,14 +56,20 @@ export async function POST(request: Request) {
   const apiKey = process.env.BUTTONDOWN_API_KEY?.trim();
   if (!apiKey) return json(503, { ok: false, error: "newsletter_unavailable" });
 
-  const response = await fetch(BUTTONDOWN_SUBSCRIBERS_ENDPOINT, {
-    method: "POST",
-    headers: {
-      Authorization: `Token ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ email_address: email, type: "unactivated" }),
-  });
+  let response: Response;
+  try {
+    response = await fetch(BUTTONDOWN_SUBSCRIBERS_ENDPOINT, {
+      method: "POST",
+      headers: {
+        Authorization: `Token ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email_address: email, type: "unactivated" }),
+      signal: AbortSignal.timeout(PROVIDER_TIMEOUT_MS),
+    });
+  } catch {
+    return json(502, { ok: false, error: "newsletter_provider_error" });
+  }
 
   if (response.ok) return json(200, { ok: true });
   if (await isDuplicateSubscriberResponse(response)) {

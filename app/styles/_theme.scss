@@ -12,20 +12,145 @@ $focus: #5b9bd5;
 $green: #115f43;
 $blue: #1a5a8f;
 $accent: #9a3f2b;
+$accent-strong: #7f3222;
+$accent-soft: #f3e2db;
 $shadow: 0 10px 28px rgb(25 20 15 / 0.09);
+// Layout dimensions
+$width-zero: 0;
+$width-full: 100%;
+$width-fit: fit-content;
+$width-max-content: max-content;
+$page-max-width: 1180px;
+$copy-max-width: 760px;
+$hero-copy-max-width: 690px;
+$calendar-column-min-width: 210px;
+$tooltip-max-width: 220px;
+$tooltip-viewport-max-width: 70vw;
+$summary-column-min-width: 92px;
+$selected-table-min-width: 560px;
+$results-table-min-width: 720px;
+$form-column-min-width: 340px;
+$form-column-max-width: 400px;
+$hero-title-min-width: 260px;
+$hero-title-max-width: 420px;
+$compact-field-min-width: 120px;
+$control-mark-size: 17px;
+$selection-mark-size: 18px;
+$legend-swatch-size: 12px;
+$breakpoint-small: 420px;
+$breakpoint-fields: 540px;
+$breakpoint-footer: 640px;
+$breakpoint-table: 768px;
+$breakpoint-desktop: 860px;
+
+// Reusable margins
+$margin-reset: 0;
+$margin-centered: 0 auto;
+$margin-hero: 0 auto 24px;
+$margin-footer: 32px auto 0;
+$margin-about: 24px auto 44px;
+$margin-eyebrow: 0 0 7px;
+$margin-status: -6px 0 0;
+$margin-checkbox: 2px 0 0;
+$margin-footer-bottom: 20px 0 0;
+$margin-selected-results: 22px 0 0;
+$margin-selected-title: 0 0 12px;
+$margin-note: 10px 0 0;
+$margin-top-formula: 2px;
+$margin-top-language: 6px;
+$margin-top-selected-results: 22px;
+$margin-footer-heading: 0 0 2px;
+// Heights
+$height-viewport: 100vh;
+$height-language-control: 30px;
+$height-segment: 44px;
+$height-control: 46px;
+$height-empty-state: 96px;
+
+// Border radii
+$radius-swatch: 3px;
+$radius-selection: 4px;
+$radius-day: 5px;
+$radius-control: 6px;
+$radius-panel: 8px;
+$radius-feature: 10px;
+$radius-pill: 999px;
+
+// Paddings
+$padding-reset: 0;
+$padding-switcher: 2px;
+$padding-bottom-panel-header: 4px;
+$padding-bottom-privacy-header: 2px;
+$padding-link-button: 4px;
+$padding-result-chip: 4px 8px;
+$padding-language-button: 4px 10px;
+$padding-formula-result: 4px 12px;
+$padding-clear-selection: 6px 9px;
+$padding-tooltip: 7px 9px;
+$padding-booking-cta: 7px 14px;
+$padding-compact: 8px;
+$padding-segment: 9px 10px;
+$padding-summary: 10px;
+$padding-input: 10px 12px;
+$padding-button: 11px 15px;
+$padding-card: 12px;
+$padding-emphasis: 12px 16px;
+$padding-summary-feature: 12px 16px;
+$padding-advanced-summary: 13px 14px;
+$padding-advanced-content: 14px;
+$padding-panel: 16px;
+$padding-about: 20px;
+$padding-page-mobile: 28px 16px 44px;
+$padding-page-desktop: 38px 24px 56px;
+$padding-top-footer: 24px;
+$padding-top-section: 16px;
+$padding-section-divider: 18px;
 
 $leva: (
-  high: (#fff0a8, #6b4a00),
-  medium: (#fff0bd, #765000),
-  low: (#e8edf0, #4a565e),
+  high: (
+    #fff0a8,
+    #6b4a00,
+  ),
+  medium: (
+    #fff0bd,
+    #765000,
+  ),
+  low: (
+    #e8edf0,
+    #4a565e,
+  ),
 );
 $days: (
-  workday: (#fff, $strong, #d8e0e6),
-  weekend: (#e8edf1, #5a6670, #d8e0e6),
-  publicHoliday: (#ffd9d0, #8c2f1c, #e4b0a3),
-  companyClosure: (#d7eafa, #1e557d, #9dbfdd),
-  mandatoryLeave: (#ffe5b8, #7b4c00, #e4bd7d),
-  recommendedLeave: (#ccefdc, #0b5b35, #8bc9a9),
+  workday: (
+    #fff,
+    $strong,
+    #d8e0e6,
+  ),
+  weekend: (
+    #e8edf1,
+    #5a6670,
+    #d8e0e6,
+  ),
+  publicHoliday: (
+    #ffd9d0,
+    #8c2f1c,
+    #e4b0a3,
+  ),
+  companyClosure: (
+    #d7eafa,
+    #1e557d,
+    #9dbfdd,
+  ),
+  mandatoryLeave: (
+    #ffe5b8,
+    #7b4c00,
+    #e4bd7d,
+  ),
+  recommendedLeave: (
+    #ccefdc,
+    #0b5b35,
+    #8bc9a9,
+  ),
 );
 
 @mixin at($width) {
@@ -39,9 +164,9 @@ $days: (
   gap: $gap;
 }
 
-@mixin panel($padding: 16px) {
+@mixin panel($padding: $padding-panel) {
   border: 1px solid #d7dee5;
-  border-radius: 8px;
+  border-radius: $radius-panel;
   padding: $padding;
   background: $surface;
   box-shadow: $shadow;
@@ -53,7 +178,7 @@ $days: (
 }
 
 @mixin heading {
-  margin: 0;
+  margin: $margin-reset;
   letter-spacing: 0;
 }
 

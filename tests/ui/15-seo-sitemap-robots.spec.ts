@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach } from "vitest";
+import { describe, it, expect } from "vitest";
 import sitemap from "@/app/sitemap";
 import robots from "@/app/robots";
 

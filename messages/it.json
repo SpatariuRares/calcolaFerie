@@ -1,0 +1,232 @@
+{
+  "metadata": {
+    "title": "CalcolaFerie — Calcolatore Ponti e Ferie Italiane",
+    "description": "Calcolatore ponti ferie: trova i migliori ponti tra le festività italiane e ottimizza le vacanze. Inserisci il budget e scopri i giorni migliori.",
+    "socialDescription": "Calcolatore ponti ferie: trova i migliori ponti tra le festività italiane e ottimizza le vacanze.",
+    "privacyTitle": "Privacy policy | CalcolaFerie",
+    "privacyDescription": "Informativa privacy minimale di CalcolaFerie: newsletter, analytics e link di affiliazione."
+  },
+  "home": {
+    "accessibleLabel": "Informazioni sul calcolatore",
+    "accessibleTitle": "Calcolatore ponti ferie italiane",
+    "accessibleDescription": "Ottimizza le tue ferie sfruttando le festività italiane: inserisci il tuo budget di giorni e scopri i ponti migliori per massimizzare i giorni di vacanza con il minimo di ferie spese. Ideale per ottimizzare ferie e ponti durante tutto l'anno."
+  },
+  "planner": {
+    "eyebrow": "Planner ferie",
+    "title": "CalcolaFerie",
+    "subtitle": "Trova i ponti migliori nei prossimi 12 mesi, distinguendo ferie da spendere, chiusure aziendali e giorni obbligatori.",
+    "formula": {
+      "freeDays": "giorni liberi",
+      "leaveUsed": "ferie spese",
+      "leverage": "{value}× leva"
+    },
+    "about": {
+      "eyebrow": "Come funziona",
+      "title": "Calcolatore ponti ferie italiane",
+      "description": "Scopri come ottimizzare le ferie sfruttando le festività italiane: inserisci il tuo budget di giorni e trova i ponti migliori per massimizzare i giorni di vacanza con il minimo di ferie spese.",
+      "disclaimer": "I risultati sono indicativi: verifica sempre festività locali, contratto e regole del tuo datore di lavoro prima di organizzare le assenze."
+    },
+    "form": {
+      "eyebrow": "Input",
+      "title": "Scenario",
+      "budget": "Giorni di ferie disponibili",
+      "budgetPlaceholder": "es. 20",
+      "year": "Anno",
+      "advanced": "Ricerca avanzata",
+      "daysOffTitle": "Chiusure e giorni obbligati",
+      "daysOffHelp": "Se l'azienda chiude senza usare ferie, scegli giorno gratuito. Se quel giorno viene scalato dal tuo monte ferie, scegli giorno obbligatorio.",
+      "date": "Data {number}",
+      "dayTypeAria": "Tipo giorno {number}",
+      "remove": "Rimuovi",
+      "addDate": "Aggiungi data",
+      "patron": "Festività del tuo patrono locale (opzionale)",
+      "calculate": "Calcola",
+      "copyLink": "Copia link",
+      "linkCopied": "Link copiato",
+      "copyFailed": "Copia non riuscita"
+    },
+    "dayOffTypes": {
+      "companyClosure": "Chiusura aziendale — giorno gratuito",
+      "mandatoryLeave": "Giorno obbligatorio — scala dal budget"
+    }
+  },
+  "results": {
+    "eyebrow": "Risultati",
+    "title": "Ponti consigliati",
+    "leverage": "Leva",
+    "best": "Il ponte migliore",
+    "bestSummary": "{staccoDays, plural, one {# giorno di stacco} other {# giorni di stacco}} con {costDays, plural, one {# giorno di ferie} other {# giorni di ferie}}. {explanation}",
+    "summary": {
+      "availableBudget": "Budget utile",
+      "used": "Scalati",
+      "remaining": "Residuo",
+      "opportunities": "Opportunità",
+      "bestLeverage": "Miglior leva"
+    },
+    "budgetWarning": "Le selezioni superano il budget disponibile di {days, plural, one {# giorno} other {# giorni}}.",
+    "notStartedTitle": "Nessun calcolo avviato",
+    "notStartedDescription": "Inserisci il budget e premi Calcola per vedere le occasioni ordinate.",
+    "noResultsTitle": "Nessun ponte trovato",
+    "noResultsDescription": "Prova ad aumentare il budget o ad aggiungere festività e chiusure nel periodo.",
+    "metrics": {
+      "breakDays": "Giorni stacco",
+      "leaveDays": "Ferie da usare"
+    },
+    "overBudget": "Fuori budget",
+    "selected": "Selezionato",
+    "selectedLeave": "Ferie selezionate",
+    "downloadPdf": "Scarica PDF",
+    "pdfTitle": "Ferie selezionate",
+    "total": "Totale",
+    "select": "Seleziona",
+    "deselect": "Deseleziona",
+    "bridgeAria": "{action} ponte {dateRange}",
+    "selectBridgeAria": "Seleziona ponte {dateRange}",
+    "table": {
+      "choose": "Scegli",
+      "period": "Periodo",
+      "breakDays": "Giorni stacco",
+      "leaveDays": "Ferie da usare",
+      "leverage": "Leva",
+      "reason": "Perché conviene",
+      "book": "Prenota"
+    },
+    "affiliateLabel": "Link affiliato",
+    "bookCta": "Prenota questi giorni",
+    "affiliateDisclosure": "Link affiliato: se prenoti, riceviamo una commissione senza costi extra per te.",
+    "disclaimer": "I risultati sono indicativi. Verifica le festività patronali e le norme del tuo contratto/datore di lavoro.",
+    "explanation": {
+      "noLeave": "Nessuna feria necessaria — blocco già libero",
+      "leaveCost": "{costDays, plural, one {# giorno} other {# giorni}} di ferie",
+      "result": "{costPhrase} = {staccoDays, plural, one {# giorno} other {# giorni}} di stacco",
+      "anchored": "{anchor} cade {weekday} → {result}",
+      "fused": "{holidays} → {result}"
+    }
+  },
+  "calendar": {
+    "eyebrow": "Calendario",
+    "title": "Vista annuale",
+    "legendAria": "Legenda calendario",
+    "selectedLeave": "Ferie selezionate",
+    "selectionCount": "{count, plural, one {# giorno di ferie selezionato} other {# giorni di ferie selezionati}}",
+    "selectionHelp": "Tocca un giorno lavorativo o consigliato. Ctrl+click (⌘ su Mac) per selezionare tutto l'intervallo.",
+    "clear": "Azzera",
+    "selectedAriaSuffix": "Selezionata per ferie",
+    "emptyTitle": "Calendario pronto dopo il calcolo",
+    "emptyDescription": "La vista annuale userà colori diversi per festivi, chiusure e ferie consigliate.",
+    "dayTypes": {
+      "weekend": "Weekend",
+      "publicHoliday": "Festivo",
+      "companyClosure": "Chiusura",
+      "mandatoryLeave": "Ferie obbligatorie",
+      "recommendedLeave": "Ferie consigliate",
+      "workday": "Lavorativo"
+    },
+    "weekdaysShort": ["L", "M", "M", "G", "V", "S", "D"],
+    "weekdays": ["domenica", "lunedì", "martedì", "mercoledì", "giovedì", "venerdì", "sabato"],
+    "monthsShort": [
+      "gen",
+      "feb",
+      "mar",
+      "apr",
+      "mag",
+      "giu",
+      "lug",
+      "ago",
+      "set",
+      "ott",
+      "nov",
+      "dic"
+    ]
+  },
+  "holidays": {
+    "newYear": "Capodanno",
+    "epiphany": "Epifania",
+    "liberation": "Festa della Liberazione",
+    "labourDay": "Festa dei Lavoratori",
+    "republic": "Festa della Repubblica",
+    "assumption": "Ferragosto",
+    "allSaints": "Ognissanti",
+    "immaculateConception": "Immacolata Concezione",
+    "christmas": "Natale",
+    "stStephen": "Santo Stefano",
+    "easterMonday": "Lunedì di Pasqua",
+    "patron": "Patrono locale",
+    "companyClosure": "Chiusura aziendale"
+  },
+  "newsletter": {
+    "eyebrow": "Newsletter",
+    "title": "Aggiornamenti utili",
+    "email": "Email",
+    "consent": "Accetto il trattamento del mio indirizzo email per ricevere aggiornamenti su CalcolaFerie e ho letto la {privacyPolicy}.",
+    "privacyPolicy": "privacy policy",
+    "submitting": "Invio...",
+    "subscribe": "Iscrivimi",
+    "success": "Controlla la tua email per confermare l'iscrizione.",
+    "error": "Iscrizione non riuscita. Riprova tra poco."
+  },
+  "footer": {
+    "tagline": "Ponti e ferie italiane, ottimizzati sul tuo budget di giorni.",
+    "contacts": "Contatti",
+    "manager": "Gestore: {name}",
+    "vat": "P.IVA: {value}",
+    "legal": "Legale",
+    "privacy": "Privacy",
+    "copyright": "© {year} CalcolaFerie · I risultati sono indicativi: verifica sempre festività locali e regole del tuo contratto."
+  },
+  "privacy": {
+    "back": "Torna al planner",
+    "eyebrow": "Privacy",
+    "title": "Privacy policy",
+    "intro": "Questa informativa copre i soli punti in cui CalcolaFerie tocca dati o servizi esterni: la newsletter (aggiornamenti sul prodotto e un promemoria annuale quando sono pronti il nuovo calendario e i dati sulle festività), le statistiche aggregate di visita e i link di affiliazione per prenotare i giorni dei ponti. Il calcolo dei ponti avviene nel tuo browser e non ci invia alcun dato.",
+    "controller": {
+      "title": "Titolare e contatto",
+      "body": "Il titolare del trattamento è il maintainer di CalcolaFerie, Spatariu Rares. Per richieste privacy puoi scrivere a <email>privacy@calcolaferie.it</email>. Il profilo GitHub resta un canale aggiuntivo: <github>SpatariuRares</github>."
+    },
+    "data": {
+      "title": "Dati raccolti",
+      "newsletter": "Quando ti iscrivi alla newsletter raccogliamo il tuo indirizzo email. Buttondown, il provider usato per gestire la newsletter, può registrare anche il momento dell'iscrizione, i metadati tecnici del provider e i dati tecnici normalmente necessari per inviare email e gestire la lista.",
+      "analytics": "Per le statistiche di visita riceviamo solo dati aggregati da Vercel Web Analytics. Il calcolo dei ponti, il budget ferie, le date selezionate e le festività inserite restano nel browser; prima dell'invio ad Analytics rimuoviamo i parametri dall'URL.",
+      "storage": "Quando chiedi di salvare le impostazioni, usiamo il localStorage del browser con la chiave calcolaferie_config. Contiene budget ferie, date di chiusura o ferie obbligatorie, patrono e date di ferie selezionate. Questa è memorizzazione tecnica richiesta dall'utente per ricordare la configurazione del planner, esente da consenso ai sensi dell'art. 5(3) della direttiva ePrivacy."
+    },
+    "purposes": {
+      "title": "Finalità e basi giuridiche",
+      "newsletter": "Usiamo l'email della newsletter solo per inviarti aggiornamenti su CalcolaFerie e un promemoria annuale quando il calendario delle festività viene aggiornato. L'iscrizione richiede la conferma via email con double opt-in prima dell'attivazione. La base giuridica è il tuo consenso esplicito, che puoi ritirare in qualsiasi momento.",
+      "analytics": "Usiamo statistiche aggregate di visita per capire quali pagine funzionano e migliorare il servizio. La base giuridica è il legittimo interesse a misurare l'uso del sito con dati minimizzati, senza cookie di terze parti e senza query string.",
+      "affiliate": "I link di affiliazione servono a sostenere il progetto. La base giuridica è il legittimo interesse a monetizzare il servizio in modo trasparente; il click ti porta su servizi esterni che trattano i dati secondo le rispettive informative."
+    },
+    "recipients": {
+      "title": "Destinatari e provider",
+      "body": "Usiamo Buttondown per gestire la newsletter, Vercel per hosting e Web Analytics, e Travelpayouts o il provider di prenotazione quando clicchi un link di affiliazione. Non vendiamo dati personali a terzi."
+    },
+    "transfers": {
+      "title": "Trasferimenti fuori SEE",
+      "body": "Alcuni provider possono trattare dati fuori dallo Spazio Economico Europeo. Dove necessario, il trasferimento deve basarsi sull'EU–US Data Privacy Framework (o Standard Contractual Clauses come garanzia alternativa)."
+    },
+    "analytics": {
+      "title": "Statistiche di visita",
+      "body": "Usiamo Vercel Web Analytics per capire, in forma aggregata, quali pagine vengono visitate e migliorare il servizio. Vercel Analytics non usa cookie di terze parti: identifica le visite tramite un hash della richiesta e scarta automaticamente le sessioni dopo 24 ore. Prima dell'invio rimuoviamo i parametri dall'URL, così i link condivisibili con budget o date non vengono trasmessi nelle statistiche."
+    },
+    "affiliate": {
+      "title": "Link di affiliazione",
+      "links": "Accanto a ogni ponte trovi un link per prenotare i giorni suggeriti. Sono link di affiliazione: se prenoti tramite questi link riceviamo una piccola commissione, senza costi extra per te. I link passano solo le date del ponte, nessuna destinazione, e ti portano alla ricerca del provider tramite Travelpayouts.",
+      "cookies": "Noi non impostiamo cookie di tracciamento dal nostro dominio e non aggiungiamo pubblicità, banner dei cookie o Google Analytics. Dopo che hai cliccato un link, il provider di prenotazione può impostare i propri cookie sul suo dominio, secondo la sua informativa privacy."
+    },
+    "retention": {
+      "title": "Conservazione",
+      "body": "Conserviamo l'email della newsletter e lo stato della conferma double opt-in finché resti iscritto o finché serve a gestire la lista. Vercel Web Analytics conserva le sessioni di visita per 24 ore e mostra metriche aggregate. I dati locali del planner restano nel tuo browser finché non li cancelli dal browser o modifichi le impostazioni salvate."
+    },
+    "rights": {
+      "title": "I tuoi diritti",
+      "body": "Puoi chiedere accesso, rettifica, cancellazione, limitazione, portabilità dei dati, opposizione al trattamento basato su legittimo interesse e ritiro del consenso alla newsletter. Rispondiamo di norma entro un mese. Puoi anche presentare reclamo al Garante per la protezione dei dati personali o all'autorità competente del tuo paese UE."
+    },
+    "unsubscribe": {
+      "title": "Disiscrizione",
+      "body": "Puoi disiscriverti in qualsiasi momento usando il link di unsubscribe presente in ogni email della newsletter."
+    },
+    "requests": {
+      "title": "Richieste privacy",
+      "body": "Per richieste sui dati o sulla privacy, scrivi a <email>privacy@calcolaferie.it</email>. Puoi anche contattare il maintainer dal profilo GitHub <github>SpatariuRares</github>."
+    }
+  }
+}

@@ -2,9 +2,25 @@ import { tryIsoDate } from "@engine";
 import type { DayOff, ISODateString, UserConfig, WeekdayIndex, WorkSchedule } from "@engine";
 
 export const CONFIG_STORAGE_KEY = "calcolaferie_config";
+export const CONFIG_STORAGE_VERSION = 1;
+export const MAX_VACATION_DAYS = 366;
+const MAX_CONFIG_DATES = 64;
+const CONFIG_PARAM_NAMES = [
+  "budget",
+  "daysOff",
+  "patron",
+  "workDays",
+  "consumeHolidays",
+  "vacation",
+] as const;
 
 export interface PlannerConfig extends UserConfig {
   selectedVacationDates?: ISODateString[];
+}
+
+interface StoredPlannerConfig {
+  version: typeof CONFIG_STORAGE_VERSION;
+  config: PlannerConfig;
 }
 
 const DAY_OFF_TYPE_TO_PARAM = {
@@ -23,13 +39,13 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 
 function parseBudget(value: unknown): number | null {
   if (typeof value === "number") {
-    return Number.isInteger(value) && value >= 0 ? value : null;
+    return Number.isInteger(value) && value >= 0 && value <= MAX_VACATION_DAYS ? value : null;
   }
 
   if (typeof value !== "string" || !/^\d+$/.test(value)) return null;
 
   const parsed = Number(value);
-  return Number.isSafeInteger(parsed) ? parsed : null;
+  return Number.isSafeInteger(parsed) && parsed <= MAX_VACATION_DAYS ? parsed : null;
 }
 
 function parseDayOff(value: unknown): DayOff | null {
@@ -47,6 +63,7 @@ function parseDayOff(value: unknown): DayOff | null {
 
 function parseDayOffs(value: unknown): DayOff[] | null {
   if (!Array.isArray(value)) return null;
+  if (value.length > MAX_CONFIG_DATES) return null;
 
   const dayOffs: DayOff[] = [];
   for (const item of value) {
@@ -60,6 +77,7 @@ function parseDayOffs(value: unknown): DayOff[] | null {
 
 function parseISODateList(value: unknown): ISODateString[] | null {
   if (!Array.isArray(value)) return null;
+  if (value.length > MAX_CONFIG_DATES) return null;
 
   const dates = new Set<ISODateString>();
   for (const date of value) {
@@ -163,7 +181,9 @@ function parseDayOffsParam(value: string | null): DayOff[] | null {
   if (value === "") return null;
 
   const dayOffs: DayOff[] = [];
-  for (const item of value.split(",")) {
+  const items = value.split(",");
+  if (items.length > MAX_CONFIG_DATES) return null;
+  for (const item of items) {
     const [date, paramType, extra] = item.split(":");
     if (extra !== undefined) return null;
     const iso = tryIsoDate(date);
@@ -205,7 +225,9 @@ function parseVacationDatesParam(value: string | null): ISODateString[] | null |
   if (value === "") return null;
 
   const dates = new Set<ISODateString>();
-  for (const date of value.split(",")) {
+  const values = value.split(",");
+  if (values.length > MAX_CONFIG_DATES) return null;
+  for (const date of values) {
     const iso = tryIsoDate(date);
     if (!iso || dates.has(iso)) return null;
     dates.add(iso);
@@ -255,6 +277,8 @@ export function serializeConfig(config: PlannerConfig): URLSearchParams {
 }
 
 export function deserializeConfig(params: URLSearchParams): PlannerConfig | null {
+  if (CONFIG_PARAM_NAMES.some((name) => params.getAll(name).length > 1)) return null;
+
   const budget = parseBudget(params.get("budget"));
   if (budget === null) return null;
 
@@ -293,10 +317,26 @@ export function deserializeStoredConfig(value: string | null): PlannerConfig | n
   if (!value) return null;
 
   try {
-    return normalizeUserConfig(JSON.parse(value));
+    const parsed: unknown = JSON.parse(value);
+    if (isRecord(parsed) && "version" in parsed) {
+      if (parsed.version !== CONFIG_STORAGE_VERSION || !("config" in parsed)) return null;
+      return normalizeUserConfig(parsed.config);
+    }
+
+    // Legacy V1 values stored the config directly. Keep reading them so existing
+    // users are migrated on the next save instead of losing their preferences.
+    return normalizeUserConfig(parsed);
   } catch {
     return null;
   }
+}
+
+export function serializeStoredConfig(config: PlannerConfig): string {
+  const stored: StoredPlannerConfig = {
+    version: CONFIG_STORAGE_VERSION,
+    config,
+  };
+  return JSON.stringify(stored);
 }
 
 export function getInitialUserConfig(

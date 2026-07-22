@@ -8,11 +8,11 @@
 }
 
 .input {
-  width: 100%;
-  min-height: 46px;
+  width: $width-full;
+  min-height: $height-control;
   border: 1px solid $border-strong;
-  border-radius: 6px;
-  padding: 10px 12px;
+  border-radius: $radius-control;
+  padding: $padding-input;
   background: $surface;
   color: $text;
   font: inherit;
@@ -27,15 +27,42 @@
 }
 
 .fieldset {
-  min-width: 0;
-  margin: 0;
+  min-width: $width-zero;
+  margin: $margin-reset;
   border: 0;
-  padding: 0;
+  padding: $padding-reset;
+}
+
+.advancedSearch {
+  border: 1px solid $border;
+  border-radius: $radius-panel;
+  background: #f9fbfc;
+
+  summary {
+    padding: $padding-advanced-summary;
+    color: $strong;
+    font-weight: 850;
+    cursor: pointer;
+
+    &:focus-visible {
+      @include focus;
+      border-radius: $radius-panel;
+    }
+  }
+
+  &[open] summary {
+    border-bottom: 1px solid $border;
+  }
+}
+
+.advancedSearchContent {
+  @include stack(18px);
+  padding: $padding-advanced-content;
 }
 
 .helpText,
 .mutedText {
-  margin: 0;
+  margin: $margin-reset;
   color: $muted;
   font-size: 0.93rem;
   line-height: 1.45;
@@ -44,9 +71,9 @@
 .dayOffRow {
   @include stack(10px);
   border: 1px solid $border;
-  border-left: 4px solid #2d6a89;
-  border-radius: 8px;
-  padding: 12px;
+  border-left: 4px solid $accent;
+  border-radius: $radius-panel;
+  padding: $padding-card;
   background: #f9fbfc;
 }
 
@@ -57,12 +84,12 @@
 
 .segment {
   display: flex;
-  min-height: 44px;
+  min-height: $height-segment;
   align-items: center;
   gap: 8px;
   border: 1px solid #c6d0d8;
-  border-radius: 6px;
-  padding: 9px 10px;
+  border-radius: $radius-control;
+  padding: $padding-segment;
   background: $surface;
   color: #26342b;
   cursor: pointer;
@@ -79,14 +106,14 @@
 
   input {
     flex: 0 0 auto;
-    width: 17px;
-    height: 17px;
-    margin: 0;
+    width: $control-mark-size;
+    height: $control-mark-size;
+    margin: $margin-reset;
     accent-color: #16724f;
   }
 
   span {
-    min-width: 0;
+    min-width: $width-zero;
     font-size: 0.88rem;
     line-height: 1.25;
   }
@@ -107,17 +134,17 @@
 
 .primaryButton,
 .secondaryButton {
-  min-height: 46px;
-  border-radius: 6px;
-  padding: 11px 15px;
+  min-height: $height-control;
+  border-radius: $radius-control;
+  padding: $padding-button;
 }
 
 .primaryButton {
-  background: $blue;
+  background: $accent;
   color: $surface;
 
   &:hover:not(:disabled) {
-    background: #144a78;
+    background: $accent-strong;
   }
 
   &:disabled {
@@ -137,7 +164,7 @@
 }
 
 .linkButton {
-  padding: 4px;
+  padding: $padding-link-button;
   background: transparent;
   color: #a23d26;
   font-size: 0.88rem;
@@ -149,7 +176,7 @@
 }
 
 .shareStatus {
-  margin: -6px 0 0;
+  margin: $margin-status;
   color: $muted;
   font-size: 0.9rem;
   line-height: 1.35;
@@ -166,13 +193,13 @@
 
   &:has(input:focus-visible) {
     @include focus;
-    border-radius: 6px;
+    border-radius: $radius-control;
   }
 
   input {
-    width: 17px;
-    height: 17px;
-    margin: 2px 0 0;
+    width: $control-mark-size;
+    height: $control-mark-size;
+    margin: $margin-checkbox;
     accent-color: #16724f;
   }
 
@@ -185,14 +212,14 @@
 }
 
 .formError {
-  margin: -6px 0 0;
+  margin: $margin-status;
   color: #96351c;
   font-size: 0.9rem;
   font-weight: 750;
   line-height: 1.35;
 }
 
-@include at(540px) {
+@include at($breakpoint-fields) {
   .segmentedControl {
     grid-template-columns: 1fr 1fr;
   }

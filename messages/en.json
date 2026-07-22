@@ -1,0 +1,232 @@
+{
+  "metadata": {
+    "title": "CalcolaFerie — Italian Holiday & Leave Planner",
+    "description": "Italian holiday bridge calculator: find the best opportunities around Italian public holidays and optimize your time off.",
+    "socialDescription": "Find the best holiday bridges around Italian public holidays and optimize your time off.",
+    "privacyTitle": "Privacy policy | CalcolaFerie",
+    "privacyDescription": "CalcolaFerie privacy notice covering the newsletter, analytics, and affiliate links."
+  },
+  "home": {
+    "accessibleLabel": "About the calculator",
+    "accessibleTitle": "Italian holiday bridge calculator",
+    "accessibleDescription": "Optimize your leave around Italian public holidays: enter your leave budget and discover the best bridges to maximize your vacation while using the fewest leave days."
+  },
+  "planner": {
+    "eyebrow": "Leave planner",
+    "title": "CalcolaFerie",
+    "subtitle": "Find the best bridges over the next 12 months, distinguishing leave days, company closures, and mandatory leave.",
+    "formula": {
+      "freeDays": "days off",
+      "leaveUsed": "leave days used",
+      "leverage": "{value}× leverage"
+    },
+    "about": {
+      "eyebrow": "How it works",
+      "title": "Italian holiday bridge calculator",
+      "description": "Optimize your leave around Italian public holidays: enter your leave budget and find the best bridges to maximize vacation time with the fewest leave days.",
+      "disclaimer": "Results are indicative: always check local holidays, your contract, and your employer's rules before planning leave."
+    },
+    "form": {
+      "eyebrow": "Input",
+      "title": "Scenario",
+      "budget": "Available leave days",
+      "budgetPlaceholder": "e.g. 20",
+      "year": "Year",
+      "advanced": "Advanced search",
+      "daysOffTitle": "Closures and mandatory days",
+      "daysOffHelp": "If the company closes without using leave, choose free day. If the day is deducted from your leave allowance, choose mandatory day.",
+      "date": "Date {number}",
+      "dayTypeAria": "Day type {number}",
+      "remove": "Remove",
+      "addDate": "Add date",
+      "patron": "Your local patron saint holiday (optional)",
+      "calculate": "Calculate",
+      "copyLink": "Copy link",
+      "linkCopied": "Link copied",
+      "copyFailed": "Copy failed"
+    },
+    "dayOffTypes": {
+      "companyClosure": "Company closure — free day",
+      "mandatoryLeave": "Mandatory day — deducted from budget"
+    }
+  },
+  "results": {
+    "eyebrow": "Results",
+    "title": "Recommended bridges",
+    "leverage": "Leverage",
+    "best": "Best bridge",
+    "bestSummary": "{staccoDays, plural, one {# day off} other {# days off}} using {costDays, plural, one {# leave day} other {# leave days}}. {explanation}",
+    "summary": {
+      "availableBudget": "Usable budget",
+      "used": "Used",
+      "remaining": "Remaining",
+      "opportunities": "Opportunities",
+      "bestLeverage": "Best leverage"
+    },
+    "budgetWarning": "Your selections exceed the available budget by {days, plural, one {# day} other {# days}}.",
+    "notStartedTitle": "No calculation started",
+    "notStartedDescription": "Enter your budget and press Calculate to see ranked opportunities.",
+    "noResultsTitle": "No bridges found",
+    "noResultsDescription": "Try increasing your budget or adding holidays and closures in the period.",
+    "metrics": {
+      "breakDays": "Days off",
+      "leaveDays": "Leave days needed"
+    },
+    "overBudget": "Over budget",
+    "selected": "Selected",
+    "selectedLeave": "Selected leave",
+    "downloadPdf": "Download PDF",
+    "pdfTitle": "Selected leave",
+    "total": "Total",
+    "select": "Select",
+    "deselect": "Deselect",
+    "bridgeAria": "{action} bridge {dateRange}",
+    "selectBridgeAria": "Select bridge {dateRange}",
+    "table": {
+      "choose": "Choose",
+      "period": "Period",
+      "breakDays": "Days off",
+      "leaveDays": "Leave days needed",
+      "leverage": "Leverage",
+      "reason": "Why it works",
+      "book": "Book"
+    },
+    "affiliateLabel": "Affiliate link",
+    "bookCta": "Book these dates",
+    "affiliateDisclosure": "Affiliate link: if you book, we receive a commission at no extra cost to you.",
+    "disclaimer": "Results are indicative. Check patron saint holidays and your contract/employer rules.",
+    "explanation": {
+      "noLeave": "No leave needed — the whole period is already free",
+      "leaveCost": "{costDays, plural, one {# leave day} other {# leave days}}",
+      "result": "{costPhrase} = {staccoDays, plural, one {# day} other {# days}} off",
+      "anchored": "{anchor} falls on {weekday} → {result}",
+      "fused": "{holidays} → {result}"
+    }
+  },
+  "calendar": {
+    "eyebrow": "Calendar",
+    "title": "Year view",
+    "legendAria": "Calendar legend",
+    "selectedLeave": "Selected leave",
+    "selectionCount": "{count, plural, one {# leave day selected} other {# leave days selected}}",
+    "selectionHelp": "Tap a working or recommended day. Ctrl+click (⌘ on Mac) to select the whole range.",
+    "clear": "Clear",
+    "selectedAriaSuffix": "Selected for leave",
+    "emptyTitle": "Calendar available after calculation",
+    "emptyDescription": "The year view uses different colors for holidays, closures, and recommended leave.",
+    "dayTypes": {
+      "weekend": "Weekend",
+      "publicHoliday": "Public holiday",
+      "companyClosure": "Closure",
+      "mandatoryLeave": "Mandatory leave",
+      "recommendedLeave": "Recommended leave",
+      "workday": "Working day"
+    },
+    "weekdaysShort": ["M", "T", "W", "T", "F", "S", "S"],
+    "weekdays": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    "monthsShort": [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec"
+    ]
+  },
+  "holidays": {
+    "newYear": "New Year's Day",
+    "epiphany": "Epiphany",
+    "liberation": "Liberation Day",
+    "labourDay": "Labour Day",
+    "republic": "Republic Day",
+    "assumption": "Assumption Day",
+    "allSaints": "All Saints' Day",
+    "immaculateConception": "Immaculate Conception",
+    "christmas": "Christmas Day",
+    "stStephen": "St Stephen's Day",
+    "easterMonday": "Easter Monday",
+    "patron": "Local patron saint",
+    "companyClosure": "Company closure"
+  },
+  "newsletter": {
+    "eyebrow": "Newsletter",
+    "title": "Useful updates",
+    "email": "Email",
+    "consent": "I consent to the processing of my email address to receive CalcolaFerie updates and have read the {privacyPolicy}.",
+    "privacyPolicy": "privacy policy",
+    "submitting": "Sending...",
+    "subscribe": "Subscribe",
+    "success": "Check your email to confirm your subscription.",
+    "error": "Subscription failed. Please try again shortly."
+  },
+  "footer": {
+    "tagline": "Italian holiday bridges, optimized for your leave budget.",
+    "contacts": "Contacts",
+    "manager": "Operator: {name}",
+    "vat": "VAT no.: {value}",
+    "legal": "Legal",
+    "privacy": "Privacy",
+    "copyright": "© {year} CalcolaFerie · Results are indicative: always check local holidays and your contract rules."
+  },
+  "privacy": {
+    "back": "Back to planner",
+    "eyebrow": "Privacy",
+    "title": "Privacy policy",
+    "intro": "This notice covers the only areas where CalcolaFerie touches data or external services: the newsletter (product updates and an annual reminder when the new calendar and holiday data are ready), aggregate visit statistics, and affiliate links for booking bridge dates. Bridge calculations run in your browser and send us no data.",
+    "controller": {
+      "title": "Controller and contact",
+      "body": "The data controller is CalcolaFerie's maintainer, Spatariu Rares. For privacy requests, email <email>privacy@calcolaferie.it</email>. The GitHub profile is an additional contact channel: <github>SpatariuRares</github>."
+    },
+    "data": {
+      "title": "Data collected",
+      "newsletter": "When you subscribe to the newsletter, we collect your email address. Buttondown, our newsletter provider, may also record the subscription time, provider technical metadata, and technical data normally needed to send email and manage the list.",
+      "analytics": "For visit statistics, we receive only aggregate data from Vercel Web Analytics. Bridge calculations, leave budgets, selected dates, and entered holidays remain in the browser; we remove URL parameters before sending data to Analytics.",
+      "storage": "When you ask us to save settings, we use browser localStorage under the key calcolaferie_config. It contains your leave budget, closure or mandatory-leave dates, patron saint day, and selected leave dates. This is technical storage requested by you to remember planner settings and is exempt from consent under Article 5(3) of the ePrivacy Directive."
+    },
+    "purposes": {
+      "title": "Purposes and legal bases",
+      "newsletter": "We use your newsletter email only to send CalcolaFerie updates and an annual reminder when holiday calendars are updated. Subscription requires email confirmation through double opt-in before activation. The legal basis is your explicit consent, which you may withdraw at any time.",
+      "analytics": "We use aggregate visit statistics to understand which pages work and improve the service. The legal basis is our legitimate interest in measuring site use with minimized data, without third-party cookies or query strings.",
+      "affiliate": "Affiliate links support the project. The legal basis is our legitimate interest in monetizing the service transparently; clicking takes you to external services that process data under their own notices."
+    },
+    "recipients": {
+      "title": "Recipients and providers",
+      "body": "We use Buttondown for the newsletter, Vercel for hosting and Web Analytics, and Travelpayouts or the booking provider when you click an affiliate link. We do not sell personal data to third parties."
+    },
+    "transfers": {
+      "title": "Transfers outside the EEA",
+      "body": "Some providers may process data outside the European Economic Area. Where necessary, transfers must rely on the EU–US Data Privacy Framework (or Standard Contractual Clauses as an alternative safeguard)."
+    },
+    "analytics": {
+      "title": "Visit statistics",
+      "body": "We use Vercel Web Analytics to understand, in aggregate, which pages are visited and improve the service. Vercel Analytics uses no third-party cookies: it identifies visits using a request hash and automatically discards sessions after 24 hours. We remove URL parameters before sending data, so shareable links containing budgets or dates are not included in statistics."
+    },
+    "affiliate": {
+      "title": "Affiliate links",
+      "links": "Each bridge includes a link to book the suggested dates. These are affiliate links: if you book through them, we receive a small commission at no extra cost to you. Links pass only the bridge dates, no destination, and take you to the provider search through Travelpayouts.",
+      "cookies": "We set no tracking cookies from our domain and add no advertising, cookie banners, or Google Analytics. After you click a link, the booking provider may set cookies on its own domain under its privacy notice."
+    },
+    "retention": {
+      "title": "Retention",
+      "body": "We retain your newsletter email and double opt-in confirmation status while you remain subscribed or as needed to manage the list. Vercel Web Analytics retains visit sessions for 24 hours and displays aggregate metrics. Local planner data remains in your browser until you clear it or change saved settings."
+    },
+    "rights": {
+      "title": "Your rights",
+      "body": "You may request access, rectification, erasure, restriction, data portability, objection to processing based on legitimate interest, and withdrawal of newsletter consent. We normally respond within one month. You may also complain to the Italian Data Protection Authority or the competent authority in your EU country."
+    },
+    "unsubscribe": {
+      "title": "Unsubscribing",
+      "body": "You can unsubscribe at any time using the unsubscribe link in every newsletter email."
+    },
+    "requests": {
+      "title": "Privacy requests",
+      "body": "For data or privacy requests, email <email>privacy@calcolaferie.it</email>. You may also contact the maintainer through the GitHub profile <github>SpatariuRares</github>."
+    }
+  }
+}

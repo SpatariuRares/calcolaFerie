@@ -1,11 +1,16 @@
 import type { BridgeOpportunity } from "@engine";
 import { buildBookingDeepLink } from "../../_lib/affiliate-link";
+import { useAppTranslations } from "../../_lib/use-app-i18n";
 import styles from "../../styles/app.module.scss";
 
-export function BookingCta({ opportunity }: { opportunity: BridgeOpportunity }) {
+export function BookingCta({
+  endDate,
+  startDate,
+}: Pick<BridgeOpportunity, "endDate" | "startDate">) {
+  const t = useAppTranslations("results");
   const href = buildBookingDeepLink({
-    startDate: opportunity.startDate,
-    endDate: opportunity.endDate,
+    startDate,
+    endDate,
   });
 
   // Stop propagation so booking does not toggle the row/card selection.
@@ -13,7 +18,7 @@ export function BookingCta({ opportunity }: { opportunity: BridgeOpportunity }) 
 
   return (
     <span className={styles.bookingCtaWrap}>
-      <span className={styles.affiliateLabel}>Link affiliato</span>
+      <span className={styles.affiliateLabel}>{t("affiliateLabel")}</span>
       <a
         className={styles.bookingCta}
         href={href}
@@ -22,7 +27,7 @@ export function BookingCta({ opportunity }: { opportunity: BridgeOpportunity }) 
         rel="sponsored noopener noreferrer"
         target="_blank"
       >
-        Prenota questi giorni
+        {t("bookCta")}
       </a>
     </span>
   );
