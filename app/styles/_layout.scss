@@ -39,11 +39,61 @@
   }
 }
 
+.heroFormula {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 10px;
+  margin-top: 2px;
+  padding: 12px 16px;
+  border: 1px solid $border;
+  border-left: 4px solid $accent;
+  border-radius: 8px;
+  background: $accent-soft;
+  color: #4a2016;
+  font-size: 0.95rem;
+}
+
+.heroFormulaNum {
+  font-family: var(--font-display, Georgia, serif);
+  font-size: 1.7rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #3a1913;
+}
+
+.heroFormulaLabel {
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.heroFormulaOp {
+  color: $accent;
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.heroFormulaResult {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+  border-radius: 999px;
+  padding: 4px 12px;
+  background: $accent;
+  color: #fff;
+  font-family: var(--font-display, Georgia, serif);
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
 .pageFooter {
   max-width: 1180px;
-  margin: 18px auto 0;
-  color: $muted;
-  font-size: 0.92rem;
+  margin: 32px auto 0;
+  padding-top: 24px;
+  border-top: 1px solid $border;
+  color: #565f66;
+  font-size: 0.9rem;
 
   a {
     color: $accent;
@@ -54,6 +104,99 @@
     &:focus-visible {
       @include focus;
     }
+  }
+}
+
+.footerInner {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: 1fr;
+}
+
+.footerBrand {
+  @include stack(4px);
+}
+
+.footerName {
+  margin: 0;
+  color: $strong;
+  font-family: var(--font-display, Georgia, serif);
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+.footerTagline {
+  margin: 0;
+  color: $muted;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.footerCol {
+  @include stack(6px);
+  align-content: start;
+
+  a,
+  span {
+    line-height: 1.4;
+  }
+
+  span {
+    color: #565f66;
+  }
+}
+
+.footerHeading {
+  margin: 0 0 2px;
+  color: $accent;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.footerBottom {
+  margin: 20px 0 0;
+  padding-top: 16px;
+  border-top: 1px solid $border;
+  color: $muted;
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+@include at(640px) {
+  .footerInner {
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 32px;
+  }
+}
+
+.aboutSection {
+  @include stack(10px);
+  max-width: 1180px;
+  margin: 24px auto 44px;
+  padding: 20px;
+  border: 1px solid $border;
+  border-radius: 8px;
+  background: $surface;
+  color: $text;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+
+  h2,
+  p {
+    margin: 0;
+  }
+
+  h2 {
+    @include heading;
+    color: $strong;
+    font-size: 1.35rem;
+  }
+
+  p:not(.eyebrow) {
+    max-width: 760px;
+    color: $muted;
+    line-height: 1.6;
   }
 }
 
@@ -216,6 +359,11 @@
       font-family: var(--font-display, Georgia, serif);
       font-size: 4rem;
     }
+  }
+
+  .heroFormula {
+    grid-column: 1 / -1;
+    justify-self: start;
   }
 
   .toolLayout {

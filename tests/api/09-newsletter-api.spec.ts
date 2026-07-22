@@ -13,6 +13,14 @@ function request(body: unknown) {
   });
 }
 
+function rawRequest(body: string, contentType = "application/json") {
+  return new Request("http://localhost/api/newsletter-signup", {
+    method: "POST",
+    headers: { "Content-Type": contentType },
+    body,
+  });
+}
+
 function installFetch(response: Response) {
   const calls: Parameters<typeof fetch>[] = [];
   globalThis.fetch = async (...args: Parameters<typeof fetch>) => {
@@ -42,6 +50,17 @@ test.describe("POST /api/newsletter-signup", () => {
 
     expect(invalidEmail.status).toBe(400);
     expect(missingConsent.status).toBe(400);
+    expect(calls).toHaveLength(0);
+  });
+
+  test("rejects unsupported content types and oversized payloads", async () => {
+    const calls = installFetch(new Response(null, { status: 201 }));
+
+    const unsupported = await POST(rawRequest("email=x", "application/x-www-form-urlencoded"));
+    const oversized = await POST(rawRequest(JSON.stringify({ padding: "x".repeat(2_100) })));
+
+    expect(unsupported.status).toBe(415);
+    expect(oversized.status).toBe(413);
     expect(calls).toHaveLength(0);
   });
 
@@ -92,5 +111,19 @@ test.describe("POST /api/newsletter-signup", () => {
 
     expect(response.status).toBe(200);
     await expect(response.json()).resolves.toEqual({ ok: true, duplicate: true });
+  });
+
+  test("returns a controlled error when Buttondown is unreachable", async () => {
+    globalThis.fetch = async () => {
+      throw new TypeError("network unavailable");
+    };
+
+    const response = await POST(request({ email: "rares@example.com", consent: true }));
+
+    expect(response.status).toBe(502);
+    await expect(response.json()).resolves.toEqual({
+      ok: false,
+      error: "newsletter_provider_error",
+    });
   });
 });

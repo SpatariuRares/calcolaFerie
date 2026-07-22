@@ -47,35 +47,36 @@ export default function PrivacyPage() {
           <p>
             Quando ti iscrivi alla newsletter raccogliamo il tuo indirizzo email. Buttondown, il
             provider usato per gestire la newsletter, puo registrare anche il momento
-            dell'iscrizione, i metadati tecnici del provider e i dati tecnici normalmente necessari
-            per inviare email e gestire la lista.
+            dell&apos;iscrizione, i metadati tecnici del provider e i dati tecnici normalmente
+            necessari per inviare email e gestire la lista.
           </p>
           <p>
             Per le statistiche di visita riceviamo solo dati aggregati da Vercel Web Analytics. Il
             calcolo dei ponti, il budget ferie, le date selezionate e le festivita inserite restano
-            nel browser; prima dell'invio ad Analytics rimuoviamo i parametri dall'URL.
+            nel browser; prima dell&apos;invio ad Analytics rimuoviamo i parametri dall&apos;URL.
           </p>
           <p>
             Quando chiedi di salvare le impostazioni, usiamo il localStorage del browser con la
             chiave <code>calcolaferie_config</code>. Contiene budget ferie, date di chiusura o ferie
             obbligatorie, patrono e date di ferie selezionate. Questa e memorizzazione tecnica
-            richiesta dall'utente per ricordare la configurazione del planner, esente da consenso ai
-            sensi dell'art. 5(3) della direttiva ePrivacy.
+            richiesta dall&apos;utente per ricordare la configurazione del planner, esente da
+            consenso ai sensi dell&apos;art. 5(3) della direttiva ePrivacy.
           </p>
         </section>
 
         <section>
           <h2>Finalita e basi giuridiche</h2>
           <p>
-            Usiamo l'email della newsletter solo per inviarti aggiornamenti su CalcolaFerie e un
-            promemoria annuale quando il calendario delle festivita viene aggiornato. L'iscrizione
-            richiede la conferma via email con double opt-in prima dell'attivazione. La base
-            giuridica e il tuo consenso esplicito, che puoi ritirare in qualsiasi momento.
+            Usiamo l&apos;email della newsletter solo per inviarti aggiornamenti su CalcolaFerie e
+            un promemoria annuale quando il calendario delle festivita viene aggiornato.
+            L&apos;iscrizione richiede la conferma via email con double opt-in prima
+            dell&apos;attivazione. La base giuridica e il tuo consenso esplicito, che puoi ritirare
+            in qualsiasi momento.
           </p>
           <p>
             Usiamo statistiche aggregate di visita per capire quali pagine funzionano e migliorare
-            il servizio. La base giuridica e il legittimo interesse a misurare l'uso del sito con
-            dati minimizzati, senza cookie di terze parti e senza query string.
+            il servizio. La base giuridica e il legittimo interesse a misurare l&apos;uso del sito
+            con dati minimizzati, senza cookie di terze parti e senza query string.
           </p>
           <p>
             I link di affiliazione servono a sostenere il progetto. La base giuridica e il legittimo
@@ -97,8 +98,8 @@ export default function PrivacyPage() {
           <h2>Trasferimenti fuori SEE</h2>
           <p>
             Alcuni provider possono trattare dati fuori dallo Spazio Economico Europeo. Dove
-            necessario, il trasferimento deve basarsi sull'EU–US Data Privacy Framework (o Standard
-            Contractual Clauses come garanzia alternativa).
+            necessario, il trasferimento deve basarsi sull&apos;EU–US Data Privacy Framework (o
+            Standard Contractual Clauses come garanzia alternativa).
           </p>
         </section>
 
@@ -108,8 +109,8 @@ export default function PrivacyPage() {
             Usiamo Vercel Web Analytics per capire, in forma aggregata, quali pagine vengono
             visitate e migliorare il servizio. Vercel Analytics non usa cookie di terze parti:
             identifica le visite tramite un hash della richiesta e scarta automaticamente le
-            sessioni dopo 24 ore. Prima dell'invio rimuoviamo i parametri dall'URL, cosi i link
-            condivisibili con budget o date non vengono trasmessi nelle statistiche.
+            sessioni dopo 24 ore. Prima dell&apos;invio rimuoviamo i parametri dall&apos;URL, cosi i
+            link condivisibili con budget o date non vengono trasmessi nelle statistiche.
           </p>
         </section>
 
@@ -132,7 +133,7 @@ export default function PrivacyPage() {
         <section>
           <h2>Conservazione</h2>
           <p>
-            Conserviamo l'email della newsletter e lo stato della conferma double opt-in finche
+            Conserviamo l&apos;email della newsletter e lo stato della conferma double opt-in finche
             resti iscritto o finche serve a gestire la lista. Vercel Web Analytics conserva le
             sessioni di visita per 24 ore e mostra metriche aggregate. I dati locali del planner
             restano nel tuo browser finche non li cancelli dal browser o modifichi le impostazioni
@@ -146,7 +147,7 @@ export default function PrivacyPage() {
             Puoi chiedere accesso, rettifica, cancellazione, limitazione, portabilita dei dati,
             opposizione al trattamento basato su legittimo interesse e ritiro del consenso alla
             newsletter. Rispondiamo di norma entro un mese. Puoi anche presentare reclamo al Garante
-            per la protezione dei dati personali o all'autorita competente del tuo paese UE.
+            per la protezione dei dati personali o all&apos;autorita competente del tuo paese UE.
           </p>
         </section>
 

@@ -1,5 +1,9 @@
 allowBuilds:
-  '@parcel/watcher': false
+  "@parcel/watcher": false
   msw: true
-  sharp: set this to true or false
-  unrs-resolver: set this to true or false
+  sharp: true
+  unrs-resolver: true
+overrides:
+  immutable: 5.1.9
+  postcss: 8.5.10
+  sharp: 0.35.0

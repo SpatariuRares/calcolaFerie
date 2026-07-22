@@ -118,22 +118,24 @@ describe("calendar view UI", () => {
     expect(within(calendarSection).getByText("Calendario pronto dopo il calcolo")).toBeInTheDocument();
   });
 
-  it("renders the rolling calendar from today through the engine window end", async () => {
+  it("renders the full chosen year from January to December", async () => {
     await renderCalculatedPlanner();
 
     const calendarSection = screen.getByRole("region", { name: "Vista annuale" });
-    expect(within(calendarSection).getByRole("heading", { name: "luglio 2026" })).toBeInTheDocument();
-    expect(within(calendarSection).getByRole("heading", { name: "luglio 2027" })).toBeInTheDocument();
+    expect(within(calendarSection).getByRole("heading", { name: "gennaio 2026" })).toBeInTheDocument();
+    expect(within(calendarSection).getByRole("heading", { name: "dicembre 2026" })).toBeInTheDocument();
+    expect(
+      within(calendarSection).queryByRole("heading", { name: /2027/ })
+    ).not.toBeInTheDocument();
 
     expect(
       within(calendarSection).getByRole("button", { name: "8 luglio 2026 — Lavorativo" })
     ).toBeInTheDocument();
-    expect(
-      within(calendarSection).getByRole("button", { name: "8 luglio 2027 — Lavorativo" })
-    ).toBeInTheDocument();
-    expect(
-      within(calendarSection).queryByRole("button", { name: /9 luglio 2027/ })
-    ).not.toBeInTheDocument();
+
+    // Days before today are still rendered, but as disabled past days.
+    const pastDay = within(calendarSection).getByRole("button", { name: "7 luglio 2026 — Lavorativo" });
+    expect(pastDay).toHaveAttribute("aria-disabled", "true");
+    expect(pastDay.className).toContain("dayCellPast");
   });
 
   it("uses one day-type class per engine day type and marks recommended leave in green tier", async () => {

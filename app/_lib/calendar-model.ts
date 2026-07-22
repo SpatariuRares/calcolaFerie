@@ -15,6 +15,7 @@ export type CalendarDay = {
   dayNumber: number;
   type: DayType;
   holidayName?: string;
+  isPast?: boolean;
 };
 
 export type CalendarMonth = {
@@ -59,6 +60,11 @@ function getMondayFirstBlankDays(date: Date) {
   return (date.getUTCDay() + 6) % 7;
 }
 
+function isWeekend(date: Date) {
+  const day = date.getUTCDay();
+  return day === 0 || day === 6;
+}
+
 export function getCalendarDayLabel(day: CalendarDay) {
   return [DAY_FORMATTER.format(isoToDate(day.iso)), DAY_TYPE_LABELS[day.type], day.holidayName]
     .filter(Boolean)
@@ -77,9 +83,14 @@ export function buildCalendarMonths(input: EngineInput, output: EngineOutput): C
 
   let current: CalendarMonth | null = null;
   let currentKey = "";
-  let firstDayOfWindow = true;
 
-  for (let iso = input.windowStart; iso <= input.windowEnd; iso = addDays(iso, 1)) {
+  // Render the full calendar year of windowStart: 1 January → 31 December.
+  // Days before windowStart are rendered as past; the whole year is always shown.
+  const calendarYear = isoToDate(input.windowStart).getUTCFullYear();
+  const gridStart = toISO(calendarYear, 1, 1);
+  const gridEnd = toISO(calendarYear, 12, 31);
+
+  for (let iso = gridStart; iso <= gridEnd; iso = addDays(iso, 1)) {
     const date = isoToDate(iso);
     const year = date.getUTCFullYear();
     const month = date.getUTCMonth();
@@ -90,25 +101,22 @@ export function buildCalendarMonths(input: EngineInput, output: EngineOutput): C
       current = {
         key,
         label: MONTH_FORMATTER.format(firstOfMonth),
-        // First window month is anchored on windowStart so the grid lines up with
-        // the partial month; later months start on their 1st.
-        leadingBlankDays: getMondayFirstBlankDays(firstDayOfWindow ? date : firstOfMonth),
+        leadingBlankDays: getMondayFirstBlankDays(firstOfMonth),
         days: [],
       };
       months.push(current);
       currentKey = key;
-      firstDayOfWindow = false;
     }
 
-    const type = output.dayMap.get(iso);
-    if (type) {
-      current!.days.push({
-        iso,
-        dayNumber: date.getUTCDate(),
-        type,
-        holidayName: holidayNames.get(iso),
-      });
-    }
+    const isPast = iso < input.windowStart;
+    const type = output.dayMap.get(iso) ?? (isWeekend(date) ? "weekend" : "workday");
+    current!.days.push({
+      iso,
+      dayNumber: date.getUTCDate(),
+      type,
+      holidayName: holidayNames.get(iso),
+      ...(isPast ? { isPast: true } : {}),
+    });
   }
 
   return months;

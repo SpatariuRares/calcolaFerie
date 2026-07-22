@@ -4,6 +4,7 @@ import {
   deserializeStoredConfig,
   getInitialUserConfig,
   serializeConfig,
+  serializeStoredConfig,
 } from "./user-config-url";
 
 describe("user config URL persistence", () => {
@@ -44,6 +45,8 @@ describe("user config URL persistence", () => {
 
   it("returns null for invalid URL params", () => {
     expect(deserializeConfig(new URLSearchParams("budget=-1"))).toBeNull();
+    expect(deserializeConfig(new URLSearchParams("budget=367"))).toBeNull();
+    expect(deserializeConfig(new URLSearchParams("budget=20&budget=21"))).toBeNull();
     expect(
       deserializeConfig(new URLSearchParams("budget=20&daysOff=2026-02-30:closure"))
     ).toBeNull();
@@ -74,6 +77,26 @@ describe("user config URL persistence", () => {
       patronSaintDate: "2026-06-24",
       selectedVacationDates: ["2026-12-28", "2026-12-29"],
     });
+  });
+
+  it("writes a versioned stored config and rejects unknown versions", () => {
+    const storedValue = serializeStoredConfig({
+      totalVacationDays: 15,
+      daysOff: [],
+    });
+
+    expect(JSON.parse(storedValue)).toEqual({
+      version: 1,
+      config: { totalVacationDays: 15, daysOff: [] },
+    });
+    expect(
+      deserializeStoredConfig(
+        JSON.stringify({
+          version: 2,
+          config: { totalVacationDays: 15, daysOff: [] },
+        })
+      )
+    ).toBeNull();
   });
 
   it("prefers URL params over stored config", () => {

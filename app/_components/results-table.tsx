@@ -202,15 +202,12 @@ function OpportunityCard({
 
 function OpportunityRow({
   opportunity,
-  availableBudget,
   isSelected,
   onToggleOpportunity,
 }: {
   opportunity: BridgeOpportunity;
-  availableBudget: number;
   isSelected: boolean;
 } & ResultsSelectionProps) {
-  const isOverBudget = opportunity.costDays > availableBudget;
   const dateRange = formatDateRange(opportunity.startDate, opportunity.endDate);
 
   return (
@@ -244,10 +241,6 @@ function OpportunityRow({
         <span className={getLevaClassName(opportunity.leva)}>{opportunity.leva.toFixed(1)}×</span>
       </td>
       <td>{formatExplanation(opportunity)}</td>
-      <td>
-        {isSelected ? <span className={styles.selectedChip}>Scalato</span> : null}
-        {isOverBudget ? <span className={styles.budgetChip}>Fuori budget</span> : null}
-      </td>
       <td className={styles.bookingCell} onClick={(event) => event.stopPropagation()}>
         <BookingCta opportunity={opportunity} />
       </td>
@@ -296,14 +289,12 @@ export function ResultsTable({
               <th scope="col">Ferie da usare</th>
               <th scope="col">Leva</th>
               <th scope="col">Perché conviene</th>
-              <th scope="col">Budget</th>
               <th scope="col">Prenota</th>
             </tr>
           </thead>
           <tbody>
             {output.opportunities.map((opportunity) => (
               <OpportunityRow
-                availableBudget={output.availableBudget}
                 isSelected={selectedOpportunityIds.has(opportunity.id)}
                 key={opportunity.id}
                 onToggleOpportunity={onToggleOpportunity}

@@ -80,6 +80,12 @@
   }
 }
 
+.calendarList {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+}
+
 .monthBlock {
   gap: 8px;
   border: 1px solid $border;
@@ -95,6 +101,12 @@
     font-size: 1rem;
     line-height: 1.25;
     text-transform: capitalize;
+  }
+
+  // When printing, force every month to render — content-visibility: auto would
+  // otherwise skip off-screen months and print them as empty placeholder boxes.
+  @media print {
+    content-visibility: visible;
   }
 }
 
@@ -188,6 +200,14 @@
 
 .dayCellLocked {
   cursor: help;
+}
+
+.dayCellPast {
+  background: #f0f0f0;
+  color: #b0b0b0;
+  opacity: 0.55;
+  cursor: default;
+  pointer-events: none;
 }
 
 .monthBlock:first-child {

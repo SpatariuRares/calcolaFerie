@@ -102,6 +102,13 @@ describe("input form UI", () => {
 
   it("submits form values as EngineInput and includes the patron saint holiday", async () => {
     const user = userEvent.setup();
+    const patronDate = new Date();
+    patronDate.setDate(patronDate.getDate() + 30);
+    const patronDateIso = [
+      patronDate.getFullYear(),
+      String(patronDate.getMonth() + 1).padStart(2, "0"),
+      String(patronDate.getDate()).padStart(2, "0"),
+    ].join("-");
     render(React.createElement(VacationPlanner));
 
     await user.type(screen.getByLabelText("Giorni di ferie disponibili"), "20");
@@ -109,7 +116,7 @@ describe("input form UI", () => {
     await user.click(screen.getByLabelText("Giorno obbligatorio — scala dal budget"));
     await user.type(
       screen.getByLabelText("Festività del tuo patrono locale (opzionale)"),
-      "2026-07-20"
+      patronDateIso
     );
     await user.click(screen.getByRole("button", { name: "Calcola" }));
 
@@ -119,7 +126,7 @@ describe("input form UI", () => {
     expect(input.totalVacationDays).toBe(20);
     expect(input.daysOff).toEqual([{ date: "2026-08-14", type: "mandatoryLeave" }]);
     expect(input.publicHolidays).toContainEqual({
-      date: "2026-07-20",
+      date: patronDateIso,
       key: "patron",
       kind: "patron",
     });

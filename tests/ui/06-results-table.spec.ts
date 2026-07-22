@@ -80,7 +80,7 @@ describe("results table UI", () => {
       )
     );
 
-    expect(screen.getAllByText("Fuori budget")).toHaveLength(2);
+    expect(screen.getByText("Fuori budget")).toBeInTheDocument();
   });
 
   it("assembles single-holiday, fused, and zero-cost Italian explanations", () => {
