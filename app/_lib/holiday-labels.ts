@@ -1,8 +1,4 @@
-/**
- * Italian display labels for the locale-neutral keys emitted by the engine.
- * The engine knows only opaque string keys; all human-facing text lives here.
- */
-
+/** Locale-neutral holiday keys emitted by the engine. */
 export type HolidayKey =
   | "newYear"
   | "epiphany"
@@ -33,8 +29,13 @@ export const HOLIDAY_LABELS: Record<HolidayKey, string> = {
 };
 
 export const COMPANY_CLOSURE_LABEL = "Chiusura aziendale";
+export type HolidayTranslator = (key: string) => string;
 
-/** Map a holiday key to its Italian label, falling back to the raw key if unknown. */
-export function holidayLabel(key: string): string {
+export function holidayLabel(key: string, translate?: HolidayTranslator): string {
+  if (translate && key in HOLIDAY_LABELS) return translate(key);
   return HOLIDAY_LABELS[key as HolidayKey] ?? key;
+}
+
+export function companyClosureLabel(translate?: HolidayTranslator): string {
+  return translate ? translate("companyClosure") : COMPANY_CLOSURE_LABEL;
 }

@@ -1,8 +1,8 @@
 @use "./theme" as *;
 
 .pageShell {
-  min-height: 100vh;
-  padding: 28px 16px 44px;
+  min-height: $height-viewport;
+  padding: $padding-page-mobile;
   background: $page-bg;
   color: $text;
   font-family:
@@ -17,9 +17,9 @@
 
 .hero {
   @include stack(14px);
-  max-width: 1180px;
-  margin: 0 auto 24px;
-  padding-bottom: 18px;
+  max-width: $page-max-width;
+  margin: $margin-hero;
+  padding-bottom: $padding-section-divider;
   border-bottom: 1px solid #d9e0e6;
 
   h1 {
@@ -31,8 +31,8 @@
   }
 
   p {
-    max-width: 690px;
-    margin: 0;
+    max-width: $hero-copy-max-width;
+    margin: $margin-reset;
     color: #4f5d66;
     font-size: 1rem;
     line-height: 1.55;
@@ -44,11 +44,11 @@
   flex-wrap: wrap;
   align-items: baseline;
   gap: 6px 10px;
-  margin-top: 2px;
-  padding: 12px 16px;
+  margin-top: $margin-top-formula;
+  padding: $padding-emphasis;
   border: 1px solid $border;
   border-left: 4px solid $accent;
-  border-radius: 8px;
+  border-radius: $radius-panel;
   background: $accent-soft;
   color: #4a2016;
   font-size: 0.95rem;
@@ -78,8 +78,8 @@
   display: inline-flex;
   align-items: baseline;
   gap: 5px;
-  border-radius: 999px;
-  padding: 4px 12px;
+  border-radius: $radius-pill;
+  padding: $padding-formula-result;
   background: $accent;
   color: #fff;
   font-family: var(--font-display, Georgia, serif);
@@ -88,9 +88,9 @@
 }
 
 .pageFooter {
-  max-width: 1180px;
-  margin: 32px auto 0;
-  padding-top: 24px;
+  max-width: $page-max-width;
+  margin: $margin-footer;
+  padding-top: $padding-top-footer;
   border-top: 1px solid $border;
   color: #565f66;
   font-size: 0.9rem;
@@ -118,7 +118,7 @@
 }
 
 .footerName {
-  margin: 0;
+  margin: $margin-reset;
   color: $strong;
   font-family: var(--font-display, Georgia, serif);
   font-size: 1.35rem;
@@ -126,7 +126,7 @@
 }
 
 .footerTagline {
-  margin: 0;
+  margin: $margin-reset;
   color: $muted;
   font-size: 0.9rem;
   line-height: 1.4;
@@ -147,7 +147,7 @@
 }
 
 .footerHeading {
-  margin: 0 0 2px;
+  margin: $margin-footer-heading;
   color: $accent;
   font-size: 0.72rem;
   font-weight: 800;
@@ -156,15 +156,15 @@
 }
 
 .footerBottom {
-  margin: 20px 0 0;
-  padding-top: 16px;
+  margin: $margin-footer-bottom;
+  padding-top: $padding-top-section;
   border-top: 1px solid $border;
   color: $muted;
   font-size: 0.82rem;
   line-height: 1.4;
 }
 
-@include at(640px) {
+@include at($breakpoint-footer) {
   .footerInner {
     grid-template-columns: 2fr 1fr 1fr;
     gap: 32px;
@@ -173,18 +173,18 @@
 
 .aboutSection {
   @include stack(10px);
-  max-width: 1180px;
-  margin: 24px auto 44px;
-  padding: 20px;
+  max-width: $page-max-width;
+  margin: $margin-about;
+  padding: $padding-about;
   border: 1px solid $border;
-  border-radius: 8px;
+  border-radius: $radius-panel;
   background: $surface;
   color: $text;
   font-family: Inter, ui-sans-serif, system-ui, sans-serif;
 
   h2,
   p {
-    margin: 0;
+    margin: $margin-reset;
   }
 
   h2 {
@@ -194,7 +194,7 @@
   }
 
   p:not(.eyebrow) {
-    max-width: 760px;
+    max-width: $copy-max-width;
     color: $muted;
     line-height: 1.6;
   }
@@ -202,20 +202,20 @@
 
 .privacyPage {
   @include stack(18px);
-  max-width: 760px;
-  margin: 0 auto;
+  max-width: $copy-max-width;
+  margin: $margin-centered;
   color: $text;
 
   section {
     @include stack(8px);
     border-top: 1px solid $border;
-    padding-top: 16px;
+    padding-top: $padding-top-section;
   }
 
   h1,
   h2,
   p {
-    margin: 0;
+    margin: $margin-reset;
   }
 
   h1,
@@ -253,16 +253,16 @@
 
 .privacyHeader {
   @include stack(10px);
-  padding-bottom: 2px;
+  padding-bottom: $padding-bottom-privacy-header;
 }
 
 .backLink {
-  width: fit-content;
+  width: $width-fit;
   font-size: 0.92rem;
 }
 
 .eyebrow {
-  margin: 0 0 7px;
+  margin: $margin-eyebrow;
   color: $accent;
   font-size: 0.76rem;
   font-weight: 800;
@@ -272,8 +272,8 @@
 
 .toolLayout {
   @include stack(18px);
-  max-width: 1180px;
-  margin: 0 auto;
+  max-width: $page-max-width;
+  margin: $margin-centered;
 }
 
 .formPanel,
@@ -318,16 +318,16 @@
 
 .outputStack {
   gap: 18px;
-  min-width: 0;
+  min-width: $width-zero;
 }
 
 .outputSection {
   gap: 14px;
-  min-width: 0;
+  min-width: $width-zero;
 }
 
 .panelHeader {
-  padding-bottom: 4px;
+  padding-bottom: $padding-bottom-panel-header;
 }
 
 .panelHeader h2,
@@ -351,19 +351,19 @@
   gap: 16px;
 }
 
-@include at(540px) {
+@include at($breakpoint-fields) {
   .primaryFields {
-    grid-template-columns: minmax(0, 1fr) minmax(120px, 0.45fr);
+    grid-template-columns: minmax(0, 1fr) minmax($compact-field-min-width, 0.45fr);
   }
 }
 
-@include at(860px) {
+@include at($breakpoint-desktop) {
   .pageShell {
-    padding: 38px 24px 56px;
+    padding: $padding-page-desktop;
   }
 
   .hero {
-    grid-template-columns: minmax(260px, 420px) minmax(0, 1fr);
+    grid-template-columns: minmax($hero-title-min-width, $hero-title-max-width) minmax(0, 1fr);
     align-items: end;
 
     h1 {
@@ -378,7 +378,7 @@
   }
 
   .toolLayout {
-    grid-template-columns: minmax(340px, 400px) minmax(0, 1fr);
+    grid-template-columns: minmax($form-column-min-width, $form-column-max-width) minmax(0, 1fr);
     align-items: start;
   }
 
@@ -390,6 +390,81 @@
   .formPanel,
   .newsletterPanel,
   .outputSection {
-    padding: 20px;
+    padding: $padding-about;
+  }
+}
+
+.languageSwitcher {
+  display: grid;
+  width: $width-fit;
+  gap: 5px;
+  margin-top: $margin-top-language;
+}
+
+.languageSwitcherLabel {
+  color: $muted;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.languageSwitcherOptions {
+  display: inline-flex;
+  width: $width-fit;
+  padding: $padding-switcher;
+  border: 1px solid $border;
+  border-radius: $radius-pill;
+  background: rgba($surface, 0.72);
+}
+
+.languageSwitcherButton {
+  min-height: $height-language-control;
+  padding: $padding-language-button;
+  border: 0;
+  border-radius: $radius-pill;
+  background: transparent;
+  color: $muted;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 800;
+  line-height: 1;
+  transition:
+    background-color 150ms ease,
+    color 150ms ease,
+    box-shadow 150ms ease;
+
+  &:hover {
+    color: $accent;
+    background: rgba($accent, 0.08);
+  }
+
+  &:focus-visible {
+    @include focus;
+  }
+}
+
+.languageSwitcherButtonActive {
+  background: $accent;
+  color: #fff;
+  box-shadow: 0 1px 3px rgba($strong, 0.18);
+
+  &:hover {
+    background: $accent;
+    color: #fff;
+  }
+}
+
+@media (max-width: $breakpoint-small) {
+  .languageSwitcher {
+    width: $width-full;
+  }
+
+  .languageSwitcherOptions {
+    width: $width-full;
+  }
+
+  .languageSwitcherButton {
+    flex: 1;
   }
 }

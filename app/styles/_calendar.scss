@@ -9,8 +9,8 @@
   flex-wrap: wrap;
   gap: 8px;
   border: 1px solid $border;
-  border-radius: 8px;
-  padding: 8px;
+  border-radius: $radius-panel;
+  padding: $padding-compact;
   background: $surface;
 }
 
@@ -25,10 +25,10 @@
 }
 
 .legendSwatch {
-  width: 12px;
-  height: 12px;
+  width: $legend-swatch-size;
+  height: $legend-swatch-size;
   flex: 0 0 auto;
-  border-radius: 3px;
+  border-radius: $radius-swatch;
 }
 
 .selectedVacationBar {
@@ -37,14 +37,14 @@
   justify-content: space-between;
   gap: 12px;
   border: 1px solid #b6d7c4;
-  border-radius: 8px;
-  padding: 10px 12px;
+  border-radius: $radius-panel;
+  padding: $padding-input;
   background: #eef8f2;
   color: #1e3b2c;
 
   div {
     display: grid;
-    min-width: 0;
+    min-width: $width-zero;
     gap: 3px;
   }
 
@@ -65,8 +65,8 @@
 .clearSelectionButton {
   flex: 0 0 auto;
   border: 1px solid #9ec7af;
-  border-radius: 6px;
-  padding: 6px 9px;
+  border-radius: $radius-control;
+  padding: $padding-clear-selection;
   background: $surface;
   color: #0b5b35;
   cursor: pointer;
@@ -83,14 +83,14 @@
 .calendarList {
   display: grid;
   gap: 12px;
-  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax($calendar-column-min-width, 1fr));
 }
 
 .monthBlock {
   gap: 8px;
   border: 1px solid $border;
-  border-radius: 8px;
-  padding: 12px;
+  border-radius: $radius-panel;
+  padding: $padding-card;
   background: $surface;
   content-visibility: auto;
   contain-intrinsic-size: 240px;
@@ -127,8 +127,8 @@
 .blankDay,
 .dayCell {
   aspect-ratio: 1;
-  min-width: 0;
-  border-radius: 5px;
+  min-width: $width-zero;
+  border-radius: $radius-day;
 }
 
 .dayCell {
@@ -136,7 +136,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 5px;
+  border-radius: $radius-day;
   border: 1px solid token($days, workday, 3);
   color: $strong;
   cursor: help;
@@ -144,7 +144,7 @@
   font-weight: 800;
   font-family: inherit;
   line-height: 1;
-  padding: 0;
+  padding: $padding-reset;
 
   &:focus-visible {
     @include focus;
@@ -157,12 +157,12 @@
     left: 50%;
     z-index: 4;
     display: none;
-    width: max-content;
-    max-width: min(220px, 70vw);
+    width: $width-max-content;
+    max-width: min($tooltip-max-width, $tooltip-viewport-max-width);
     transform: translateX(-50%);
     border: 1px solid #26342b;
-    border-radius: 6px;
-    padding: 7px 9px;
+    border-radius: $radius-control;
+    padding: $padding-tooltip;
     background: #17211b;
     color: #fff;
     content: attr(data-tooltip);

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Playfair_Display } from "next/font/google";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale, getMessages } from "next-intl/server";
 import { VercelAnalytics } from "./_components/vercel-analytics";
 import "./globals.css";
 
@@ -33,11 +35,12 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const [locale, messages] = await Promise.all([getLocale(), getMessages()]);
   return (
-    <html lang="it" className={playfair.variable}>
+    <html lang={locale} className={playfair.variable}>
       <body>
-        {children}
+        <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
         <VercelAnalytics />
       </body>
     </html>

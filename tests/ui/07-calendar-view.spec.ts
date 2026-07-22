@@ -115,17 +115,25 @@ describe("calendar view UI", () => {
 
     const calendarSection = screen.getByRole("region", { name: "Vista annuale" });
     expect(within(calendarSection).getByLabelText("Legenda calendario")).toBeInTheDocument();
-    expect(within(calendarSection).getByText("Calendario pronto dopo il calcolo")).toBeInTheDocument();
+    expect(
+      within(calendarSection).getByText("Calendario pronto dopo il calcolo")
+    ).toBeInTheDocument();
   });
 
   it("renders from January of the current year through the window end month", async () => {
     await renderCalculatedPlanner();
 
     const calendarSection = screen.getByRole("region", { name: "Vista annuale" });
-    expect(within(calendarSection).getByRole("heading", { name: "gennaio 2026" })).toBeInTheDocument();
-    expect(within(calendarSection).getByRole("heading", { name: "dicembre 2026" })).toBeInTheDocument();
+    expect(
+      within(calendarSection).getByRole("heading", { name: "gennaio 2026" })
+    ).toBeInTheDocument();
+    expect(
+      within(calendarSection).getByRole("heading", { name: "dicembre 2026" })
+    ).toBeInTheDocument();
     // windowEnd is 31 January of next year, so January 2027 is included too.
-    expect(within(calendarSection).getByRole("heading", { name: "gennaio 2027" })).toBeInTheDocument();
+    expect(
+      within(calendarSection).getByRole("heading", { name: "gennaio 2027" })
+    ).toBeInTheDocument();
     expect(
       within(calendarSection).queryByRole("heading", { name: /febbraio 2027/ })
     ).not.toBeInTheDocument();
@@ -135,7 +143,9 @@ describe("calendar view UI", () => {
     ).toBeInTheDocument();
 
     // Days before today are still rendered, but as disabled past days.
-    const pastDay = within(calendarSection).getByRole("button", { name: "7 luglio 2026 — Lavorativo" });
+    const pastDay = within(calendarSection).getByRole("button", {
+      name: "7 luglio 2026 — Lavorativo",
+    });
     expect(pastDay).toHaveAttribute("aria-disabled", "true");
     expect(pastDay.className).toContain("dayCellPast");
   });
@@ -154,8 +164,7 @@ describe("calendar view UI", () => {
         .className
     ).toContain("dayCell_publicHoliday");
     expect(
-      within(calendarSection).getByRole("button", { name: /24 dicembre 2026 — Chiusura/ })
-        .className
+      within(calendarSection).getByRole("button", { name: /24 dicembre 2026 — Chiusura/ }).className
     ).toContain("dayCell_companyClosure");
     expect(
       within(calendarSection).getByRole("button", { name: /31 dicembre 2026 — Ferie obbligatorie/ })
@@ -184,7 +193,7 @@ describe("calendar view UI", () => {
     expect(within(calendarSection).getByText("0 giorni di ferie selezionati")).toBeInTheDocument();
 
     await user.click(recommendedLeave);
-    expect(within(calendarSection).getByText("1 giorni di ferie selezionati")).toBeInTheDocument();
+    expect(within(calendarSection).getByText("1 giorno di ferie selezionato")).toBeInTheDocument();
     expect(
       within(calendarSection).getByRole("button", {
         name: /14 agosto 2026 — Ferie consigliate — Selezionata per ferie/,

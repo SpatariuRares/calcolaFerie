@@ -1,10 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import { createTranslator, useLocale, useTranslations } from "next-intl";
+import italianMessages from "../../messages/it.json";
 import { useEffect, useId, useRef, useState } from "react";
 import { isoToDate, tryIsoDate, type DayOff, type ISODateString, type UserConfig } from "@engine";
 import {
   buildCalendarMonths,
+  buildSelectableVacationDates,
   CALENDAR_LEGEND,
   DAY_TYPE_LABELS,
   getCalendarDayLabel,
@@ -12,13 +15,15 @@ import {
 } from "../_lib/calendar-model";
 import { calculateVacationPlan, type CalculationState } from "../_lib/calculate-vacation-plan";
 import styles from "../styles/app.module.scss";
+import { LanguageSwitcher } from "./language-switcher";
 import {
   formatDateRange,
   formatExplanation,
   getSelectedOpportunityCost,
   ResultsTable,
+  SelectedVacationsTable,
+  type SelectedVacationRange,
 } from "./results-table";
-import { NewsletterConsentText } from "./newsletter-consent-text";
 import {
   CONFIG_STORAGE_KEY,
   MAX_VACATION_DAYS,
@@ -30,41 +35,51 @@ import {
 
 type DayOffRow = Omit<DayOff, "date"> & { date: string; id: string };
 type NewsletterStatus = "idle" | "success" | "error";
+type TranslationNamespace =
+  | "planner"
+  | "results"
+  | "calendar"
+  | "holidays"
+  | "newsletter"
+  | "footer";
 
-const DAY_OFF_TYPE_LABELS: Record<DayOff["type"], string> = {
-  companyClosure: "Chiusura aziendale — giorno gratuito",
-  mandatoryLeave: "Giorno obbligatorio — scala dal budget",
-};
-
-const WEEKDAY_INITIALS = ["L", "M", "M", "G", "V", "S", "D"];
-
-const SHORT_MONTH_LABELS = [
-  "gen",
-  "feb",
-  "mar",
-  "apr",
-  "mag",
-  "giu",
-  "lug",
-  "ago",
-  "set",
-  "ott",
-  "nov",
-  "dic",
-];
-
-function formatSingleDay(iso: string) {
-  const [, month, day] = iso.split("-").map(Number);
-  return `${day} ${SHORT_MONTH_LABELS[month - 1]}`;
+function useAppTranslations(namespace: TranslationNamespace): ReturnType<typeof useTranslations> {
+  try {
+    return useTranslations(namespace as never);
+  } catch {
+    return createTranslator({
+      locale: "it",
+      messages: italianMessages,
+      namespace: namespace as never,
+    }) as ReturnType<typeof useTranslations>;
+  }
 }
 
+function useAppLocale() {
+  try {
+    return useLocale();
+  } catch {
+    return "it";
+  }
+}
+
+function formatSingleDay(iso: string, locale: string) {
+  return new Intl.DateTimeFormat(locale === "en" ? "en-GB" : "it-IT", {
+    day: "numeric",
+    month: "short",
+    timeZone: "UTC",
+  }).format(isoToDate(iso));
+}
 /**
  * Collapses selected days into contiguous runs (adjacent in the selectable-day
  * sequence, so weekends/holidays don't split a work block) for a compact,
  * human-readable summary instead of a long list of ISO dates.
  */
-function buildSelectedRanges(selectableIsoDates: string[], selected: Set<string>) {
-  const ranges: Array<{ start: string; end: string }> = [];
+function buildSelectedRanges(
+  selectableIsoDates: string[],
+  selected: Set<string>
+): SelectedVacationRange[] {
+  const ranges: SelectedVacationRange[] = [];
   let previousIndex = -2;
 
   selectableIsoDates.forEach((iso, index) => {
@@ -72,15 +87,20 @@ function buildSelectedRanges(selectableIsoDates: string[], selected: Set<string>
     const last = ranges[ranges.length - 1];
     if (last && index === previousIndex + 1) {
       last.end = iso;
+      last.days += 1;
     } else {
-      ranges.push({ start: iso, end: iso });
+      ranges.push({ start: iso, end: iso, days: 1 });
     }
     previousIndex = index;
   });
 
-  return ranges.map(({ start, end }) =>
-    start === end ? formatSingleDay(start) : formatDateRange(start, end)
-  );
+  return ranges;
+}
+
+function formatSelectedRangeLabel(range: SelectedVacationRange, locale: string) {
+  return range.start === range.end
+    ? formatSingleDay(range.start, locale)
+    : formatDateRange(range.start, range.end, locale);
 }
 
 // TODO: valorizzare queste variabili in .env.local per aggiornare i dati del gestore
@@ -122,6 +142,7 @@ function ResultsPanel({
   onToggleOpportunity: (opportunityId: string) => void;
   selectedOpportunityIds: Set<string>;
 }) {
+  const t = useAppTranslations("results");
   const output = calculation?.output;
   const opportunities = output?.opportunities ?? [];
   const selectedOpportunityCost = output
@@ -139,8 +160,8 @@ function ResultsPanel({
     <section className={styles.outputSection} aria-labelledby="results-title">
       <div className={styles.sectionHeader}>
         <div>
-          <p className={styles.eyebrow}>Risultati</p>
-          <h2 id="results-title">Ponti consigliati</h2>
+          <p className={styles.eyebrow}>{t("eyebrow")}</p>
+          <h2 id="results-title">{t("title")}</h2>
         </div>
       </div>
       {calculation ? (
@@ -149,49 +170,48 @@ function ResultsPanel({
             <div className={styles.bestPonte}>
               <div className={styles.bestPonteLeva}>
                 <strong>{bestOpportunity.leva.toFixed(1)}×</strong>
-                <span>Leva</span>
+                <span>{t("leverage")}</span>
               </div>
               <div className={styles.bestPonteBody}>
-                <p className={styles.bestPonteEyebrow}>Il ponte migliore</p>
+                <p className={styles.bestPonteEyebrow}>{t("best")}</p>
                 <p className={styles.bestPonteRange}>
                   {formatDateRange(bestOpportunity.startDate, bestOpportunity.endDate)}
                 </p>
                 <p className={styles.bestPonteMeta}>
-                  <b>{bestOpportunity.staccoDays} giorni di stacco</b> con{" "}
-                  <b>
-                    {bestOpportunity.costDays}{" "}
-                    {bestOpportunity.costDays === 1 ? "giorno" : "giorni"} di ferie
-                  </b>
-                  . {formatExplanation(bestOpportunity)}
+                  {t("bestSummary", {
+                    staccoDays: bestOpportunity.staccoDays,
+                    costDays: bestOpportunity.costDays,
+                    explanation: formatExplanation(bestOpportunity),
+                  })}
                 </p>
               </div>
             </div>
           ) : null}
           <dl className={styles.summaryGrid}>
             <div>
-              <dt>Budget utile</dt>
+              <dt>{t("summary.availableBudget")}</dt>
               <dd>{output?.availableBudget ?? 0}</dd>
             </div>
             <div>
-              <dt>Scalati</dt>
+              <dt>{t("summary.used")}</dt>
               <dd>{selectedOpportunityCost}</dd>
             </div>
             <div className={remainingBudget < 0 ? styles.summaryWarning : undefined}>
-              <dt>Residuo</dt>
+              <dt>{t("summary.remaining")}</dt>
               <dd>{remainingBudget}</dd>
             </div>
             <div>
-              <dt>Opportunità</dt>
+              <dt>{t("summary.opportunities")}</dt>
               <dd>{opportunities.length}</dd>
             </div>
             <div>
-              <dt>Miglior leva</dt>
+              <dt>{t("summary.bestLeverage")}</dt>
               <dd>{bestOpportunity ? `${bestOpportunity.leva.toFixed(1)}×` : "0×"}</dd>
             </div>
           </dl>
           {remainingBudget < 0 ? (
             <p className={styles.budgetWarning}>
-              Le selezioni superano il budget disponibile di {Math.abs(remainingBudget)} giorni.
+              {t("budgetWarning", { days: Math.abs(remainingBudget) })}
             </p>
           ) : null}
           <ResultsTable
@@ -202,8 +222,8 @@ function ResultsPanel({
         </>
       ) : (
         <div className={styles.emptyState}>
-          <strong>Nessun calcolo avviato</strong>
-          <span>Inserisci il budget e premi Calcola per vedere le occasioni ordinate.</span>
+          <strong>{t("notStartedTitle")}</strong>
+          <span>{t("notStartedDescription")}</span>
         </div>
       )}
     </section>
@@ -223,8 +243,19 @@ function CalendarView({
   onToggleVacationDate: (isoDate: string) => void;
   selectedVacationDates: Set<string>;
 }) {
+  const t = useAppTranslations("calendar");
+  const holidayTranslations = useAppTranslations("holidays");
+  const locale = useAppLocale();
+  const dayTypeLabels = Object.fromEntries(
+    CALENDAR_LEGEND.map((type) => [type, t(`dayTypes.${type}`)])
+  ) as typeof DAY_TYPE_LABELS;
   const anchorDateRef = useRef<ISODateString | null>(null);
-  const months = calculation ? buildCalendarMonths(calculation.input, calculation.output) : [];
+  const months = calculation
+    ? buildCalendarMonths(calculation.input, calculation.output, {
+        locale,
+        holidayLabel: (key) => holidayTranslations(key as never),
+      })
+    : [];
 
   // Ordered list of every selectable day, used to fill Ctrl+click ranges and to
   // group the current selection into contiguous, readable date ranges.
@@ -257,21 +288,21 @@ function CalendarView({
     <section className={styles.outputSection} aria-labelledby="calendar-title">
       <div className={styles.sectionHeader}>
         <div>
-          <p className={styles.eyebrow}>Calendario</p>
-          <h2 id="calendar-title">Vista annuale</h2>
+          <p className={styles.eyebrow}>{t("eyebrow")}</p>
+          <h2 id="calendar-title">{t("title")}</h2>
         </div>
       </div>
 
-      <div className={styles.legend} aria-label="Legenda calendario">
+      <div className={styles.legend} aria-label={t("legendAria")}>
         {CALENDAR_LEGEND.map((type) => (
           <span className={styles.legendItem} key={type}>
             <span className={`${styles.legendSwatch} ${styles[`dayCell_${type}`]}`} />
-            {DAY_TYPE_LABELS[type]}
+            {dayTypeLabels[type]}
           </span>
         ))}
         <span className={styles.legendItem}>
           <span className={`${styles.legendSwatch} ${styles.dayCellSelected}`} />
-          Ferie selezionate
+          {t("selectedLeave")}
         </span>
       </div>
 
@@ -279,11 +310,11 @@ function CalendarView({
         <>
           <div className={styles.selectedVacationBar}>
             <div>
-              <strong>{selectedVacationDates.size} giorni di ferie selezionati</strong>
+              <strong>{t("selectionCount", { count: selectedVacationDates.size })}</strong>
               <span>
                 {selectedRanges.length > 0
-                  ? selectedRanges.join(", ")
-                  : "Tocca un giorno lavorativo o consigliato. Ctrl+click (⌘ su Mac) per selezionare tutto l'intervallo."}
+                  ? selectedRanges.map((range) => formatSelectedRangeLabel(range, locale)).join(", ")
+                  : t("selectionHelp")}
               </span>
             </div>
             {selectedVacationDates.size > 0 ? (
@@ -292,7 +323,7 @@ function CalendarView({
                 onClick={onClearSelectedVacationDates}
                 type="button"
               >
-                Azzera
+                {t("clear")}
               </button>
             ) : null}
           </div>
@@ -302,7 +333,7 @@ function CalendarView({
               <article className={styles.monthBlock} key={month.key}>
                 <h3>{month.label}</h3>
                 <div className={styles.weekdayGrid} aria-hidden="true">
-                  {WEEKDAY_INITIALS.map((weekday, index) => (
+                  {t.raw("weekdaysShort").map((weekday: string, index: number) => (
                     <span key={`${weekday}-${index}`}>{weekday}</span>
                   ))}
                 </div>
@@ -313,8 +344,10 @@ function CalendarView({
                   {month.days.map((day) => {
                     const isSelectable = isSelectableVacationDay(day.type) && !day.isPast;
                     const isSelected = selectedVacationDates.has(day.iso);
-                    const baseLabel = getCalendarDayLabel(day);
-                    const label = isSelected ? `${baseLabel} — Selezionata per ferie` : baseLabel;
+                    const baseLabel = getCalendarDayLabel(day, { locale, dayTypeLabels });
+                    const label = isSelected
+                      ? `${baseLabel} — ${t("selectedAriaSuffix")}`
+                      : baseLabel;
                     const selectedClassName = isSelected ? ` ${styles.dayCellSelected}` : "";
                     const lockedClassName = isSelectable ? "" : ` ${styles.dayCellLocked}`;
                     const pastClassName = day.isPast ? ` ${styles.dayCellPast}` : "";
@@ -344,10 +377,8 @@ function CalendarView({
         </>
       ) : (
         <div className={styles.emptyState}>
-          <strong>Calendario pronto dopo il calcolo</strong>
-          <span>
-            La vista annuale userà colori diversi per festivi, chiusure e ferie consigliate.
-          </span>
+          <strong>{t("emptyTitle")}</strong>
+          <span>{t("emptyDescription")}</span>
         </div>
       )}
     </section>
@@ -355,6 +386,7 @@ function CalendarView({
 }
 
 function NewsletterSignup({ isVisible }: { isVisible: boolean }) {
+  const t = useAppTranslations("newsletter");
   const emailId = useId();
   const consentId = useId();
   const [email, setEmail] = useState("");
@@ -390,13 +422,13 @@ function NewsletterSignup({ isVisible }: { isVisible: boolean }) {
   return (
     <form className={styles.newsletterPanel} onSubmit={handleSubmit}>
       <div className={styles.panelHeader}>
-        <p className={styles.eyebrow}>Newsletter</p>
-        <h2>Aggiornamenti utili</h2>
+        <p className={styles.eyebrow}>{t("eyebrow")}</p>
+        <h2>{t("title")}</h2>
       </div>
 
       <div className={styles.fieldGroup}>
         <label className={styles.label} htmlFor={emailId}>
-          Email
+          {t("email")}
         </label>
         <input
           id={emailId}
@@ -418,22 +450,23 @@ function NewsletterSignup({ isVisible }: { isVisible: boolean }) {
           type="checkbox"
         />
         <span>
-          <NewsletterConsentText />
+          {t("consent", { privacyPolicy: "" }).trim()}{" "}
+          <Link href="/privacy">{t("privacyPolicy")}</Link>.
         </span>
       </label>
 
       <button className={styles.primaryButton} disabled={!canSubmit} type="submit">
-        {isSubmitting ? "Invio..." : "Iscrivimi"}
+        {isSubmitting ? t("submitting") : t("subscribe")}
       </button>
 
       {status === "success" ? (
         <p className={styles.shareStatus} role="status">
-          Controlla la tua email per confermare l&apos;iscrizione.
+          {t("success")}
         </p>
       ) : null}
       {status === "error" ? (
         <p className={styles.formError} role="alert">
-          Iscrizione non riuscita. Riprova tra poco.
+          {t("error")}
         </p>
       ) : null}
     </form>
@@ -441,6 +474,9 @@ function NewsletterSignup({ isVisible }: { isVisible: boolean }) {
 }
 
 export function VacationPlanner() {
+  const t = useAppTranslations("planner");
+  const footer = useAppTranslations("footer");
+  const dayOffTypes: DayOff["type"][] = ["companyClosure", "mandatoryLeave"];
   const budgetId = useId();
   const yearId = useId();
   const patronId = useId();
@@ -636,9 +672,9 @@ export function VacationPlanner() {
 
     try {
       await navigator.clipboard.writeText(link);
-      setShareStatus("Link copiato");
+      setShareStatus(t("form.linkCopied"));
     } catch {
-      setShareStatus("Copia non riuscita");
+      setShareStatus(t("form.copyFailed"));
     }
   }
 
@@ -646,50 +682,42 @@ export function VacationPlanner() {
     <main className={styles.pageShell}>
       <section className={styles.hero} aria-labelledby="page-title">
         <div>
-          <p className={styles.eyebrow}>Planner ferie</p>
-          <h1 id="page-title">CalcolaFerie</h1>
+          <p className={styles.eyebrow}>{t("eyebrow")}</p>
+          <h1 id="page-title">{t("title")}</h1>
         </div>
-        <p>
-          Trova i ponti migliori nei prossimi 12 mesi, distinguendo ferie da spendere, chiusure
-          aziendali e giorni obbligatori.
-        </p>
+        <p>{t("subtitle")}</p>
         <div className={styles.heroFormula} aria-hidden="true">
           <span className={styles.heroFormulaNum}>9</span>
-          <span className={styles.heroFormulaLabel}>giorni liberi</span>
+          <span className={styles.heroFormulaLabel}>{t("formula.freeDays")}</span>
           <span className={styles.heroFormulaOp}>÷</span>
           <span className={styles.heroFormulaNum}>4</span>
-          <span className={styles.heroFormulaLabel}>ferie spese</span>
+          <span className={styles.heroFormulaLabel}>{t("formula.leaveUsed")}</span>
           <span className={styles.heroFormulaOp}>=</span>
-          <span className={styles.heroFormulaResult}>2,3× leva</span>
+          <span className={styles.heroFormulaResult}>
+            {t("formula.leverage", { value: "2,3" })}
+          </span>
         </div>
       </section>
 
       <section aria-labelledby="about-title" className={styles.aboutSection}>
-        <p className={styles.eyebrow}>Come funziona</p>
-        <h2 id="about-title">Calcolatore ponti ferie italiane</h2>
-        <p>
-          Scopri come ottimizzare le ferie sfruttando le festività italiane: inserisci il tuo budget
-          di giorni e trova i ponti migliori per massimizzare i giorni di vacanza con il minimo di
-          ferie spese.
-        </p>
-        <p>
-          I risultati sono indicativi: verifica sempre festività locali, contratto e regole del tuo
-          datore di lavoro prima di organizzare le assenze.
-        </p>
+        <p className={styles.eyebrow}>{t("about.eyebrow")}</p>
+        <h2 id="about-title">{t("about.title")}</h2>
+        <p>{t("about.description")}</p>
+        <p>{t("about.disclaimer")}</p>
       </section>
 
       <div className={styles.toolLayout}>
         <div className={styles.formColumn}>
           <form className={styles.formPanel} onSubmit={handleSubmit}>
             <div className={styles.panelHeader}>
-              <p className={styles.eyebrow}>Input</p>
-              <h2>Scenario</h2>
+              <p className={styles.eyebrow}>{t("form.eyebrow")}</p>
+              <h2>{t("form.title")}</h2>
             </div>
 
             <div className={styles.primaryFields}>
               <div className={styles.fieldGroup}>
                 <label className={styles.label} htmlFor={budgetId}>
-                  Giorni di ferie disponibili
+                  {t("form.budget")}
                 </label>
                 <input
                   id={budgetId}
@@ -699,7 +727,7 @@ export function VacationPlanner() {
                   max={MAX_VACATION_DAYS}
                   name="totalVacationDays"
                   onChange={(event) => setTotalVacationDays(event.target.value)}
-                  placeholder="es. 20"
+                  placeholder={t("form.budgetPlaceholder")}
                   required
                   step="1"
                   type="number"
@@ -709,7 +737,7 @@ export function VacationPlanner() {
 
               <div className={styles.fieldGroup}>
                 <label className={styles.label} htmlFor={yearId}>
-                  Anno
+                  {t("form.year")}
                 </label>
                 <select
                   id={yearId}
@@ -728,14 +756,11 @@ export function VacationPlanner() {
             </div>
 
             <details className={styles.advancedSearch}>
-              <summary>Ricerca avanzata</summary>
+              <summary>{t("form.advanced")}</summary>
               <div className={styles.advancedSearchContent}>
                 <fieldset className={styles.fieldset}>
-                  <legend>Chiusure e giorni obbligati</legend>
-                  <p className={styles.helpText}>
-                    Se l&apos;azienda chiude senza usare ferie, scegli giorno gratuito. Se quel
-                    giorno viene scalato dal tuo monte ferie, scegli giorno obbligatorio.
-                  </p>
+                  <legend>{t("form.daysOffTitle")}</legend>
+                  <p className={styles.helpText}>{t("form.daysOffHelp")}</p>
 
                   <div className={styles.dayOffList}>
                     {dayOffRows.map((row, index) => {
@@ -746,14 +771,14 @@ export function VacationPlanner() {
                         <div className={styles.dayOffRow} key={row.id}>
                           <div className={styles.dayOffTopLine}>
                             <label className={styles.label} htmlFor={dateId}>
-                              Data {index + 1}
+                              {t("form.date", { number: index + 1 })}
                             </label>
                             <button
                               className={styles.linkButton}
                               onClick={() => removeDayOff(row.id)}
                               type="button"
                             >
-                              Rimuovi
+                              {t("form.remove")}
                             </button>
                           </div>
                           <input
@@ -767,22 +792,20 @@ export function VacationPlanner() {
                           <div
                             className={styles.segmentedControl}
                             role="radiogroup"
-                            aria-label={`Tipo giorno ${index + 1}`}
+                            aria-label={t("form.dayTypeAria", { number: index + 1 })}
                           >
-                            {(Object.keys(DAY_OFF_TYPE_LABELS) as Array<DayOff["type"]>).map(
-                              (type) => (
-                                <label className={styles.segment} key={type}>
-                                  <input
-                                    checked={row.type === type}
-                                    name={radioName}
-                                    onChange={() => updateDayOffType(row.id, type)}
-                                    type="radio"
-                                    value={type}
-                                  />
-                                  <span>{DAY_OFF_TYPE_LABELS[type]}</span>
-                                </label>
-                              )
-                            )}
+                            {dayOffTypes.map((type) => (
+                              <label className={styles.segment} key={type}>
+                                <input
+                                  checked={row.type === type}
+                                  name={radioName}
+                                  onChange={() => updateDayOffType(row.id, type)}
+                                  type="radio"
+                                  value={type}
+                                />
+                                <span>{t(`dayOffTypes.${type}`)}</span>
+                              </label>
+                            ))}
                           </div>
                         </div>
                       );
@@ -798,13 +821,13 @@ export function VacationPlanner() {
                     }}
                     type="button"
                   >
-                    Aggiungi data
+                    {t("form.addDate")}
                   </button>
                 </fieldset>
 
                 <div className={styles.fieldGroup}>
                   <label className={styles.label} htmlFor={patronId}>
-                    Festività del tuo patrono locale (opzionale)
+                    {t("form.patron")}
                   </label>
                   <input
                     id={patronId}
@@ -819,11 +842,11 @@ export function VacationPlanner() {
 
             <div className={styles.submitActions}>
               <button className={styles.primaryButton} disabled={!canCalculate} type="submit">
-                Calcola
+                {t("form.calculate")}
               </button>
               {submittedConfig ? (
                 <button className={styles.secondaryButton} onClick={handleCopyLink} type="button">
-                  Copia link
+                  {t("form.copyLink")}
                 </button>
               ) : null}
             </div>
@@ -854,6 +877,14 @@ export function VacationPlanner() {
             onToggleVacationDate={toggleVacationDate}
             selectedVacationDates={selectedVacationDates}
           />
+          {calculation ? (
+            <SelectedVacationsTable
+              ranges={buildSelectedRanges(
+                buildSelectableVacationDates(calculation.input, calculation.output),
+                selectedVacationDates
+              )}
+            />
+          ) : null}
         </div>
       </div>
 
@@ -861,26 +892,24 @@ export function VacationPlanner() {
         <div className={styles.footerInner}>
           <div className={styles.footerBrand}>
             <p className={styles.footerName}>CalcolaFerie</p>
-            <p className={styles.footerTagline}>
-              Ponti e ferie italiane, ottimizzati sul tuo budget di giorni.
-            </p>
+            <p className={styles.footerTagline}>{footer("tagline")}</p>
           </div>
           <div className={styles.footerCol}>
-            <p className={styles.footerHeading}>Contatti</p>
+            <p className={styles.footerHeading}>{footer("contacts")}</p>
             <a href={`mailto:${FOOTER_EMAIL}`}>{FOOTER_EMAIL}</a>
-            <span>Gestore: {FOOTER_MANAGER}</span>
+            <span>{footer("manager", { name: FOOTER_MANAGER })}</span>
             {process.env.NEXT_PUBLIC_PIVA ? (
-              <span>P.IVA: {process.env.NEXT_PUBLIC_PIVA}</span>
+              <span>{footer("vat", { value: process.env.NEXT_PUBLIC_PIVA })}</span>
             ) : null}
           </div>
           <div className={styles.footerCol}>
-            <p className={styles.footerHeading}>Legale</p>
-            <Link href="/privacy">Privacy</Link>
+            <p className={styles.footerHeading}>{footer("legal")}</p>
+            <Link href="/privacy">{footer("privacy")}</Link>
+            <LanguageSwitcher />
           </div>
         </div>
         <p className={styles.footerBottom}>
-          © {new Date().getFullYear()} CalcolaFerie · I risultati sono indicativi: verifica sempre
-          festività locali e regole del tuo contratto.
+          {footer("copyright", { year: new Date().getFullYear() })}
         </p>
       </footer>
     </main>

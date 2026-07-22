@@ -1,13 +1,8 @@
 import { type BridgeOpportunity, type EngineOutput, type WeekdayIndex } from "@engine";
+import { useLocale, useTranslations } from "next-intl";
 import { buildBookingDeepLink } from "../_lib/affiliate-link";
-import { COMPANY_CLOSURE_LABEL, holidayLabel } from "../_lib/holiday-labels";
+import { companyClosureLabel, holidayLabel, type HolidayTranslator } from "../_lib/holiday-labels";
 import styles from "../styles/app.module.scss";
-
-const AFFILIATE_DISCLOSURE =
-  "Link affiliato: se prenoti, riceviamo una commissione senza costi extra per te.";
-
-const RESULTS_DISCLAIMER =
-  "I risultati sono indicativi. Verifica le festività patronali e le norme del tuo contratto/datore di lavoro.";
 
 const MONTH_LABELS = [
   "gen",
@@ -22,6 +17,21 @@ const MONTH_LABELS = [
   "ott",
   "nov",
   "dic",
+];
+
+const EN_MONTH_LABELS = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
 ];
 
 const WEEKDAY_LABELS: Record<WeekdayIndex, string> = {
@@ -49,11 +59,18 @@ function vacationDayLabel(costDays: number) {
   return costDays === 1 ? "giorno" : "giorni";
 }
 
-export function formatDateRange(startDate: string, endDate: string) {
+export function formatSingleDay(isoDate: string, locale = "it") {
+  const { day, month } = parseISODateParts(isoDate);
+  const months = locale.toLowerCase().startsWith("it") ? MONTH_LABELS : EN_MONTH_LABELS;
+  return `${day} ${months[month - 1]}`;
+}
+
+export function formatDateRange(startDate: string, endDate: string, locale = "it") {
   const start = parseISODateParts(startDate);
   const end = parseISODateParts(endDate);
-  const startMonth = MONTH_LABELS[start.month - 1];
-  const endMonth = MONTH_LABELS[end.month - 1];
+  const months = locale.toLowerCase().startsWith("it") ? MONTH_LABELS : EN_MONTH_LABELS;
+  const startMonth = months[start.month - 1];
+  const endMonth = months[end.month - 1];
 
   if (start.year === end.year && start.month === end.month) {
     return `${start.day}–${end.day} ${endMonth}`;
@@ -66,28 +83,45 @@ export function formatDateRange(startDate: string, endDate: string) {
   return `${start.day} ${startMonth} ${start.year}–${end.day} ${endMonth} ${end.year}`;
 }
 
-export function formatExplanation(opportunity: BridgeOpportunity) {
+export function formatExplanation(
+  opportunity: BridgeOpportunity,
+  translate?: (key: string, values?: Record<string, string | number>) => string,
+  translateHoliday?: HolidayTranslator
+) {
   const { explanation } = opportunity;
   const costDays = explanation.costDays;
   const staccoDays = explanation.staccoDays;
 
   if (costDays === 0) {
-    return "Nessuna feria necessaria — blocco già libero";
+    return translate
+      ? translate("explanation.noLeave")
+      : "Nessuna feria necessaria — blocco già libero";
   }
 
   const costPhrase = `${costDays} ${vacationDayLabel(costDays)} di ferie`;
   const resultPhrase = `${costPhrase} = ${staccoDays} giorni di stacco`;
 
   if (explanation.fusedHolidayKeys && explanation.fusedHolidayKeys.length > 1) {
-    return `${explanation.fusedHolidayKeys.map(holidayLabel).join(" + ")} → ${resultPhrase}`;
+    const holidays = explanation.fusedHolidayKeys
+      .map((key) => holidayLabel(key, translateHoliday))
+      .join(" + ");
+    return translate
+      ? translate("explanation.fused", { holidays, result: resultPhrase })
+      : `${holidays} → ${resultPhrase}`;
   }
 
   const anchorLabel =
     explanation.anchorKind === "companyClosure"
-      ? COMPANY_CLOSURE_LABEL
-      : holidayLabel(explanation.anchorHolidayKey ?? "");
+      ? companyClosureLabel(translateHoliday)
+      : holidayLabel(explanation.anchorHolidayKey ?? "", translateHoliday);
 
-  return `${anchorLabel} cade ${WEEKDAY_LABELS[explanation.anchorWeekday]} → ${resultPhrase}`;
+  return translate
+    ? translate("explanation.anchored", {
+        anchor: anchorLabel,
+        weekday: WEEKDAY_LABELS[explanation.anchorWeekday],
+        result: resultPhrase,
+      })
+    : `${anchorLabel} cade ${WEEKDAY_LABELS[explanation.anchorWeekday]} → ${resultPhrase}`;
 }
 
 export function getLevaTier(leva: number): LevaTier {
@@ -112,18 +146,16 @@ export function getSelectedOpportunityCost(
   );
 }
 
-function BookingCta({ opportunity }: { opportunity: BridgeOpportunity }) {
-  const href = buildBookingDeepLink({
-    startDate: opportunity.startDate,
-    endDate: opportunity.endDate,
-  });
+function BookingCta({ startDate, endDate }: { startDate: string; endDate: string }) {
+  const t = useTranslations("results");
+  const href = buildBookingDeepLink({ startDate, endDate });
 
   // Stop propagation so booking does not toggle the row/card selection.
   const stop = (event: { stopPropagation: () => void }) => event.stopPropagation();
 
   return (
     <span className={styles.bookingCtaWrap}>
-      <span className={styles.affiliateLabel}>Link affiliato</span>
+      <span className={styles.affiliateLabel}>{t("affiliateLabel")}</span>
       <a
         className={styles.bookingCta}
         href={href}
@@ -132,7 +164,7 @@ function BookingCta({ opportunity }: { opportunity: BridgeOpportunity }) {
         rel="sponsored noopener noreferrer"
         target="_blank"
       >
-        Prenota questi giorni
+        {t("bookCta")}
       </a>
     </span>
   );
@@ -153,6 +185,12 @@ function OpportunityCard({
   availableBudget: number;
   isSelected: boolean;
 } & ResultsSelectionProps) {
+  const t = useTranslations("results");
+  const holidayT = useTranslations("holidays");
+  const locale = useLocale();
+  const translate = (key: string, values?: Record<string, string | number>) =>
+    t(key as never, values as never);
+  const translateHoliday = (key: string) => holidayT(key as never);
   const isOverBudget = opportunity.costDays > availableBudget;
 
   return (
@@ -174,28 +212,30 @@ function OpportunityCard({
           <span aria-hidden="true" className={styles.selectionBox}>
             {isSelected ? "✓" : ""}
           </span>
-          <span>{formatDateRange(opportunity.startDate, opportunity.endDate)}</span>
+          <span>{formatDateRange(opportunity.startDate, opportunity.endDate, locale)}</span>
         </span>
         <span className={getLevaClassName(opportunity.leva)}>{opportunity.leva.toFixed(1)}×</span>
       </div>
 
       <dl className={styles.opportunityMetrics}>
         <div>
-          <dt>Giorni stacco</dt>
+          <dt>{t("metrics.breakDays")}</dt>
           <dd>{opportunity.staccoDays}</dd>
         </div>
         <div>
-          <dt>Ferie da usare</dt>
+          <dt>{t("metrics.leaveDays")}</dt>
           <dd>{opportunity.costDays}</dd>
         </div>
       </dl>
 
-      <p className={styles.explanationText}>{formatExplanation(opportunity)}</p>
+      <p className={styles.explanationText}>
+        {formatExplanation(opportunity, translate, translateHoliday)}
+      </p>
 
-      {isOverBudget ? <span className={styles.budgetChip}>Fuori budget</span> : null}
-      {isSelected ? <span className={styles.selectedChip}>Selezionato</span> : null}
+      {isOverBudget ? <span className={styles.budgetChip}>{t("overBudget")}</span> : null}
+      {isSelected ? <span className={styles.selectedChip}>{t("selected")}</span> : null}
 
-      <BookingCta opportunity={opportunity} />
+      <BookingCta endDate={opportunity.endDate} startDate={opportunity.startDate} />
     </article>
   );
 }
@@ -208,11 +248,13 @@ function OpportunityRow({
   opportunity: BridgeOpportunity;
   isSelected: boolean;
 } & ResultsSelectionProps) {
-  const dateRange = formatDateRange(opportunity.startDate, opportunity.endDate);
+  const t = useTranslations("results");
+  const locale = useLocale();
+  const dateRange = formatDateRange(opportunity.startDate, opportunity.endDate, locale);
 
   return (
     <tr
-      aria-label={`${isSelected ? "Deseleziona" : "Seleziona"} ponte ${dateRange}`}
+      aria-label={t("bridgeAria", { action: t(isSelected ? "deselect" : "select"), dateRange })}
       aria-pressed={isSelected}
       className={isSelected ? styles.selectedTableRow : undefined}
       onClick={() => onToggleOpportunity(opportunity.id)}
@@ -227,7 +269,7 @@ function OpportunityRow({
     >
       <td>
         <input
-          aria-label={`Seleziona ponte ${dateRange}`}
+          aria-label={t("selectBridgeAria", { dateRange })}
           checked={isSelected}
           onChange={() => onToggleOpportunity(opportunity.id)}
           onClick={(event) => event.stopPropagation()}
@@ -240,11 +282,115 @@ function OpportunityRow({
       <td>
         <span className={getLevaClassName(opportunity.leva)}>{opportunity.leva.toFixed(1)}×</span>
       </td>
-      <td>{formatExplanation(opportunity)}</td>
       <td className={styles.bookingCell} onClick={(event) => event.stopPropagation()}>
-        <BookingCta opportunity={opportunity} />
+        <BookingCta endDate={opportunity.endDate} startDate={opportunity.startDate} />
       </td>
     </tr>
+  );
+}
+
+export type SelectedVacationRange = {
+  start: string;
+  end: string;
+  days: number;
+};
+
+export function SelectedVacationsTable({ ranges }: { ranges: SelectedVacationRange[] }) {
+  const t = useTranslations("results");
+  const locale = useLocale();
+
+  if (ranges.length === 0) {
+    return null;
+  }
+
+  const totalDays = ranges.reduce((total, range) => total + range.days, 0);
+
+  const formatPeriod = (range: SelectedVacationRange) =>
+    range.start === range.end
+      ? formatSingleDay(range.start, locale)
+      : formatDateRange(range.start, range.end, locale);
+
+  const handleDownloadPdf = () => {
+    const rowsHtml = ranges
+      .map(
+        (range) =>
+          `<tr><td>${formatPeriod(range)}</td><td class="num">${range.days}</td></tr>`
+      )
+      .join("");
+    const documentHtml = `<!doctype html><html lang="${locale}"><head><meta charset="utf-8"><title>${t("pdfTitle")}</title><style>
+      body{font-family:Inter,Arial,sans-serif;color:#1b2620;margin:32px;}
+      h1{font-size:20px;margin:0 0 16px;}
+      table{width:100%;border-collapse:collapse;font-size:14px;}
+      th,td{border-bottom:1px solid #d7dee2;padding:8px 10px;text-align:left;}
+      thead th{background:#f2f5f6;text-transform:uppercase;font-size:11px;letter-spacing:0.04em;}
+      td.num,th.num{text-align:right;}
+      tfoot td{font-weight:700;background:#f8fafb;}
+    </style></head><body>
+      <h1>${t("pdfTitle")}</h1>
+      <table>
+        <thead><tr><th>${t("table.period")}</th><th class="num">${t("table.leaveDays")}</th></tr></thead>
+        <tbody>${rowsHtml}</tbody>
+        <tfoot><tr><td>${t("total")}</td><td class="num">${totalDays}</td></tr></tfoot>
+      </table>
+    </body></html>`;
+
+    const printWindow = window.open("", "_blank");
+    if (!printWindow) return;
+    printWindow.document.write(documentHtml);
+    printWindow.document.close();
+    printWindow.focus();
+    printWindow.addEventListener("load", () => {
+      printWindow.print();
+    });
+    // Fallback if the load event already fired.
+    setTimeout(() => printWindow.print(), 300);
+  };
+
+  return (
+    <section className={styles.outputSection} aria-labelledby="selected-vacations-title">
+      <div className={styles.sectionHeader}>
+        <div>
+          <p className={styles.eyebrow}>{t("eyebrow")}</p>
+          <h2 id="selected-vacations-title">{t("selectedLeave")}</h2>
+        </div>
+        <button className={styles.secondaryButton} onClick={handleDownloadPdf} type="button">
+          {t("downloadPdf")}
+        </button>
+      </div>
+      <div className={styles.selectedTableWrap}>
+        <table className={styles.resultsTable}>
+          <thead>
+            <tr>
+              <th scope="col">{t("table.period")}</th>
+              <th scope="col">{t("table.leaveDays")}</th>
+              <th scope="col">{t("table.book")}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {ranges.map((range) => (
+              <tr key={range.start}>
+                <th scope="row">
+                  {range.start === range.end
+                    ? formatSingleDay(range.start, locale)
+                    : formatDateRange(range.start, range.end, locale)}
+                </th>
+                <td>{range.days}</td>
+                <td className={styles.bookingCell}>
+                  <BookingCta endDate={range.end} startDate={range.start} />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+          <tfoot>
+            <tr>
+              <th scope="row">{t("total")}</th>
+              <td>{totalDays}</td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </section>
   );
 }
 
@@ -255,11 +401,13 @@ export function ResultsTable({
 }: {
   output: EngineOutput;
 } & ResultsSelectionProps) {
+  const t = useTranslations("results");
+
   if (output.opportunities.length === 0) {
     return (
       <div className={styles.emptyState}>
-        <strong>Nessun ponte trovato</strong>
-        <span>Prova ad aumentare il budget o ad aggiungere festività e chiusure nel periodo.</span>
+        <strong>{t("noResultsTitle")}</strong>
+        <span>{t("noResultsDescription")}</span>
       </div>
     );
   }
@@ -283,13 +431,12 @@ export function ResultsTable({
         <table className={styles.resultsTable}>
           <thead>
             <tr>
-              <th scope="col">Scegli</th>
-              <th scope="col">Periodo</th>
-              <th scope="col">Giorni stacco</th>
-              <th scope="col">Ferie da usare</th>
-              <th scope="col">Leva</th>
-              <th scope="col">Perché conviene</th>
-              <th scope="col">Prenota</th>
+              <th scope="col">{t("table.choose")}</th>
+              <th scope="col">{t("table.period")}</th>
+              <th scope="col">{t("table.breakDays")}</th>
+              <th scope="col">{t("table.leaveDays")}</th>
+              <th scope="col">{t("table.leverage")}</th>
+              <th scope="col">{t("table.book")}</th>
             </tr>
           </thead>
           <tbody>
@@ -306,8 +453,8 @@ export function ResultsTable({
         </table>
       </div>
 
-      <p className={styles.resultsDisclaimer}>{RESULTS_DISCLAIMER}</p>
-      <p className={styles.affiliateDisclosure}>{AFFILIATE_DISCLOSURE}</p>
+      <p className={styles.resultsDisclaimer}>{t("disclaimer")}</p>
+      <p className={styles.affiliateDisclosure}>{t("affiliateDisclosure")}</p>
     </div>
   );
 }
