@@ -84,11 +84,20 @@ export function buildCalendarMonths(input: EngineInput, output: EngineOutput): C
   let current: CalendarMonth | null = null;
   let currentKey = "";
 
-  // Render the full calendar year of windowStart: 1 January → 31 December.
-  // Days before windowStart are rendered as past; the whole year is always shown.
-  const calendarYear = isoToDate(input.windowStart).getUTCFullYear();
-  const gridStart = toISO(calendarYear, 1, 1);
-  const gridEnd = toISO(calendarYear, 12, 31);
+  // Render from 1 January of windowStart's year through the last day of the month
+  // that contains windowEnd — so the grid spans the whole planning window (l'anno
+  // corrente più i mesi extra fino a windowEnd, es. gennaio dell'anno prossimo).
+  // Days before windowStart are rendered as past; whole months are always shown.
+  const gridStart = toISO(isoToDate(input.windowStart).getUTCFullYear(), 1, 1);
+  const windowEndDate = isoToDate(input.windowEnd);
+  const lastDayOfEndMonth = new Date(
+    Date.UTC(windowEndDate.getUTCFullYear(), windowEndDate.getUTCMonth() + 1, 0)
+  ).getUTCDate();
+  const gridEnd = toISO(
+    windowEndDate.getUTCFullYear(),
+    windowEndDate.getUTCMonth() + 1,
+    lastDayOfEndMonth
+  );
 
   for (let iso = gridStart; iso <= gridEnd; iso = addDays(iso, 1)) {
     const date = isoToDate(iso);

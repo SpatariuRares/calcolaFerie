@@ -701,7 +701,10 @@ export function VacationPlanner() {
               />
             </div>
 
-            <fieldset className={styles.fieldset}>
+            <details className={styles.advancedSearch}>
+              <summary>Ricerca avanzata</summary>
+              <div className={styles.advancedSearchContent}>
+                <fieldset className={styles.fieldset}>
               <legend>Chiusure e giorni obbligati</legend>
               <p className={styles.helpText}>
                 Se l&apos;azienda chiude senza usare ferie, scegli giorno gratuito. Se quel giorno
@@ -769,9 +772,9 @@ export function VacationPlanner() {
               >
                 Aggiungi data
               </button>
-            </fieldset>
+                </fieldset>
 
-            <div className={styles.fieldGroup}>
+                <div className={styles.fieldGroup}>
               <label className={styles.label} htmlFor={patronId}>
                 Festività del tuo patrono locale (opzionale)
               </label>
@@ -780,9 +783,11 @@ export function VacationPlanner() {
                 className={styles.input}
                 onChange={(event) => setPatronSaintDate(event.target.value)}
                 type="date"
-                value={patronSaintDate}
-              />
-            </div>
+                    value={patronSaintDate}
+                  />
+                </div>
+              </div>
+            </details>
 
             <div className={styles.submitActions}>
               <button className={styles.primaryButton} disabled={!canCalculate} type="submit">

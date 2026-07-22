@@ -57,11 +57,27 @@ describe("input form UI", () => {
     setMobileViewport();
   });
 
+  it("shows only the required vacation budget before opening advanced search", async () => {
+    const user = userEvent.setup();
+    render(React.createElement(VacationPlanner));
+
+    const budgetInput = screen.getByLabelText("Giorni di ferie disponibili");
+    const advancedSearch = screen.getByText("Ricerca avanzata").closest("details");
+
+    expect(budgetInput).toBeRequired();
+    expect(advancedSearch).not.toHaveAttribute("open");
+    expect(screen.getByRole("button", { name: "Calcola" })).toBeDisabled();
+
+    await user.click(screen.getByText("Ricerca avanzata"));
+    expect(advancedSearch).toHaveAttribute("open");
+  });
+
   it("renders accessible mobile inputs and keeps Calcola disabled until the budget is filled", async () => {
     const user = userEvent.setup();
     render(React.createElement(VacationPlanner));
 
     const budgetInput = screen.getByLabelText("Giorni di ferie disponibili");
+    await user.click(screen.getByText("Ricerca avanzata"));
     const dayOffDateInput = screen.getByLabelText("Data 1");
     const patronInput = screen.getByLabelText("Festività del tuo patrono locale (opzionale)");
     const calculateButton = screen.getByRole("button", { name: "Calcola" });

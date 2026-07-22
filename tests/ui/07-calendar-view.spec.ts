@@ -118,14 +118,16 @@ describe("calendar view UI", () => {
     expect(within(calendarSection).getByText("Calendario pronto dopo il calcolo")).toBeInTheDocument();
   });
 
-  it("renders the full chosen year from January to December", async () => {
+  it("renders from January of the current year through the window end month", async () => {
     await renderCalculatedPlanner();
 
     const calendarSection = screen.getByRole("region", { name: "Vista annuale" });
     expect(within(calendarSection).getByRole("heading", { name: "gennaio 2026" })).toBeInTheDocument();
     expect(within(calendarSection).getByRole("heading", { name: "dicembre 2026" })).toBeInTheDocument();
+    // windowEnd is 31 January of next year, so January 2027 is included too.
+    expect(within(calendarSection).getByRole("heading", { name: "gennaio 2027" })).toBeInTheDocument();
     expect(
-      within(calendarSection).queryByRole("heading", { name: /2027/ })
+      within(calendarSection).queryByRole("heading", { name: /febbraio 2027/ })
     ).not.toBeInTheDocument();
 
     expect(

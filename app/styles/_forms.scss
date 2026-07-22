@@ -33,6 +33,33 @@
   padding: 0;
 }
 
+.advancedSearch {
+  border: 1px solid $border;
+  border-radius: 8px;
+  background: #f9fbfc;
+
+  summary {
+    padding: 13px 14px;
+    color: $strong;
+    font-weight: 850;
+    cursor: pointer;
+
+    &:focus-visible {
+      @include focus;
+      border-radius: 8px;
+    }
+  }
+
+  &[open] summary {
+    border-bottom: 1px solid $border;
+  }
+}
+
+.advancedSearchContent {
+  @include stack(18px);
+  padding: 14px;
+}
+
 .helpText,
 .mutedText {
   margin: 0;

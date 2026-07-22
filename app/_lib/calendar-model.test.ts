@@ -42,13 +42,12 @@ describe("calendar model", () => {
       })
     );
 
-    // The calendar always shows the full year of windowStart: Jan 1 → Dec 31.
-    expect(months).toHaveLength(12);
+    // The calendar spans from Jan 1 of windowStart's year through the month of windowEnd.
     expect(months[0]).toMatchObject({ key: "2026-01", label: "gennaio 2026" });
-    expect(months.at(-1)?.key).toBe("2026-12");
+    expect(months.at(-1)?.key).toBe("2027-06");
     // Whole months are rendered; days before windowStart are marked past.
     expect(months[0].days[0]).toMatchObject({ iso: "2026-01-01", isPast: true });
-    expect(months.at(-1)?.days.at(-1)?.iso).toBe("2026-12-31");
+    expect(months.at(-1)?.days.at(-1)?.iso).toBe("2027-06-30");
     const june = months.find((month) => month.key === "2026-06");
     expect(june?.days.find((day) => day.iso === "2026-06-20")?.isPast).toBeUndefined();
     expect(june?.days.find((day) => day.iso === "2026-06-19")?.isPast).toBe(true);
