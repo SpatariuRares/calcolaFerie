@@ -62,9 +62,11 @@ describe("input form UI", () => {
     render(React.createElement(VacationPlanner));
 
     const budgetInput = screen.getByLabelText("Giorni di ferie disponibili");
+    const yearSelect = screen.getByLabelText("Anno");
     const advancedSearch = screen.getByText("Ricerca avanzata").closest("details");
 
     expect(budgetInput).toBeRequired();
+    expect(yearSelect).toHaveValue(String(new Date().getFullYear()));
     expect(advancedSearch).not.toHaveAttribute("open");
     expect(screen.getByRole("button", { name: "Calcola" })).toBeDisabled();
 
@@ -90,6 +92,8 @@ describe("input form UI", () => {
 
     await user.tab();
     expect(budgetInput).toHaveFocus();
+    await user.tab();
+    expect(screen.getByLabelText("Anno")).toHaveFocus();
     await user.tab();
     expect(screen.getByRole("button", { name: "Rimuovi" })).toHaveFocus();
     await user.tab();
@@ -146,5 +150,18 @@ describe("input form UI", () => {
       key: "patron",
       kind: "patron",
     });
+  });
+
+  it("calculates a future year from its first day", async () => {
+    const user = userEvent.setup();
+    const nextYear = new Date().getFullYear() + 1;
+    render(React.createElement(VacationPlanner));
+
+    await user.type(screen.getByLabelText("Giorni di ferie disponibili"), "20");
+    await user.selectOptions(screen.getByLabelText("Anno"), String(nextYear));
+    await user.click(screen.getByRole("button", { name: "Calcola" }));
+
+    await waitFor(() => expect(calculatePlanSpy).toHaveBeenCalledOnce());
+    expect(calculatePlanSpy.mock.calls[0][0].windowStart).toBe(`${nextYear}-01-01`);
   });
 });

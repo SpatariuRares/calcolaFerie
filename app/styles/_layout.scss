@@ -311,6 +311,11 @@
   gap: 8px;
 }
 
+.primaryFields {
+  display: grid;
+  gap: 12px;
+}
+
 .outputStack {
   gap: 18px;
   min-width: 0;
@@ -344,6 +349,12 @@
 
 .sectionHeader {
   gap: 16px;
+}
+
+@include at(540px) {
+  .primaryFields {
+    grid-template-columns: minmax(0, 1fr) minmax(120px, 0.45fr);
+  }
 }
 
 @include at(860px) {

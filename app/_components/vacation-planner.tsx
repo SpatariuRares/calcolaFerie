@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
-import { tryIsoDate, type DayOff, type ISODateString, type UserConfig } from "@engine";
+import { isoToDate, tryIsoDate, type DayOff, type ISODateString, type UserConfig } from "@engine";
 import {
   buildCalendarMonths,
   CALENDAR_LEGEND,
@@ -442,9 +442,12 @@ function NewsletterSignup({ isVisible }: { isVisible: boolean }) {
 
 export function VacationPlanner() {
   const budgetId = useId();
+  const yearId = useId();
   const patronId = useId();
   const nextDayOffId = useRef(1);
+  const currentYear = new Date().getFullYear();
   const [totalVacationDays, setTotalVacationDays] = useState("");
+  const [planningYear, setPlanningYear] = useState(currentYear);
   const [dayOffRows, setDayOffRows] = useState<DayOffRow[]>([createDayOffRow("day-off-0")]);
   const [patronSaintDate, setPatronSaintDate] = useState("");
   const [calculation, setCalculation] = useState<CalculationState | null>(null);
@@ -620,7 +623,9 @@ export function VacationPlanner() {
     setShareStatus("");
     setSubmittedConfig(config);
     saveUserConfig(config);
-    setCalculation(calculateVacationPlan(config));
+    const calculationDate =
+      planningYear === currentYear ? new Date() : isoToDate(`${planningYear}-01-01`);
+    setCalculation(calculateVacationPlan(config, calculationDate));
   }
 
   async function handleCopyLink() {
@@ -681,108 +686,131 @@ export function VacationPlanner() {
               <h2>Scenario</h2>
             </div>
 
-            <div className={styles.fieldGroup}>
-              <label className={styles.label} htmlFor={budgetId}>
-                Giorni di ferie disponibili
-              </label>
-              <input
-                id={budgetId}
-                className={styles.input}
-                inputMode="numeric"
-                min="0"
-                max={MAX_VACATION_DAYS}
-                name="totalVacationDays"
-                onChange={(event) => setTotalVacationDays(event.target.value)}
-                placeholder="es. 20"
-                required
-                step="1"
-                type="number"
-                value={totalVacationDays}
-              />
+            <div className={styles.primaryFields}>
+              <div className={styles.fieldGroup}>
+                <label className={styles.label} htmlFor={budgetId}>
+                  Giorni di ferie disponibili
+                </label>
+                <input
+                  id={budgetId}
+                  className={styles.input}
+                  inputMode="numeric"
+                  min="0"
+                  max={MAX_VACATION_DAYS}
+                  name="totalVacationDays"
+                  onChange={(event) => setTotalVacationDays(event.target.value)}
+                  placeholder="es. 20"
+                  required
+                  step="1"
+                  type="number"
+                  value={totalVacationDays}
+                />
+              </div>
+
+              <div className={styles.fieldGroup}>
+                <label className={styles.label} htmlFor={yearId}>
+                  Anno
+                </label>
+                <select
+                  id={yearId}
+                  className={styles.input}
+                  name="planningYear"
+                  onChange={(event) => setPlanningYear(Number(event.target.value))}
+                  value={planningYear}
+                >
+                  {[currentYear, currentYear + 1, currentYear + 2].map((year) => (
+                    <option key={year} value={year}>
+                      {year}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
 
             <details className={styles.advancedSearch}>
               <summary>Ricerca avanzata</summary>
               <div className={styles.advancedSearchContent}>
                 <fieldset className={styles.fieldset}>
-              <legend>Chiusure e giorni obbligati</legend>
-              <p className={styles.helpText}>
-                Se l&apos;azienda chiude senza usare ferie, scegli giorno gratuito. Se quel giorno
-                viene scalato dal tuo monte ferie, scegli giorno obbligatorio.
-              </p>
+                  <legend>Chiusure e giorni obbligati</legend>
+                  <p className={styles.helpText}>
+                    Se l&apos;azienda chiude senza usare ferie, scegli giorno gratuito. Se quel
+                    giorno viene scalato dal tuo monte ferie, scegli giorno obbligatorio.
+                  </p>
 
-              <div className={styles.dayOffList}>
-                {dayOffRows.map((row, index) => {
-                  const dateId = `day-off-date-${row.id}`;
-                  const radioName = `day-off-type-${row.id}`;
+                  <div className={styles.dayOffList}>
+                    {dayOffRows.map((row, index) => {
+                      const dateId = `day-off-date-${row.id}`;
+                      const radioName = `day-off-type-${row.id}`;
 
-                  return (
-                    <div className={styles.dayOffRow} key={row.id}>
-                      <div className={styles.dayOffTopLine}>
-                        <label className={styles.label} htmlFor={dateId}>
-                          Data {index + 1}
-                        </label>
-                        <button
-                          className={styles.linkButton}
-                          onClick={() => removeDayOff(row.id)}
-                          type="button"
-                        >
-                          Rimuovi
-                        </button>
-                      </div>
-                      <input
-                        id={dateId}
-                        className={styles.input}
-                        onChange={(event) => updateDayOffDate(row.id, event.target.value)}
-                        type="date"
-                        value={row.date}
-                      />
+                      return (
+                        <div className={styles.dayOffRow} key={row.id}>
+                          <div className={styles.dayOffTopLine}>
+                            <label className={styles.label} htmlFor={dateId}>
+                              Data {index + 1}
+                            </label>
+                            <button
+                              className={styles.linkButton}
+                              onClick={() => removeDayOff(row.id)}
+                              type="button"
+                            >
+                              Rimuovi
+                            </button>
+                          </div>
+                          <input
+                            id={dateId}
+                            className={styles.input}
+                            onChange={(event) => updateDayOffDate(row.id, event.target.value)}
+                            type="date"
+                            value={row.date}
+                          />
 
-                      <div
-                        className={styles.segmentedControl}
-                        role="radiogroup"
-                        aria-label={`Tipo giorno ${index + 1}`}
-                      >
-                        {(Object.keys(DAY_OFF_TYPE_LABELS) as Array<DayOff["type"]>).map((type) => (
-                          <label className={styles.segment} key={type}>
-                            <input
-                              checked={row.type === type}
-                              name={radioName}
-                              onChange={() => updateDayOffType(row.id, type)}
-                              type="radio"
-                              value={type}
-                            />
-                            <span>{DAY_OFF_TYPE_LABELS[type]}</span>
-                          </label>
-                        ))}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+                          <div
+                            className={styles.segmentedControl}
+                            role="radiogroup"
+                            aria-label={`Tipo giorno ${index + 1}`}
+                          >
+                            {(Object.keys(DAY_OFF_TYPE_LABELS) as Array<DayOff["type"]>).map(
+                              (type) => (
+                                <label className={styles.segment} key={type}>
+                                  <input
+                                    checked={row.type === type}
+                                    name={radioName}
+                                    onChange={() => updateDayOffType(row.id, type)}
+                                    type="radio"
+                                    value={type}
+                                  />
+                                  <span>{DAY_OFF_TYPE_LABELS[type]}</span>
+                                </label>
+                              )
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
 
-              <button
-                className={styles.secondaryButton}
-                onClick={() => {
-                  const id = `day-off-${nextDayOffId.current}`;
-                  nextDayOffId.current += 1;
-                  setDayOffRows((rows) => [...rows, createDayOffRow(id)]);
-                }}
-                type="button"
-              >
-                Aggiungi data
-              </button>
+                  <button
+                    className={styles.secondaryButton}
+                    onClick={() => {
+                      const id = `day-off-${nextDayOffId.current}`;
+                      nextDayOffId.current += 1;
+                      setDayOffRows((rows) => [...rows, createDayOffRow(id)]);
+                    }}
+                    type="button"
+                  >
+                    Aggiungi data
+                  </button>
                 </fieldset>
 
                 <div className={styles.fieldGroup}>
-              <label className={styles.label} htmlFor={patronId}>
-                Festività del tuo patrono locale (opzionale)
-              </label>
-              <input
-                id={patronId}
-                className={styles.input}
-                onChange={(event) => setPatronSaintDate(event.target.value)}
-                type="date"
+                  <label className={styles.label} htmlFor={patronId}>
+                    Festività del tuo patrono locale (opzionale)
+                  </label>
+                  <input
+                    id={patronId}
+                    className={styles.input}
+                    onChange={(event) => setPatronSaintDate(event.target.value)}
+                    type="date"
                     value={patronSaintDate}
                   />
                 </div>
