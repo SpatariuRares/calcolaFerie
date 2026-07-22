@@ -7,7 +7,7 @@ import { existsSync } from "fs";
 import { join } from "path";
 import { metadata } from "../../app/layout";
 
-vi.mock("../../app/_components/vacation-planner", () => ({
+vi.mock("../../app/_components/templates/vacation-planner", () => ({
   VacationPlanner: () => React.createElement("div", { "data-testid": "vacation-planner" }),
 }));
 

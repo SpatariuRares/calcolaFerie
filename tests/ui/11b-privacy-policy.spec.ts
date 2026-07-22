@@ -3,8 +3,8 @@
 import React from "react";
 import { render, screen, within } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { NewsletterConsentText } from "../../app/_components/newsletter-consent-text";
-import { VacationPlanner } from "../../app/_components/vacation-planner";
+import { NewsletterConsentText } from "../../app/_components/atoms/newsletter-consent-text";
+import { VacationPlanner } from "../../app/_components/templates/vacation-planner";
 import PrivacyPage from "../../app/privacy/page";
 
 function installLocalStorage() {

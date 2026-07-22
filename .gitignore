@@ -1,7 +1,10 @@
 node_modules
 .pnpm-store
+.playwright-mcp
 
 .cursor
 
 .next
 tsconfig.tsbuildinfo
+.vercel
+.env*

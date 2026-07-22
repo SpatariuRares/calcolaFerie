@@ -1,4 +1,4 @@
-import { VacationPlanner } from "./_components/vacation-planner";
+import { VacationPlanner } from "./_components/templates/vacation-planner";
 
 export default function Home() {
   return (

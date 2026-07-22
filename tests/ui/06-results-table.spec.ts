@@ -4,7 +4,7 @@ import React from "react";
 import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import type { BridgeOpportunity, EngineOutput } from "@engine";
-import { ResultsTable } from "../../app/_components/results-table";
+import { ResultsTable } from "../../app/_components/organisms/results-table";
 
 function opportunity(overrides: Partial<BridgeOpportunity>): BridgeOpportunity {
   return {

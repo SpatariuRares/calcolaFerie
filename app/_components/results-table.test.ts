@@ -5,7 +5,7 @@ import {
   formatExplanation,
   getLevaTier,
   getSelectedOpportunityCost,
-} from "./results-table";
+} from "../_lib/opportunity-display";
 
 function opportunity(overrides: Partial<BridgeOpportunity>): BridgeOpportunity {
   return {

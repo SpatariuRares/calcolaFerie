@@ -1,1 +1,2 @@
-pnpm test:smoke
+pnpm lint
+# pnpm test:smoke

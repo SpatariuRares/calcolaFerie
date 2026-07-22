@@ -5,7 +5,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { EngineInput, EngineOutput } from "@engine";
-import { VacationPlanner } from "../../app/_components/vacation-planner";
+import { VacationPlanner } from "../../app/_components/templates/vacation-planner";
 
 const calculatePlanSpy = vi.hoisted(() =>
   vi.fn(

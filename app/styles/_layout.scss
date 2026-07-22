@@ -1,8 +1,14 @@
 @use "./theme" as *;
 
 .pageShell {
+  --page-x: 16px;
+  --page-top: 28px;
+  --page-bottom: 44px;
+
+  display: flex;
   min-height: 100vh;
-  padding: 28px 16px 44px;
+  flex-direction: column;
+  padding: var(--page-top) var(--page-x) var(--page-bottom);
   background: $page-bg;
   color: $text;
   font-family:
@@ -40,13 +46,16 @@
 }
 
 .pageFooter {
-  max-width: 1180px;
-  margin: 18px auto 0;
-  color: $muted;
+  width: auto;
+  margin: auto calc(var(--page-x) * -1) calc(var(--page-bottom) * -1);
+  border-top: 1px solid #27313a;
+  padding: 18px var(--page-x) calc(20px + env(safe-area-inset-bottom));
+  background: #111820;
+  color: #d8e0e5;
   font-size: 0.92rem;
 
   a {
-    color: $accent;
+    color: #f0c66f;
     font-weight: 800;
     text-decoration-thickness: 2px;
     text-underline-offset: 3px;
@@ -55,6 +64,31 @@
       @include focus;
     }
   }
+}
+
+.footerInner {
+  display: flex;
+  width: 100%;
+  max-width: 1180px;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0 auto;
+}
+
+.footerContact {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  font-style: normal;
+  line-height: 1.6;
+}
+
+.footerLine {
+  min-width: 0;
+}
+
+.footerNav {
+  width: fit-content;
 }
 
 .privacyPage {
@@ -205,7 +239,9 @@
 
 @include at(860px) {
   .pageShell {
-    padding: 38px 24px 56px;
+    --page-x: 24px;
+    --page-top: 38px;
+    --page-bottom: 56px;
   }
 
   .hero {
@@ -232,5 +268,11 @@
   .newsletterPanel,
   .outputSection {
     padding: 20px;
+  }
+
+  .footerInner {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
   }
 }

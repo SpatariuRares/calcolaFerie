@@ -3,7 +3,7 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { VacationPlanner } from "../../app/_components/vacation-planner";
+import { VacationPlanner } from "../../app/_components/templates/vacation-planner";
 
 function installLocalStorage() {
   const entries = new Map<string, string>();
