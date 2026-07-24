@@ -1,5 +1,5 @@
 import type { BridgeOpportunity } from "@engine";
-import { buildBookingDeepLink } from "../../_lib/affiliate-link";
+import { buildBookingDeepLink, buildLastminuteDeepLink } from "../../_lib/affiliate-link";
 import { useAppTranslations } from "../../_lib/use-app-i18n";
 import styles from "../../styles/app.module.scss";
 
@@ -8,7 +8,11 @@ export function BookingCta({
   startDate,
 }: Pick<BridgeOpportunity, "endDate" | "startDate">) {
   const t = useAppTranslations("results");
-  const href = buildBookingDeepLink({
+  const bookingHref = buildBookingDeepLink({
+    startDate,
+    endDate,
+  });
+  const flightsHref = buildLastminuteDeepLink({
     startDate,
     endDate,
   });
@@ -21,13 +25,23 @@ export function BookingCta({
       <span className={styles.affiliateLabel}>{t("affiliateLabel")}</span>
       <a
         className={styles.bookingCta}
-        href={href}
+        href={bookingHref}
         onClick={stop}
         onKeyDown={stop}
         rel="sponsored noopener noreferrer"
         target="_blank"
       >
         {t("bookCta")}
+      </a>
+      <a
+        className={styles.bookingCta}
+        href={flightsHref}
+        onClick={stop}
+        onKeyDown={stop}
+        rel="sponsored noopener noreferrer"
+        target="_blank"
+      >
+        {t("flightsCta")}
       </a>
     </span>
   );

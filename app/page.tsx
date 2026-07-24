@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { VacationPlanner } from "./_components/templates/vacation-planner";
+import { VacationPlanner } from "@components/templates/vacation-planner";
 
 export default function Home() {
   const t = useTranslations("home");

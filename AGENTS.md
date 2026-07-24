@@ -75,8 +75,9 @@ MSW mock server lives in `tests/mocks/` for UI tests that need API interception.
 ## Path Aliases
 
 ```
-@         →  project root
-@engine   →  engine/src/index.ts
+@             →  project root
+@engine       →  engine/src/index.ts
+@components   →  app/_components
 ```
 
 ## Persistence
@@ -91,4 +92,18 @@ Create `.env.local` (gitignored):
 ```
 NEXT_PUBLIC_TRAVELPAYOUTS_MARKER=your_marker_here
 ```
-Without it, affiliate links are built but the marker param is empty. No other env vars required for local dev.
+Without it, affiliate links are built but the marker param is empty. Required for local dev; everything below is optional.
+
+Travelpayouts approves accounts per-program (Booking, ...), so the shared marker above can be rejected on a program you aren't yet enrolled in, and each program has its own `program_id`/`campaign_id`. Override any of these in `.env.local` without touching code:
+```
+NEXT_PUBLIC_BOOKING_MARKER=...          # falls back to NEXT_PUBLIC_TRAVELPAYOUTS_MARKER
+NEXT_PUBLIC_BOOKING_PROGRAM_ID=4115
+NEXT_PUBLIC_BOOKING_CAMPAIGN_ID=101
+```
+
+The flights CTA links to lastminute.com IT via Awin (separate network, separate account from Travelpayouts):
+```
+NEXT_PUBLIC_AWIN_AFFILIATE_ID=your_awin_affiliate_id_here
+NEXT_PUBLIC_LASTMINUTE_MERCHANT_ID=12374   # Awin merchant id for lastminute.com IT
+```
+Without a real `NEXT_PUBLIC_AWIN_AFFILIATE_ID` (Awin publisher signup + lastminute.com IT program approval, https://ui.awin.com/merchant-profile/12374), the link still builds but carries no affiliate id — no commission attribution.

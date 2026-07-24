@@ -11,7 +11,7 @@ import {
   type EngineOutput,
   type ISODateString,
 } from "@engine";
-import { VacationPlanner } from "../../app/_components/templates/vacation-planner";
+import { VacationPlanner } from "@components/templates/vacation-planner";
 
 const calculatePlanSpy = vi.hoisted(() =>
   vi.fn((input: EngineInput): EngineOutput => {

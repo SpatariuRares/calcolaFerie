@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useAppTranslations } from "../../_lib/use-app-i18n";
 import styles from "../../styles/app.module.scss";
-import { LanguageSwitcher } from "../language-switcher";
+import { LanguageSwitcher } from "./language-switcher";
 
 const FOOTER_MANAGER = process.env.NEXT_PUBLIC_GESTORE ?? "Spatariu Rares";
 const FOOTER_EMAIL = process.env.NEXT_PUBLIC_EMAIL ?? "privacy@calcolaferie.it";

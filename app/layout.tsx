@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Playfair_Display } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
-import { VercelAnalytics } from "./_components/vercel-analytics";
+import { VercelAnalytics } from "@components/atoms/vercel-analytics";
 import "./globals.css";
 
 const playfair = Playfair_Display({

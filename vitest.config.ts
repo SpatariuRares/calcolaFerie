@@ -34,6 +34,7 @@ export default defineConfig({
     alias: {
       "@": fileURLToPath(new URL("./", import.meta.url)),
       "@engine": fileURLToPath(new URL("./engine/src/index.ts", import.meta.url)),
+      "@components": fileURLToPath(new URL("./app/_components", import.meta.url)),
     },
   },
 });
