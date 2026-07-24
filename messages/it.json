@@ -9,7 +9,17 @@
   "home": {
     "accessibleLabel": "Informazioni sul calcolatore",
     "accessibleTitle": "Calcolatore ponti ferie italiane",
-    "accessibleDescription": "Ottimizza le tue ferie sfruttando le festività italiane: inserisci il tuo budget di giorni e scopri i ponti migliori per massimizzare i giorni di vacanza con il minimo di ferie spese. Ideale per ottimizzare ferie e ponti durante tutto l'anno."
+    "accessibleDescription": "Ottimizza le tue ferie sfruttando le festività italiane: inserisci il tuo budget di giorni e scopri i ponti migliori per massimizzare i giorni di vacanza con il minimo di ferie spese. Ideale per ottimizzare ferie e ponti durante tutto l'anno.",
+    "faq": {
+      "title": "Domande Frequenti sui Ponti e Festività Italiane",
+      "subtitle": "Tutto quello che c'è da sapere per pianificare le ferie con la massima resa.",
+      "q1": "Come funziona il calcolo dei ponti?",
+      "a1": "Il calcolatore analizza il calendario ufficiale delle festività nazionali italiane, i fine settimana e le eventuali chiusure aziendali. Calcola la 'leva' (rapporto tra giorni totali di stacco continuativo e giorni di ferie effettivi da consumare) per trovare le combinazioni più vantaggiose.",
+      "q2": "Quali festività italiane sono incluse?",
+      "a2": "Include tutte le festività nazionali ufficiali (Capodanno, Epifania, Pasqua, Pasquetta, 25 Aprile, 1 Maggio, 2 Giugno, Ferragosto, 1 Novembre, 8 Dicembre, Natale, Santo Stefano) con possibilità di aggiungere la festa del patrono locale.",
+      "q3": "Come vengono considerate le chiusure aziendali?",
+      "a3": "È possibile indicare se una data di chiusura è un 'giorno gratuito' (azienda chiusa senza scalare ferie) o un 'giorno obbligatorio' (scalato dal proprio monte ferie), adattando il calcolo alla situazione specifica del tuo contratto."
+    }
   },
   "planner": {
     "eyebrow": "Planner ferie",

@@ -63,6 +63,13 @@ describe("issue 14 – SEO metadata", () => {
     });
   });
 
+  describe("Canonical URL", () => {
+    it("has canonical URL configured", () => {
+      const alternates = metadata.alternates as { canonical?: string };
+      expect(alternates?.canonical).toBe("https://calcolaferie.it");
+    });
+  });
+
   describe("page static content", () => {
     beforeEach(() => {
       window.history.replaceState(null, "", "/");
@@ -82,6 +89,14 @@ describe("issue 14 – SEO metadata", () => {
       const body = document.body.textContent ?? "";
       expect(body).toMatch(/festività italiane/i);
       expect(body).toMatch(/ottimizzare.*ferie|ferie.*ottimizzare/i);
+    });
+
+    it("renders FAQ section with accessible title", async () => {
+      const { default: HomePage } = await import("../../app/page");
+      render(React.createElement(HomePage));
+      expect(
+        screen.getByRole("heading", { name: /domande frequenti/i })
+      ).toBeInTheDocument();
     });
   });
 });

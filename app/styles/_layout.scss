@@ -486,3 +486,63 @@
     align-items: start;
   }
 }
+
+.seoFaqSection {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: var(--bg-surface, #ffffff);
+  border: 1px solid var(--border-color, #e2e8f0);
+  border-radius: 12px;
+}
+
+.seoFaqTitle {
+  font-family: var(--font-display, Georgia, serif);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text-primary, #1e293b);
+  margin-bottom: 0.25rem;
+}
+
+.seoFaqSubtitle {
+  font-size: 0.9rem;
+  color: var(--text-secondary, #64748b);
+  margin-bottom: 1.25rem;
+}
+
+.seoFaqList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.seoFaqItem {
+  border: 1px solid var(--border-subtle, #cbd5e1);
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+  background: var(--bg-subtle, #f8fafc);
+  transition: border-color 0.2s ease;
+
+  &[open] {
+    border-color: var(--color-primary, #2563eb);
+    background: #ffffff;
+  }
+}
+
+.seoFaqQuestion {
+  font-weight: 600;
+  font-size: 0.98rem;
+  color: var(--text-primary, #0f172a);
+  cursor: pointer;
+
+  &:hover {
+    color: var(--color-primary, #2563eb);
+  }
+}
+
+.seoFaqAnswer {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--text-secondary, #334155);
+}
+

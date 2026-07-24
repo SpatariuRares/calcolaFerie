@@ -9,7 +9,17 @@
   "home": {
     "accessibleLabel": "About the calculator",
     "accessibleTitle": "Italian holiday bridge calculator",
-    "accessibleDescription": "Optimize your leave around Italian public holidays: enter your leave budget and discover the best bridges to maximize your vacation while using the fewest leave days."
+    "accessibleDescription": "Optimize your leave around Italian public holidays: enter your leave budget and discover the best bridges to maximize your vacation while using the fewest leave days.",
+    "faq": {
+      "title": "Frequently Asked Questions about Italian Holiday Bridges",
+      "subtitle": "Everything you need to know to plan your time off with maximum leverage.",
+      "q1": "How does the holiday bridge calculation work?",
+      "a1": "The calculator analyzes official Italian public holidays, weekends, and company closures. It computes 'leverage' (the ratio between total consecutive days off and actual leave days spent) to find the most efficient combinations.",
+      "q2": "Which Italian public holidays are included?",
+      "a2": "It includes all official national holidays (New Year, Epiphany, Easter, Easter Monday, Liberation Day, Labor Day, Republic Day, Assumption, All Saints, Immaculate Conception, Christmas, St. Stephen) plus an optional local patron saint day.",
+      "q3": "How are company closures handled?",
+      "a3": "You can specify whether a closure date is a 'free day' (company closed without deducting leave) or a 'mandatory day' (deducted from your leave budget), adapting the calculation to your employer's rules."
+    }
   },
   "planner": {
     "eyebrow": "Leave planner",

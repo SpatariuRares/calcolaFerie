@@ -15,6 +15,9 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "https://calcolaferie.it";
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
+  alternates: {
+    canonical: BASE_URL,
+  },
   title: "CalcolaFerie — Calcolatore Ponti e Ferie Italiane",
   description:
     "Calcolatore ponti ferie: trova i migliori ponti tra le festività italiane e ottimizza le vacanze. Inserisci il budget e scopri i giorni migliori.",

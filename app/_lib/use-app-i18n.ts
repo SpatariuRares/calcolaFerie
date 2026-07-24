@@ -2,6 +2,8 @@ import { createTranslator, useLocale, useTranslations } from "next-intl";
 import italianMessages from "../../messages/it.json";
 
 export type TranslationNamespace =
+  | "home"
+  | "home.faq"
   | "planner"
   | "results"
   | "calendar"
