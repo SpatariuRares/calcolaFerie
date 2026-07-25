@@ -7,18 +7,21 @@ Questo documento sintetizza le azioni rimanenti (manuali ed esterne) da completa
 ## 1. Azioni Esterne Immediate (Search Console & Registri)
 
 ### A. Google Search Console (GSC)
-- [ ] Accedere a [Google Search Console](https://search.google.com/search-console).
-- [ ] Aggiungere la proprietà **Dominio**: `calcolaferie.it`.
-- [ ] Aggiungere il record **TXT** di verifica fornito da Google nei DNS (su Vercel in `Settings → Domains → DNS Records` oppure su Register.it).
-- [ ] Inviare l'URL della sitemap: `https://calcolaferie.it/sitemap.xml`.
-- [ ] Usare lo strumento **Ispezione URL** inserendo `https://calcolaferie.it` e cliccare su **Richiedi indicizzazione**.
+
+- [x] Accedere a [Google Search Console](https://search.google.com/search-console).
+- [x] Aggiungere la proprietà **Dominio**: `calcolaferie.it`.
+- [x] Aggiungere il record **TXT** di verifica fornito da Google nei DNS (su Vercel in `Settings → Domains → DNS Records` oppure su Register.it).
+- [x] Inviare l'URL della sitemap: `https://calcolaferie.it/sitemap.xml`.
+- [x] Usare lo strumento **Ispezione URL** inserendo `https://calcolaferie.it` e cliccare su **Richiedi indicizzazione**.
 
 ### B. Bing Webmaster Tools
-- [ ] Accedere a [Bing Webmaster Tools](https://www.bing.com/webmasters).
-- [ ] Usare l'opzione **Importa da Google Search Console** per sincronizzare sitemap e dati in 1 click.
+
+- [x] Accedere a [Bing Webmaster Tools](https://www.bing.com/webmasters).
+- [x] Usare l'opzione **Importa da Google Search Console** per sincronizzare sitemap e dati in 1 click.
 
 ### C. Verifica WHOIS Registro.it
-- [ ] Verificare nella casella mail di Register.it che la procedura di identificazione/convalida documento dell'intestatario del dominio `.it` sia completata per evitare sospensioni amministrative dal Registro.it (IIT-CNR).
+
+- [x] Verificare nella casella mail di Register.it che la procedura di identificazione/convalida documento dell'intestatario del dominio `.it` sia completata per evitare sospensioni amministrative dal Registro.it (IIT-CNR).
 
 ---
 
@@ -46,10 +49,10 @@ La pipeline GitHub Actions eseguirà i test e distribuirà l'aggiornamento autom
 Per intercettare le ricerche degli utenti legate a periodi specifici dell'anno:
 
 - [ ] **Landing Page Stagionali Dedicate**:
-  - `/ponti-2026` → Target: *"Ponti e festività 2026"*
-  - `/ponte-25-aprile` → Target: *"Ponte 25 aprile 2026"*
-  - `/ponte-1-maggio` → Target: *"Ponte 1 maggio 2026"*
-  - `/ponte-1-novembre` → Target: *"Ponte dei Santi"*
+  - `/ponti-2026` → Target: _"Ponti e festività 2026"_
+  - `/ponte-25-aprile` → Target: _"Ponte 25 aprile 2026"_
+  - `/ponte-1-maggio` → Target: _"Ponte 1 maggio 2026"_
+  - `/ponte-1-novembre` → Target: _"Ponte dei Santi"_
 - [ ] **Blog / Articoli di Approfondimento**:
   - Guide su come negoziare le ferie in azienda o massimizzare i giorni di stacco.
 
