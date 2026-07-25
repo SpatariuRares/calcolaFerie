@@ -27,6 +27,28 @@ export function JsonLd() {
   );
 }
 
+export function Ponti2027JsonLd() {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "@id": `${BASE_URL}/ponti-2027#article`,
+    "headline": "Ponti 2027: tutte le date per pianificare le ferie",
+    "description":
+      "I ponti italiani con la leva più alta di tutto il 2027, calcolati festività per festività.",
+    "author": { "@type": "Organization", "name": "CalcolaFerie" },
+    "publisher": { "@type": "Organization", "name": "CalcolaFerie" },
+    "mainEntityOfPage": `${BASE_URL}/ponti-2027`,
+    "inLanguage": ["it", "en"],
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+    />
+  );
+}
+
 export function FaqJsonLd() {
   const schema = {
     "@context": "https://schema.org",
