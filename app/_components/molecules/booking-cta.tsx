@@ -12,29 +12,21 @@ import styles from "../../styles/app.module.scss";
 
 type AffiliateProgramKey =
   | "booking"
-  | "expedia"
-  | "hostelworld"
-  | "aviasales"
-  | "hotellook"
-  | "getyourguide"
-  | "discovercars"
-  | "insurance"
   | "saily"
   | "klook"
-  | "radicalstorage";
+  | "radicalstorage"
+  | "getyourguide"
+  | "expedia"
+  | "hostelworld";
 
 const PROGRAM_ORDER: AffiliateProgramKey[] = [
   "booking",
-  "expedia",
-  "hostelworld",
-  "aviasales",
-  "hotellook",
-  "getyourguide",
-  "discovercars",
-  "insurance",
   "saily",
   "klook",
   "radicalstorage",
+  "getyourguide",
+  "expedia",
+  "hostelworld",
 ];
 
 export function BookingCta({

@@ -261,14 +261,6 @@
         "name": "Booking.com",
         "description": "Hotel search pre-filled with the bridge dates. Active on every opportunity in the results."
       },
-      "aviasales": {
-        "name": "Aviasales",
-        "description": "Flight search to reach your destination during the bridge dates."
-      },
-      "hotellook": {
-        "name": "Hotellook",
-        "description": "Alternative hotel comparison engine, useful for checking prices across multiple sites."
-      },
       "getyourguide": {
         "name": "GetYourGuide",
         "description": "Tours, activities, and experiences to book at your chosen destination."
@@ -280,14 +272,6 @@
       "hostelworld": {
         "name": "Hostelworld",
         "description": "Hostels and budget stays for low-cost bridges."
-      },
-      "discovercars": {
-        "name": "Discover Cars",
-        "description": "Local car rental, handy for bridges in areas with limited public transport."
-      },
-      "insurance": {
-        "name": "Travel insurance",
-        "description": "Medical and trip-cancellation coverage for your booked vacation."
       },
       "saily": {
         "name": "Saily",

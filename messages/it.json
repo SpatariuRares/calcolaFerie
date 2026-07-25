@@ -261,14 +261,6 @@
         "name": "Booking.com",
         "description": "Ricerca hotel con le date del ponte già precompilate. Attivo su ogni opportunità nei risultati."
       },
-      "aviasales": {
-        "name": "Aviasales",
-        "description": "Ricerca voli per raggiungere la destinazione nei giorni del ponte."
-      },
-      "hotellook": {
-        "name": "Hotellook",
-        "description": "Comparatore hotel alternativo, utile per confrontare prezzi su più portali."
-      },
       "getyourguide": {
         "name": "GetYourGuide",
         "description": "Tour, attività ed esperienze da prenotare nella destinazione scelta."
@@ -280,14 +272,6 @@
       "hostelworld": {
         "name": "Hostelworld",
         "description": "Ostelli e sistemazioni economiche per ponti low-cost."
-      },
-      "discovercars": {
-        "name": "Discover Cars",
-        "description": "Noleggio auto in loco, comodo per ponti in zone poco servite dai mezzi pubblici."
-      },
-      "insurance": {
-        "name": "Assicurazione viaggio",
-        "description": "Copertura medica e annullamento viaggio per le vacanze prenotate."
       },
       "saily": {
         "name": "Saily",

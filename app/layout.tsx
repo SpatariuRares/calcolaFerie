@@ -3,6 +3,7 @@ import { Playfair_Display } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
 import { VercelAnalytics } from "@components/atoms/vercel-analytics";
+import { VercelSpeedInsights } from "@components/atoms/vercel-speed-insights";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -48,6 +49,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body>
         <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
         <VercelAnalytics />
+        <VercelSpeedInsights />
       </body>
     </html>
   );
