@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import type { BridgeOpportunity } from "@engine";
 import {
@@ -45,8 +45,9 @@ export function BookingCta({
   };
 
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLUListElement>(null);
   const [isOpen, setIsOpen] = useState(false);
-  const [menuPosition, setMenuPosition] = useState({ top: 0, right: 0 });
+  const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
 
   // Menu renders through a portal (see below), so closing on scroll avoids
   // it drifting away from the trigger button it's anchored to.
@@ -61,6 +62,21 @@ export function BookingCta({
     };
   }, [isOpen]);
 
+  // Anchors the menu to the trigger's right edge (opens leftward), but clamps
+  // it within the viewport so it doesn't get cut off when the trigger sits
+  // near the screen edge, e.g. inside a narrow mobile card. Runs after the
+  // menu mounts so it can measure its actual (max-content) width.
+  useLayoutEffect(() => {
+    if (!isOpen || !triggerRef.current || !menuRef.current) return;
+    const triggerRect = triggerRef.current.getBoundingClientRect();
+    const menuRect = menuRef.current.getBoundingClientRect();
+    const margin = 8;
+    const preferredLeft = triggerRect.right - menuRect.width;
+    const maxLeft = Math.max(window.innerWidth - menuRect.width - margin, margin);
+    const left = Math.min(Math.max(preferredLeft, margin), maxLeft);
+    setMenuPosition({ top: triggerRect.bottom + 4, left });
+  }, [isOpen]);
+
   // Stop propagation so booking does not toggle the row/card selection.
   const stop = (event: { stopPropagation: () => void }) => event.stopPropagation();
 
@@ -68,7 +84,7 @@ export function BookingCta({
     stop(event);
     if (!isOpen && triggerRef.current) {
       const rect = triggerRef.current.getBoundingClientRect();
-      setMenuPosition({ top: rect.bottom + 4, right: window.innerWidth - rect.right });
+      setMenuPosition({ top: rect.bottom + 4, left: rect.left });
     }
     setIsOpen((open) => !open);
   };
@@ -93,7 +109,8 @@ export function BookingCta({
               <div className={styles.bookingMenuBackdrop} onClick={() => setIsOpen(false)} />
               <ul
                 className={styles.bookingMenuList}
-                style={{ top: menuPosition.top, right: menuPosition.right }}
+                ref={menuRef}
+                style={{ top: menuPosition.top, left: menuPosition.left }}
               >
                 {PROGRAM_ORDER.filter((program) => programHref[program]).map((program) => (
                   <li key={program}>

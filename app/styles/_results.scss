@@ -269,6 +269,7 @@
 }
 
 .selectedTableWrap {
+  display: none;
   overflow-x: auto;
   border: 1px solid #e2e8ed;
   border-radius: $radius-panel;
@@ -283,6 +284,54 @@
     color: $strong;
     font-weight: 850;
   }
+}
+
+.selectedVacationsList {
+  @include stack(8px);
+  margin: $margin-reset;
+  padding: 0;
+  list-style: none;
+}
+
+.selectedVacationCard {
+  display: grid;
+  gap: 8px;
+  border: 1px solid $border;
+  border-radius: $radius-panel;
+  padding: $padding-card;
+  background: $surface;
+}
+
+.selectedVacationCardRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.selectedVacationCardPeriod {
+  color: $strong;
+  font-weight: 850;
+  text-transform: capitalize;
+}
+
+.selectedVacationCardDays {
+  color: #5d6971;
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.selectedVacationsTotal {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #e2e8ed;
+  border-radius: $radius-panel;
+  padding: $padding-summary;
+  background: #f6f8fa;
+  color: $strong;
+  font-weight: 850;
 }
 
 .resultsTable {
@@ -452,6 +501,7 @@
   gap: 2px;
   width: max-content;
   min-width: 170px;
+  max-width: calc(100vw - 16px);
   margin: 0;
   padding: 6px;
   border: 1px solid $border;
@@ -530,5 +580,14 @@
     overflow-x: auto;
     border: 1px solid #e2e8ed;
     border-radius: $radius-panel;
+  }
+
+  .selectedVacationsList,
+  .selectedVacationsTotal {
+    display: none;
+  }
+
+  .selectedTableWrap {
+    display: block;
   }
 }
