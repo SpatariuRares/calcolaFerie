@@ -10,6 +10,11 @@ updates:
     groups:
       dev-dependencies:
         dependency-type: development
+    ignore:
+      # eslint-plugin-react (via eslint-config-next) doesn't support ESLint 10 yet:
+      # https://github.com/jsx-eslint/eslint-plugin-react/issues (getFilename removed in flat config context)
+      - dependency-name: "eslint"
+        update-types: ["version-update:semver-major"]
     open-pull-requests-limit: 10
 
   - package-ecosystem: github-actions
