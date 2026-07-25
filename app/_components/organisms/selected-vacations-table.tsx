@@ -59,6 +59,24 @@ export function SelectedVacationsTable({ ranges }: { ranges: SelectedVacationRan
           {t("downloadPdf")}
         </button>
       </div>
+      <ul className={styles.selectedVacationsList}>
+        {ranges.map((range) => (
+          <li className={styles.selectedVacationCard} key={range.start}>
+            <div className={styles.selectedVacationCardRow}>
+              <span className={styles.selectedVacationCardPeriod}>{formatPeriod(range)}</span>
+              <span className={styles.selectedVacationCardDays}>
+                {t("table.leaveDays")}: {range.days}
+              </span>
+            </div>
+            <BookingCta endDate={range.end} startDate={range.start} />
+          </li>
+        ))}
+      </ul>
+      <p className={styles.selectedVacationsTotal}>
+        <span>{t("total")}</span>
+        <span>{totalDays}</span>
+      </p>
+
       <div className={styles.selectedTableWrap}>
         <table className={styles.resultsTable}>
           <thead>
