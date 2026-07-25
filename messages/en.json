@@ -4,7 +4,9 @@
     "description": "Italian holiday bridge calculator: find the best opportunities around Italian public holidays and optimize your time off.",
     "socialDescription": "Find the best holiday bridges around Italian public holidays and optimize your time off.",
     "privacyTitle": "Privacy policy | CalcolaFerie",
-    "privacyDescription": "CalcolaFerie privacy notice covering the newsletter, analytics, and affiliate links."
+    "privacyDescription": "CalcolaFerie privacy notice covering the newsletter, analytics, and affiliate links.",
+    "faqTitle": "Frequently Asked Questions | CalcolaFerie",
+    "faqDescription": "Answers to the most common questions about Italian holiday bridges: how the calculation works, which public holidays are included, and how company closures are handled."
   },
   "home": {
     "accessibleLabel": "About the calculator",
@@ -182,6 +184,7 @@
     "manager": "Operator: {name}",
     "vat": "VAT no.: {value}",
     "legal": "Legal",
+    "faq": "FAQ",
     "privacy": "Privacy",
     "copyright": "© {year} CalcolaFerie · Results are indicative: always check local holidays and your contract rules."
   },

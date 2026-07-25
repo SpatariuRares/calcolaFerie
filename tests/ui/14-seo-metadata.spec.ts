@@ -91,9 +91,9 @@ describe("issue 14 – SEO metadata", () => {
       expect(body).toMatch(/ottimizzare.*ferie|ferie.*ottimizzare/i);
     });
 
-    it("renders FAQ section with accessible title", async () => {
-      const { default: HomePage } = await import("../../app/page");
-      render(React.createElement(HomePage));
+    it("renders FAQ section with accessible title on its own page", async () => {
+      const { FaqView } = await import("@components/templates/faq-view");
+      render(React.createElement(FaqView));
       expect(
         screen.getByRole("heading", { name: /domande frequenti/i })
       ).toBeInTheDocument();

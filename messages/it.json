@@ -4,7 +4,9 @@
     "description": "Calcolatore ponti ferie: trova i migliori ponti tra le festività italiane e ottimizza le vacanze. Inserisci il budget e scopri i giorni migliori.",
     "socialDescription": "Calcolatore ponti ferie: trova i migliori ponti tra le festività italiane e ottimizza le vacanze.",
     "privacyTitle": "Privacy policy | CalcolaFerie",
-    "privacyDescription": "Informativa privacy minimale di CalcolaFerie: newsletter, analytics e link di affiliazione."
+    "privacyDescription": "Informativa privacy minimale di CalcolaFerie: newsletter, analytics e link di affiliazione.",
+    "faqTitle": "Domande Frequenti sui Ponti e Ferie | CalcolaFerie",
+    "faqDescription": "Tutte le risposte alle domande più frequenti su ponti, ferie e festività italiane: come funziona il calcolo, quali festività sono incluse e come gestire le chiusure aziendali."
   },
   "home": {
     "accessibleLabel": "Informazioni sul calcolatore",
@@ -182,6 +184,7 @@
     "manager": "Gestore: {name}",
     "vat": "P.IVA: {value}",
     "legal": "Legale",
+    "faq": "FAQ",
     "privacy": "Privacy",
     "copyright": "© {year} CalcolaFerie · I risultati sono indicativi: verifica sempre festività locali e regole del tuo contratto."
   },

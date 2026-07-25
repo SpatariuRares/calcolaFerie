@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import { PrivacyView } from "@components/templates/privacy-view";
+import { FaqView } from "@components/templates/faq-view";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "https://calcolaferie.it";
-const PAGE_URL = `${BASE_URL}/privacy`;
+const PAGE_URL = `${BASE_URL}/faq`;
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("metadata");
-  const title = t("privacyTitle");
-  const description = t("privacyDescription");
+  const title = t("faqTitle");
+  const description = t("faqDescription");
 
   return {
     title,
@@ -28,6 +28,6 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function PrivacyPage() {
-  return <PrivacyView />;
+export default function FaqPage() {
+  return <FaqView />;
 }

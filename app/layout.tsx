@@ -36,6 +36,9 @@ export const metadata: Metadata = {
       "Calcolatore ponti ferie: trova i migliori ponti tra le festività italiane e ottimizza le vacanze.",
     images: [`${BASE_URL}/og-image.png`],
   },
+  verification: {
+    google: "ndar5LfgIDvCn5k-OeUqXtS8RnxCTKURdsfmzHeC7sk",
+  },
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {

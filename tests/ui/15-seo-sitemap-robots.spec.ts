@@ -5,14 +5,15 @@ import robots from "@/app/robots";
 const BASE = "https://calcolaferie.it";
 
 describe("sitemap", () => {
-  it("returns two entries", () => {
+  it("returns three entries", () => {
     const entries = sitemap();
-    expect(entries).toHaveLength(2);
+    expect(entries).toHaveLength(3);
   });
 
-  it("includes root and privacy with absolute URLs", () => {
+  it("includes root, faq and privacy with absolute URLs", () => {
     const urls = sitemap().map((e) => e.url);
     expect(urls).toContain(BASE);
+    expect(urls).toContain(`${BASE}/faq`);
     expect(urls).toContain(`${BASE}/privacy`);
   });
 
@@ -45,13 +46,14 @@ describe("robots", () => {
     expect(sitemapUrl).toBe(`${BASE}/sitemap.xml`);
   });
 
-  it("allows / and /privacy", () => {
+  it("allows /, /faq and /privacy", () => {
     const r = robots();
     const rules = Array.isArray(r.rules) ? r.rules : [r.rules];
     const allowed = rules.flatMap((rule) =>
       Array.isArray(rule.allow) ? rule.allow : [rule.allow ?? ""]
     );
     expect(allowed).toContain("/");
+    expect(allowed).toContain("/faq");
     expect(allowed).toContain("/privacy");
   });
 });

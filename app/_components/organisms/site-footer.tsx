@@ -26,6 +26,7 @@ export function SiteFooter() {
 
         <div className={styles.footerCol}>
           <p className={styles.footerHeading}>{t("legal")}</p>
+          <Link href="/faq">{t("faq")}</Link>
           <Link href="/privacy">{t("privacy")}</Link>
           <LanguageSwitcher />
         </div>
