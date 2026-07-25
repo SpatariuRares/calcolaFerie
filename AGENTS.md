@@ -100,10 +100,3 @@ NEXT_PUBLIC_BOOKING_MARKER=...          # falls back to NEXT_PUBLIC_TRAVELPAYOUT
 NEXT_PUBLIC_BOOKING_PROGRAM_ID=4115
 NEXT_PUBLIC_BOOKING_CAMPAIGN_ID=101
 ```
-
-The flights CTA links to lastminute.com IT via Awin (separate network, separate account from Travelpayouts):
-```
-NEXT_PUBLIC_AWIN_AFFILIATE_ID=your_awin_affiliate_id_here
-NEXT_PUBLIC_LASTMINUTE_MERCHANT_ID=12374   # Awin merchant id for lastminute.com IT
-```
-Without a real `NEXT_PUBLIC_AWIN_AFFILIATE_ID` (Awin publisher signup + lastminute.com IT program approval, https://ui.awin.com/merchant-profile/12374), the link still builds but carries no affiliate id — no commission attribution.

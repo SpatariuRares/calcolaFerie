@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 
 import React from "react";
-import { render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import type { BridgeOpportunity, EngineOutput } from "@engine";
 import { ResultsTable } from "@components/organisms/results-table";
@@ -196,7 +196,11 @@ describe("results table UI", () => {
         "Link affiliato: se prenoti, riceviamo una commissione senza costi extra per te."
       )
     ).toBeInTheDocument();
-    expect(screen.getAllByRole("link", { name: "Prenota questi giorni" })[0]).toHaveAttribute(
+
+    const [trigger] = screen.getAllByRole("button", { name: "Prenota questi giorni" });
+    fireEvent.click(trigger);
+
+    expect(screen.getAllByRole("link", { name: "Booking.com" })[0]).toHaveAttribute(
       "rel",
       expect.stringContaining("sponsored")
     );

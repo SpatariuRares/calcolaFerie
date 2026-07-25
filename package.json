@@ -25,6 +25,7 @@
   "type": "module",
   "dependencies": {
     "@vercel/analytics": "2.0.1",
+    "material-symbols": "^0.45.9",
     "next": "16.2.9",
     "next-intl": "^4.13.3",
     "react": "19.2.7",

@@ -9,7 +9,8 @@ export type TranslationNamespace =
   | "calendar"
   | "holidays"
   | "newsletter"
-  | "footer";
+  | "footer"
+  | "affiliates";
 
 export function useAppTranslations(
   namespace: TranslationNamespace

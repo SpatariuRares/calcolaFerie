@@ -406,6 +406,79 @@
   gap: 3px;
 }
 
+.bookingMenu {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+}
+
+.bookingMenuTrigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid #16724f;
+  border-radius: $radius-pill;
+  background: $green;
+  cursor: pointer;
+
+  &:hover {
+    background: #0f5d3f;
+  }
+
+  &:focus-visible {
+    @include focus;
+  }
+}
+
+.hamburgerIcon {
+  font-size: 20px;
+  color: #fff;
+}
+
+.bookingMenuBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+}
+
+.bookingMenuList {
+  position: fixed;
+  z-index: 31;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: max-content;
+  min-width: 170px;
+  margin: 0;
+  padding: 6px;
+  border: 1px solid $border;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 8px 20px rgb(0 0 0 / 15%);
+  list-style: none;
+}
+
+.bookingMenuLink {
+  display: block;
+  padding: 4px 8px;
+  border-radius: 6px;
+  color: $strong;
+  font-size: 0.84rem;
+  font-weight: 700;
+  text-decoration: none;
+
+  &:hover {
+    background: #eef6f1;
+  }
+
+  &:focus-visible {
+    @include focus;
+  }
+}
+
 .affiliateLabel {
   font-size: 0.7rem;
   color: #5d6971;

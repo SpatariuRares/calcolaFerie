@@ -1,48 +1,112 @@
+import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import type { BridgeOpportunity } from "@engine";
-import { buildBookingDeepLink, buildLastminuteDeepLink } from "../../_lib/affiliate-link";
+import { buildBookingDeepLink, SAILY_AFFILIATE_URL } from "../../_lib/affiliate-link";
 import { useAppTranslations } from "../../_lib/use-app-i18n";
 import styles from "../../styles/app.module.scss";
+
+type AffiliateProgramKey =
+  | "booking"
+  | "aviasales"
+  | "hotellook"
+  | "getyourguide"
+  | "discovercars"
+  | "insurance"
+  | "saily";
+
+const PROGRAM_ORDER: AffiliateProgramKey[] = [
+  "booking",
+  "aviasales",
+  "hotellook",
+  "getyourguide",
+  "discovercars",
+  "insurance",
+  "saily",
+];
 
 export function BookingCta({
   endDate,
   startDate,
 }: Pick<BridgeOpportunity, "endDate" | "startDate">) {
   const t = useAppTranslations("results");
-  const bookingHref = buildBookingDeepLink({
-    startDate,
-    endDate,
-  });
-  const flightsHref = buildLastminuteDeepLink({
-    startDate,
-    endDate,
-  });
+  const tPrograms = useAppTranslations("affiliates");
+  // Programs with a live affiliate link. Booking.com's is per-opportunity
+  // (dates-only, see buildBookingDeepLink); Saily's is a static short link.
+  const programHref: Partial<Record<AffiliateProgramKey, string>> = {
+    booking: buildBookingDeepLink({ startDate, endDate }),
+    saily: SAILY_AFFILIATE_URL,
+  };
+
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [menuPosition, setMenuPosition] = useState({ top: 0, right: 0 });
+
+  // Menu renders through a portal (see below), so closing on scroll avoids
+  // it drifting away from the trigger button it's anchored to.
+  useEffect(() => {
+    if (!isOpen) return;
+    const close = () => setIsOpen(false);
+    window.addEventListener("scroll", close, true);
+    window.addEventListener("resize", close);
+    return () => {
+      window.removeEventListener("scroll", close, true);
+      window.removeEventListener("resize", close);
+    };
+  }, [isOpen]);
 
   // Stop propagation so booking does not toggle the row/card selection.
   const stop = (event: { stopPropagation: () => void }) => event.stopPropagation();
 
+  const toggleMenu = (event: React.MouseEvent) => {
+    stop(event);
+    if (!isOpen && triggerRef.current) {
+      const rect = triggerRef.current.getBoundingClientRect();
+      setMenuPosition({ top: rect.bottom + 4, right: window.innerWidth - rect.right });
+    }
+    setIsOpen((open) => !open);
+  };
+
   return (
-    <span className={styles.bookingCtaWrap}>
+    <span className={styles.bookingMenu} onClick={stop}>
+      <button
+        aria-expanded={isOpen}
+        aria-label={t("bookCta")}
+        className={styles.bookingMenuTrigger}
+        onClick={toggleMenu}
+        ref={triggerRef}
+        type="button"
+      >
+        <span aria-hidden="true" className={`material-symbols-outlined ${styles.hamburgerIcon}`}>
+          menu
+        </span>
+      </button>
+      {isOpen
+        ? createPortal(
+            <>
+              <div className={styles.bookingMenuBackdrop} onClick={() => setIsOpen(false)} />
+              <ul
+                className={styles.bookingMenuList}
+                style={{ top: menuPosition.top, right: menuPosition.right }}
+              >
+                {PROGRAM_ORDER.filter((program) => programHref[program]).map((program) => (
+                  <li key={program}>
+                    <a
+                      className={styles.bookingMenuLink}
+                      href={programHref[program]}
+                      onClick={() => setIsOpen(false)}
+                      rel="sponsored noopener noreferrer"
+                      target="_blank"
+                    >
+                      {tPrograms(`programs.${program}.name`)}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </>,
+            document.body
+          )
+        : null}
       <span className={styles.affiliateLabel}>{t("affiliateLabel")}</span>
-      <a
-        className={styles.bookingCta}
-        href={bookingHref}
-        onClick={stop}
-        onKeyDown={stop}
-        rel="sponsored noopener noreferrer"
-        target="_blank"
-      >
-        {t("bookCta")}
-      </a>
-      <a
-        className={styles.bookingCta}
-        href={flightsHref}
-        onClick={stop}
-        onKeyDown={stop}
-        rel="sponsored noopener noreferrer"
-        target="_blank"
-      >
-        {t("flightsCta")}
-      </a>
     </span>
   );
 }

@@ -6,7 +6,9 @@
     "privacyTitle": "Privacy policy | CalcolaFerie",
     "privacyDescription": "Informativa privacy minimale di CalcolaFerie: newsletter, analytics e link di affiliazione.",
     "faqTitle": "Domande Frequenti sui Ponti e Ferie | CalcolaFerie",
-    "faqDescription": "Tutte le risposte alle domande più frequenti su ponti, ferie e festività italiane: come funziona il calcolo, quali festività sono incluse e come gestire le chiusure aziendali."
+    "faqDescription": "Tutte le risposte alle domande più frequenti su ponti, ferie e festività italiane: come funziona il calcolo, quali festività sono incluse e come gestire le chiusure aziendali.",
+    "affiliatesTitle": "Programmi di affiliazione | CalcolaFerie",
+    "affiliatesDescription": "I programmi di affiliazione attivi e in arrivo su CalcolaFerie: hotel, voli, attività, noleggio auto e assicurazioni di viaggio."
   },
   "home": {
     "accessibleLabel": "Informazioni sul calcolatore",
@@ -105,7 +107,6 @@
     },
     "affiliateLabel": "Link affiliato",
     "bookCta": "Prenota questi giorni",
-    "flightsCta": "Cerca voli",
     "affiliateDisclosure": "Link affiliato: se prenoti, riceviamo una commissione senza costi extra per te.",
     "disclaimer": "I risultati sono indicativi. Verifica le festività patronali e le norme del tuo contratto/datore di lavoro.",
     "explanation": {
@@ -185,6 +186,7 @@
     "vat": "P.IVA: {value}",
     "legal": "Legale",
     "faq": "FAQ",
+    "affiliates": "Affiliazioni",
     "privacy": "Privacy",
     "copyright": "© {year} CalcolaFerie · I risultati sono indicativi: verifica sempre festività locali e regole del tuo contratto."
   },
@@ -201,7 +203,7 @@
       "title": "Dati raccolti",
       "newsletter": "Quando ti iscrivi alla newsletter raccogliamo il tuo indirizzo email. Buttondown, il provider usato per gestire la newsletter, può registrare anche il momento dell'iscrizione, i metadati tecnici del provider e i dati tecnici normalmente necessari per inviare email e gestire la lista.",
       "analytics": "Per le statistiche di visita riceviamo solo dati aggregati da Vercel Web Analytics. Il calcolo dei ponti, il budget ferie, le date selezionate e le festività inserite restano nel browser; prima dell'invio ad Analytics rimuoviamo i parametri dall'URL.",
-      "storage": "Quando chiedi di salvare le impostazioni, usiamo il localStorage del browser con la chiave calcolaferie_config. Contiene budget ferie, date di chiusura o ferie obbligatorie, patrono e date di ferie selezionate. Questa è memorizzazione tecnica richiesta dall'utente per ricordare la configurazione del planner, esente da consenso ai sensi dell'art. 5(3) della direttiva ePrivacy."
+      "storage": "Quando chiedi di salvare le impostazioni, usiamo il localStorage del browser con la chiave calcolaferie_config. Contiene budget ferie, date di chiusura o ferie obbligatorie, patrono e date di ferie selezionate. Usiamo anche un cookie tecnico, calcolaferie_locale, per ricordare se preferisci il sito in italiano o inglese: dura 1 anno e non contiene dati identificativi. Sia il localStorage che questo cookie sono memorizzazione tecnica richiesta dall'utente, esente da consenso ai sensi dell'art. 5(3) della direttiva ePrivacy."
     },
     "purposes": {
       "title": "Finalità e basi giuridiche",
@@ -211,7 +213,7 @@
     },
     "recipients": {
       "title": "Destinatari e provider",
-      "body": "Usiamo Buttondown per gestire la newsletter, Vercel per hosting e Web Analytics, e Travelpayouts o il provider di prenotazione quando clicchi un link di affiliazione. Non vendiamo dati personali a terzi."
+      "body": "Usiamo Buttondown per gestire la newsletter, Vercel per hosting e Web Analytics, e Travelpayouts (che gestisce i link verso i vari partner di affiliazione, es. Booking.com, Saily) quando clicchi un link di affiliazione. Non vendiamo dati personali a terzi."
     },
     "transfers": {
       "title": "Trasferimenti fuori SEE",
@@ -223,8 +225,8 @@
     },
     "affiliate": {
       "title": "Link di affiliazione",
-      "links": "Accanto a ogni ponte trovi un link per prenotare i giorni suggeriti. Sono link di affiliazione: se prenoti tramite questi link riceviamo una piccola commissione, senza costi extra per te. I link passano solo le date del ponte, nessuna destinazione, e ti portano alla ricerca del provider tramite Travelpayouts.",
-      "cookies": "Noi non impostiamo cookie di tracciamento dal nostro dominio e non aggiungiamo pubblicità, banner dei cookie o Google Analytics. Dopo che hai cliccato un link, il provider di prenotazione può impostare i propri cookie sul suo dominio, secondo la sua informativa privacy."
+      "links": "Accanto a ogni ponte trovi un menu con i programmi di affiliazione disponibili (es. Booking.com, Saily). Sono link di affiliazione Travelpayouts: se prenoti o acquisti tramite questi link riceviamo una piccola commissione, senza costi extra per te. Il link verso Booking.com passa solo le date del ponte, nessuna destinazione; gli altri partner, come Saily, usano un link generico, senza dati del ponte.",
+      "cookies": "Noi non impostiamo cookie di tracciamento dal nostro dominio e non aggiungiamo pubblicità, banner dei cookie o Google Analytics. Dopo che hai cliccato un link, Travelpayouts e il partner scelto possono impostare i propri cookie sul loro dominio, secondo le rispettive informative privacy."
     },
     "retention": {
       "title": "Conservazione",
@@ -241,6 +243,52 @@
     "requests": {
       "title": "Richieste privacy",
       "body": "Per richieste sui dati o sulla privacy, scrivi a <email>privacy@calcolaferie.it</email>. Puoi anche contattare il maintainer dal profilo GitHub <github>SpatariuRares</github>."
+    }
+  },
+  "affiliates": {
+    "eyebrow": "Affiliazioni",
+    "title": "Programmi di affiliazione",
+    "intro": "CalcolaFerie si sostiene tramite link di affiliazione: nessun costo extra per te, una piccola commissione per noi se prenoti tramite questi link. Qui trovi tutti i programmi già attivi e quelli che valutiamo di attivare in futuro, tutti tramite la rete Travelpayouts.",
+    "status": {
+      "active": "Attivo",
+      "planned": "In arrivo"
+    },
+    "list": {
+      "title": "Programmi"
+    },
+    "programs": {
+      "booking": {
+        "name": "Booking.com",
+        "description": "Ricerca hotel con le date del ponte già precompilate. Attivo su ogni opportunità nei risultati."
+      },
+      "aviasales": {
+        "name": "Aviasales",
+        "description": "Ricerca voli per raggiungere la destinazione nei giorni del ponte."
+      },
+      "hotellook": {
+        "name": "Hotellook",
+        "description": "Comparatore hotel alternativo, utile per confrontare prezzi su più portali."
+      },
+      "getyourguide": {
+        "name": "GetYourGuide",
+        "description": "Tour, attività ed esperienze da prenotare nella destinazione scelta."
+      },
+      "discovercars": {
+        "name": "Discover Cars",
+        "description": "Noleggio auto in loco, comodo per ponti in zone poco servite dai mezzi pubblici."
+      },
+      "insurance": {
+        "name": "Assicurazione viaggio",
+        "description": "Copertura medica e annullamento viaggio per le vacanze prenotate."
+      },
+      "saily": {
+        "name": "Saily",
+        "description": "eSIM dati per restare connessi all'estero senza roaming, attivabile in pochi minuti."
+      }
+    },
+    "disclosure": {
+      "title": "Trasparenza",
+      "body": "Attivare un programma non cambia il calcolo dei ponti: la logica dell'engine resta indipendente dalla monetizzazione. Per i dettagli su cookie e trattamento dati dei link di affiliazione, consulta la privacy policy."
     }
   }
 }

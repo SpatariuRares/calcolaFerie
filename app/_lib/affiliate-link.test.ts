@@ -1,10 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import {
-  affiliateMarker,
-  awinAffiliateId,
-  buildBookingDeepLink,
-  buildLastminuteDeepLink,
-} from "./affiliate-link";
+import { affiliateMarker, buildBookingDeepLink } from "./affiliate-link";
 
 describe("buildBookingDeepLink", () => {
   it("builds a Travelpayouts redirect carrying the marker", () => {
@@ -43,36 +38,6 @@ describe("buildBookingDeepLink", () => {
     expect(affiliateMarker()).toBe("env-marker");
     const url = new URL(buildBookingDeepLink({ startDate: "2026-04-23", endDate: "2026-04-27" }));
     expect(url.searchParams.get("marker")).toBe("env-marker");
-  });
-});
-
-describe("buildLastminuteDeepLink", () => {
-  it("builds an Awin redirect carrying the merchant id and affiliate id", () => {
-    const url = new URL(
-      buildLastminuteDeepLink({ startDate: "2026-04-23", endDate: "2026-04-27" }, "67890")
-    );
-
-    expect(url.origin + url.pathname).toBe("https://www.awin1.com/cread.php");
-    expect(url.searchParams.get("awinmid")).toBe("12374");
-    expect(url.searchParams.get("awinaffid")).toBe("67890");
-  });
-
-  it("points at the lastminute.com IT homepage", () => {
-    const url = new URL(
-      buildLastminuteDeepLink({ startDate: "2026-04-23", endDate: "2026-04-27" }, "67890")
-    );
-
-    expect(url.searchParams.get("p")).toBe("https://www.it.lastminute.com/");
-  });
-
-  it("reads the affiliate id from the NEXT_PUBLIC env var by default", () => {
-    vi.stubEnv("NEXT_PUBLIC_AWIN_AFFILIATE_ID", "env-affid");
-
-    expect(awinAffiliateId()).toBe("env-affid");
-    const url = new URL(
-      buildLastminuteDeepLink({ startDate: "2026-04-23", endDate: "2026-04-27" })
-    );
-    expect(url.searchParams.get("awinaffid")).toBe("env-affid");
   });
 });
 

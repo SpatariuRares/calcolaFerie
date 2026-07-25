@@ -21,19 +21,6 @@ const BOOKING_CAMPAIGN_ID = process.env.NEXT_PUBLIC_BOOKING_CAMPAIGN_ID ?? "101"
 /** Booking.com hotel search endpoint that accepts checkin/checkout params. */
 const BOOKING_SEARCH_URL = "https://www.booking.com/searchresults.html";
 
-/** Awin redirect endpoint that stamps the affiliate id and forwards the click. */
-const AWIN_REDIRECT_BASE = "https://www.awin1.com/cread.php";
-
-/** Awin merchant id for lastminute.com IT (ui.awin.com/merchant-profile/12374). */
-const LASTMINUTE_IT_MERCHANT_ID = process.env.NEXT_PUBLIC_LASTMINUTE_MERCHANT_ID ?? "12374";
-
-/**
- * lastminute.com IT homepage. No confirmed flight-search URL/query params for
- * this brand yet (site blocks unauthenticated fetches), so v1 lands here
- * instead of guessing a path — dates aren't pre-filled.
- */
-const LASTMINUTE_IT_URL = "https://www.it.lastminute.com/";
-
 export interface AffiliateDateRange {
   startDate: string;
   endDate: string;
@@ -76,27 +63,7 @@ export function buildBookingDeepLink(
 }
 
 /**
- * The Awin publisher (affiliate) id — separate account/network from
- * Travelpayouts. Public identifier, safe client-side.
+ * Saily (eSIM data plans) affiliate link. Static short link: no per-opportunity
+ * dates to prefill, unlike the Booking.com deep-link above.
  */
-export function awinAffiliateId(): string {
-  return process.env.NEXT_PUBLIC_AWIN_AFFILIATE_ID ?? "";
-}
-
-/**
- * Build an Awin deep-link to lastminute.com IT. Pure: pass `affiliateId` to
- * test without env. `startDate`/`endDate` are accepted for parity with the
- * other builders but unused until lastminute.com's search URL is confirmed.
- */
-export function buildLastminuteDeepLink(
-  _dates: AffiliateDateRange,
-  affiliateId: string = awinAffiliateId()
-): string {
-  const params = new URLSearchParams({
-    awinmid: LASTMINUTE_IT_MERCHANT_ID,
-    awinaffid: affiliateId,
-    p: LASTMINUTE_IT_URL,
-  });
-
-  return `${AWIN_REDIRECT_BASE}?${params.toString()}`;
-}
+export const SAILY_AFFILIATE_URL = "https://saily.tpk.lv/Hyp9pZwn";

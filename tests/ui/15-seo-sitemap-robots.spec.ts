@@ -5,15 +5,16 @@ import robots from "@/app/robots";
 const BASE = "https://calcolaferie.it";
 
 describe("sitemap", () => {
-  it("returns three entries", () => {
+  it("returns four entries", () => {
     const entries = sitemap();
-    expect(entries).toHaveLength(3);
+    expect(entries).toHaveLength(4);
   });
 
-  it("includes root, faq and privacy with absolute URLs", () => {
+  it("includes root, faq, affiliazioni and privacy with absolute URLs", () => {
     const urls = sitemap().map((e) => e.url);
     expect(urls).toContain(BASE);
     expect(urls).toContain(`${BASE}/faq`);
+    expect(urls).toContain(`${BASE}/affiliazioni`);
     expect(urls).toContain(`${BASE}/privacy`);
   });
 

@@ -271,6 +271,54 @@
   font-size: 0.92rem;
 }
 
+.affiliateGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+}
+
+.affiliateCard {
+  @include stack(8px);
+  padding: 16px;
+  border: 1px solid $border;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.affiliateCardHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.affiliateCardTitle {
+  margin: $margin-reset;
+  font-size: 1rem;
+  font-weight: 800;
+  color: $strong;
+}
+
+.affiliateBadge {
+  flex-shrink: 0;
+  padding: 2px 9px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.affiliateBadgeActive {
+  color: #1a7f4e;
+  background: #e3f6ec;
+}
+
+.affiliateBadgePlanned {
+  color: $muted;
+  background: #eef1f3;
+}
+
 .eyebrow {
   margin: $margin-eyebrow;
   color: $accent;

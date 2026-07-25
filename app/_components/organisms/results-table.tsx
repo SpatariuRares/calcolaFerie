@@ -47,15 +47,12 @@ export function ResultsTable({
               <th scope="col">{t("table.breakDays")}</th>
               <th scope="col">{t("table.leaveDays")}</th>
               <th scope="col">{t("table.leverage")}</th>
-              <th scope="col">{t("table.reason")}</th>
-              <th scope="col">{t("summary.remaining")}</th>
               <th scope="col">{t("table.book")}</th>
             </tr>
           </thead>
           <tbody>
             {output.opportunities.map((opportunity) => (
               <OpportunityRow
-                availableBudget={output.availableBudget}
                 isSelected={selectedOpportunityIds.has(opportunity.id)}
                 key={opportunity.id}
                 onToggleOpportunity={onToggleOpportunity}

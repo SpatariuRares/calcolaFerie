@@ -7,18 +7,15 @@ import { LevaBadge } from "./leva-badge";
 
 export function OpportunityRow({
   opportunity,
-  availableBudget,
   isSelected,
   onToggleOpportunity,
 }: {
   opportunity: BridgeOpportunity;
-  availableBudget: number;
   isSelected: boolean;
   onToggleOpportunity: (opportunityId: string) => void;
 }) {
   const t = useAppTranslations("results");
   const locale = useAppLocale();
-  const isOverBudget = opportunity.costDays > availableBudget;
   const dateRange = formatDateRange(opportunity.startDate, opportunity.endDate, locale);
 
   return (
@@ -50,19 +47,6 @@ export function OpportunityRow({
       <td>{opportunity.costDays}</td>
       <td>
         <LevaBadge leva={opportunity.leva} />
-      </td>
-      <td aria-label={t("table.reason")}>-</td>
-      <td>
-        {isSelected ? (
-          <span aria-label={t("selected")} className={styles.selectedChip} title={t("selected")}>
-            ✓
-          </span>
-        ) : null}
-        {isOverBudget ? (
-          <span aria-label={t("overBudget")} className={styles.budgetChip} title={t("overBudget")}>
-            !
-          </span>
-        ) : null}
       </td>
       <td className={styles.bookingCell} onClick={(event) => event.stopPropagation()}>
         <BookingCta endDate={opportunity.endDate} startDate={opportunity.startDate} />

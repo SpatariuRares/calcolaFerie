@@ -6,7 +6,9 @@
     "privacyTitle": "Privacy policy | CalcolaFerie",
     "privacyDescription": "CalcolaFerie privacy notice covering the newsletter, analytics, and affiliate links.",
     "faqTitle": "Frequently Asked Questions | CalcolaFerie",
-    "faqDescription": "Answers to the most common questions about Italian holiday bridges: how the calculation works, which public holidays are included, and how company closures are handled."
+    "faqDescription": "Answers to the most common questions about Italian holiday bridges: how the calculation works, which public holidays are included, and how company closures are handled.",
+    "affiliatesTitle": "Affiliate programs | CalcolaFerie",
+    "affiliatesDescription": "The affiliate programs active and planned on CalcolaFerie: hotels, flights, activities, car rental, and travel insurance."
   },
   "home": {
     "accessibleLabel": "About the calculator",
@@ -105,7 +107,6 @@
     },
     "affiliateLabel": "Affiliate link",
     "bookCta": "Book these dates",
-    "flightsCta": "Search flights",
     "affiliateDisclosure": "Affiliate link: if you book, we receive a commission at no extra cost to you.",
     "disclaimer": "Results are indicative. Check patron saint holidays and your contract/employer rules.",
     "explanation": {
@@ -185,6 +186,7 @@
     "vat": "VAT no.: {value}",
     "legal": "Legal",
     "faq": "FAQ",
+    "affiliates": "Affiliates",
     "privacy": "Privacy",
     "copyright": "© {year} CalcolaFerie · Results are indicative: always check local holidays and your contract rules."
   },
@@ -201,7 +203,7 @@
       "title": "Data collected",
       "newsletter": "When you subscribe to the newsletter, we collect your email address. Buttondown, our newsletter provider, may also record the subscription time, provider technical metadata, and technical data normally needed to send email and manage the list.",
       "analytics": "For visit statistics, we receive only aggregate data from Vercel Web Analytics. Bridge calculations, leave budgets, selected dates, and entered holidays remain in the browser; we remove URL parameters before sending data to Analytics.",
-      "storage": "When you ask us to save settings, we use browser localStorage under the key calcolaferie_config. It contains your leave budget, closure or mandatory-leave dates, patron saint day, and selected leave dates. This is technical storage requested by you to remember planner settings and is exempt from consent under Article 5(3) of the ePrivacy Directive."
+      "storage": "When you ask us to save settings, we use browser localStorage under the key calcolaferie_config. It contains your leave budget, closure or mandatory-leave dates, patron saint day, and selected leave dates. We also use a technical cookie, calcolaferie_locale, to remember whether you prefer the site in Italian or English: it lasts 1 year and holds no identifying data. Both localStorage and this cookie are technical storage requested by you, exempt from consent under Article 5(3) of the ePrivacy Directive."
     },
     "purposes": {
       "title": "Purposes and legal bases",
@@ -211,7 +213,7 @@
     },
     "recipients": {
       "title": "Recipients and providers",
-      "body": "We use Buttondown for the newsletter, Vercel for hosting and Web Analytics, and Travelpayouts or the booking provider when you click an affiliate link. We do not sell personal data to third parties."
+      "body": "We use Buttondown for the newsletter, Vercel for hosting and Web Analytics, and Travelpayouts (which handles links to our affiliate partners, e.g. Booking.com, Saily) when you click an affiliate link. We do not sell personal data to third parties."
     },
     "transfers": {
       "title": "Transfers outside the EEA",
@@ -223,8 +225,8 @@
     },
     "affiliate": {
       "title": "Affiliate links",
-      "links": "Each bridge includes a link to book the suggested dates. These are affiliate links: if you book through them, we receive a small commission at no extra cost to you. Links pass only the bridge dates, no destination, and take you to the provider search through Travelpayouts.",
-      "cookies": "We set no tracking cookies from our domain and add no advertising, cookie banners, or Google Analytics. After you click a link, the booking provider may set cookies on its own domain under its privacy notice."
+      "links": "Each bridge includes a menu with the available affiliate programs (e.g. Booking.com, Saily). These are Travelpayouts affiliate links: if you book or purchase through them, we receive a small commission at no extra cost to you. The Booking.com link passes only the bridge dates, no destination; other partners, like Saily, use a generic link with no bridge data.",
+      "cookies": "We set no tracking cookies from our domain and add no advertising, cookie banners, or Google Analytics. After you click a link, Travelpayouts and the chosen partner may set cookies on their own domains under their respective privacy notices."
     },
     "retention": {
       "title": "Retention",
@@ -241,6 +243,52 @@
     "requests": {
       "title": "Privacy requests",
       "body": "For data or privacy requests, email <email>privacy@calcolaferie.it</email>. You may also contact the maintainer through the GitHub profile <github>SpatariuRares</github>."
+    }
+  },
+  "affiliates": {
+    "eyebrow": "Affiliates",
+    "title": "Affiliate programs",
+    "intro": "CalcolaFerie supports itself through affiliate links: no extra cost to you, a small commission for us if you book through them. Here are all the programs already active and the ones we're evaluating for the future, all through the Travelpayouts network.",
+    "status": {
+      "active": "Active",
+      "planned": "Planned"
+    },
+    "list": {
+      "title": "Programs"
+    },
+    "programs": {
+      "booking": {
+        "name": "Booking.com",
+        "description": "Hotel search pre-filled with the bridge dates. Active on every opportunity in the results."
+      },
+      "aviasales": {
+        "name": "Aviasales",
+        "description": "Flight search to reach your destination during the bridge dates."
+      },
+      "hotellook": {
+        "name": "Hotellook",
+        "description": "Alternative hotel comparison engine, useful for checking prices across multiple sites."
+      },
+      "getyourguide": {
+        "name": "GetYourGuide",
+        "description": "Tours, activities, and experiences to book at your chosen destination."
+      },
+      "discovercars": {
+        "name": "Discover Cars",
+        "description": "Local car rental, handy for bridges in areas with limited public transport."
+      },
+      "insurance": {
+        "name": "Travel insurance",
+        "description": "Medical and trip-cancellation coverage for your booked vacation."
+      },
+      "saily": {
+        "name": "Saily",
+        "description": "eSIM data plans to stay connected abroad without roaming, activated in minutes."
+      }
+    },
+    "disclosure": {
+      "title": "Transparency",
+      "body": "Activating a program never changes the bridge calculation: the engine logic stays independent from monetization. See the privacy policy for details on cookies and data processing for affiliate links."
     }
   }
 }
