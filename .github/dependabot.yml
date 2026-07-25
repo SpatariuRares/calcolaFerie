@@ -6,6 +6,7 @@ updates:
       interval: weekly
     cooldown:
       default-days: 2
+      semver-major-days: 90
     groups:
       dev-dependencies:
         dependency-type: development
