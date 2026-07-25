@@ -11,9 +11,20 @@ updates:
       dev-dependencies:
         dependency-type: development
     ignore:
-      # eslint-plugin-react (via eslint-config-next) doesn't support ESLint 10 yet:
-      # https://github.com/jsx-eslint/eslint-plugin-react/issues (getFilename removed in flat config context)
+      # eslint/typescript toolchain: major bumps break peer-compat often
+      # (eslint-plugin-react vs ESLint 10, typescript-eslint vs TS 7, etc).
+      # Bump these manually once the ecosystem catches up.
       - dependency-name: "eslint"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "eslint-config-next"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "eslint-plugin-import"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@typescript-eslint/eslint-plugin"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@typescript-eslint/parser"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "typescript"
         update-types: ["version-update:semver-major"]
     open-pull-requests-limit: 10
 
