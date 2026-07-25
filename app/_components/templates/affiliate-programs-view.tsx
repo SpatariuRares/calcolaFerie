@@ -14,11 +14,11 @@ interface AffiliateProgram {
 const PROGRAMS: AffiliateProgram[] = [
   { key: "booking", status: "active" },
   { key: "saily", status: "active" },
-  { key: "aviasales", status: "planned" },
-  { key: "hotellook", status: "planned" },
+  { key: "klook", status: "active" },
+  { key: "radicalstorage", status: "active" },
   { key: "getyourguide", status: "planned" },
-  { key: "discovercars", status: "planned" },
-  { key: "insurance", status: "planned" },
+  { key: "expedia", status: "planned" },
+  { key: "hostelworld", status: "planned" },
 ];
 
 export function AffiliateProgramsView() {

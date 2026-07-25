@@ -273,6 +273,14 @@
         "name": "GetYourGuide",
         "description": "Tours, activities, and experiences to book at your chosen destination."
       },
+      "expedia": {
+        "name": "Expedia",
+        "description": "Flights, hotels and travel packages to plan your bridge in one place."
+      },
+      "hostelworld": {
+        "name": "Hostelworld",
+        "description": "Hostels and budget stays for low-cost bridges."
+      },
       "discovercars": {
         "name": "Discover Cars",
         "description": "Local car rental, handy for bridges in areas with limited public transport."
@@ -284,6 +292,14 @@
       "saily": {
         "name": "Saily",
         "description": "eSIM data plans to stay connected abroad without roaming, activated in minutes."
+      },
+      "klook": {
+        "name": "Klook",
+        "description": "Tours, activities and experiences worldwide, bookable in a few clicks."
+      },
+      "radicalstorage": {
+        "name": "Radical Storage",
+        "description": "Secure luggage storage near stations and landmarks, in 1,000+ cities worldwide. No weight or size limits, coverage up to $3,000 per bag."
       }
     },
     "disclosure": {

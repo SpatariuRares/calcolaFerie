@@ -273,6 +273,14 @@
         "name": "GetYourGuide",
         "description": "Tour, attività ed esperienze da prenotare nella destinazione scelta."
       },
+      "expedia": {
+        "name": "Expedia",
+        "description": "Voli, hotel e pacchetti viaggio per organizzare il ponte in un solo posto."
+      },
+      "hostelworld": {
+        "name": "Hostelworld",
+        "description": "Ostelli e sistemazioni economiche per ponti low-cost."
+      },
       "discovercars": {
         "name": "Discover Cars",
         "description": "Noleggio auto in loco, comodo per ponti in zone poco servite dai mezzi pubblici."
@@ -284,6 +292,14 @@
       "saily": {
         "name": "Saily",
         "description": "eSIM dati per restare connessi all'estero senza roaming, attivabile in pochi minuti."
+      },
+      "klook": {
+        "name": "Klook",
+        "description": "Tour, attività ed esperienze in tutto il mondo, prenotabili in pochi click."
+      },
+      "radicalstorage": {
+        "name": "Radical Storage",
+        "description": "Deposito bagagli sicuro vicino a stazioni e attrazioni, in oltre 1.000 città nel mondo. Nessun limite di peso o dimensioni, copertura fino a 3.000€ a bagaglio."
       }
     },
     "disclosure": {

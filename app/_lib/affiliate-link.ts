@@ -67,3 +67,15 @@ export function buildBookingDeepLink(
  * dates to prefill, unlike the Booking.com deep-link above.
  */
 export const SAILY_AFFILIATE_URL = "https://saily.tpk.lv/Hyp9pZwn";
+
+/**
+ * Klook (tours, activities and experiences) affiliate link. Static short link:
+ * no per-opportunity dates to prefill.
+ */
+export const KLOOK_AFFILIATE_URL = "https://klook.tpk.lv/otvyOzi2";
+
+/**
+ * Radical Storage (luggage storage network) affiliate link. Static short
+ * link: no per-opportunity dates to prefill.
+ */
+export const RADICAL_STORAGE_AFFILIATE_URL = "https://radicalstorage.tpk.lv/v6YkL3Zh";
