@@ -64,6 +64,7 @@ La leva ferie per questo ponte è 4.0x.
 
     const draft = await generateBlogMDXDraft("Ponte 2 Giugno 2026", {
       articleType: "destination_guide",
+      expiresAt: "2026-06-03",
       ragEngine: rag,
       useOpenRouter: false,
     });
@@ -71,7 +72,9 @@ La leva ferie per questo ponte è 4.0x.
     expect(draft.title).toContain("Ponte 2 Giugno 2026");
     expect(draft.slug).toBe("ponte-2-giugno-2026");
     expect(draft.articleType).toBe("destination_guide");
+    expect(draft.expiresAt).toBe("2026-06-03");
     expect(draft.mdxContent).toContain("---");
+    expect(draft.mdxContent).toContain('expiresAt: "2026-06-03"');
     expect(draft.mdxContent).toContain("Leva Ferie");
     expect(draft.mdxContent).not.toMatch(/RAG|Fonte|fonti|Spunto/i);
     expect(draft.mdxContent).toContain("Come imposterei questo ponte");

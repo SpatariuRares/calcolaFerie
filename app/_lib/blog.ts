@@ -7,6 +7,7 @@ export type BlogPostMeta = {
   title: string;
   description: string;
   date: string;
+  expiresAt?: string;
 };
 
 export type BlogPost = BlogPostMeta & { content: string };
@@ -27,8 +28,11 @@ function getTodayIso(): string {
   return `${values.year}-${values.month}-${values.day}`;
 }
 
-function isPublished(date: string): boolean {
-  return date <= getTodayIso();
+export function isPostVisible(
+  post: Pick<BlogPostMeta, "date" | "expiresAt">,
+  todayIso = getTodayIso()
+): boolean {
+  return post.date <= todayIso && (!post.expiresAt || post.expiresAt >= todayIso);
 }
 
 function readMeta(dir: string, file: string): BlogPostMeta {
@@ -39,6 +43,7 @@ function readMeta(dir: string, file: string): BlogPostMeta {
     title: data.title as string,
     description: data.description as string,
     date: data.date as string,
+    expiresAt: typeof data.expiresAt === "string" ? data.expiresAt : undefined,
   };
 }
 
@@ -56,22 +61,24 @@ function readPost(dir: string, slug: string): BlogPost | null {
     title: data.title as string,
     description: data.description as string,
     date: data.date as string,
+    expiresAt: typeof data.expiresAt === "string" ? data.expiresAt : undefined,
     content,
   };
 }
 
 export function getAllPosts(): BlogPostMeta[] {
+  const todayIso = getTodayIso();
   const files = fs.readdirSync(VISIBLE_DIR).filter((file) => file.endsWith(".mdx"));
   return files
     .map((file) => readMeta(VISIBLE_DIR, file))
-    .filter((post) => isPublished(post.date))
+    .filter((post) => isPostVisible(post, todayIso))
     .sort((a, b) => (a.date < b.date ? 1 : -1));
 }
 
 export function getPostBySlug(slug: string): BlogPost | null {
   const visiblePost = readPost(VISIBLE_DIR, slug);
   if (visiblePost) {
-    return isPublished(visiblePost.date) ? visiblePost : null;
+    return isPostVisible(visiblePost) ? visiblePost : null;
   }
 
   return readPost(HIDDEN_DIR, slug);

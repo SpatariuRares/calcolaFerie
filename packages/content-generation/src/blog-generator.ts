@@ -10,6 +10,7 @@ export interface BlogGeneratorOptions {
   bridgeDays?: number;
   customTitle?: string;
   customDescription?: string;
+  expiresAt?: string;
   ragEngine?: RAGEngine;
   useOpenRouter?: boolean;
   openRouterOptions?: OpenRouterOptions;
@@ -20,6 +21,7 @@ export interface GeneratedBlogDraft {
   title: string;
   description: string;
   date: string;
+  expiresAt?: string;
   articleType: ArticleType;
   mdxContent: string;
   sourcesUsed: string[];
@@ -74,6 +76,7 @@ export async function generateBlogMDXDraft(
     title,
     description,
     date: todayStr,
+    expiresAt: options.expiresAt,
     articleType,
     articleTypeInstructions: articleTypeDef.systemPromptInstructions,
     articleTypeLabel: articleTypeDef.label,
@@ -87,6 +90,7 @@ export async function generateBlogMDXDraft(
     title,
     description,
     date: todayStr,
+    expiresAt: options.expiresAt,
     articleType,
     mdxContent:
       mdxFromOpenRouter ??
@@ -95,6 +99,7 @@ export async function generateBlogMDXDraft(
         title,
         description,
         date: todayStr,
+        expiresAt: options.expiresAt,
         articleTypeLabel: articleTypeDef.label,
         bridgeDays,
         destinationRows,
@@ -129,6 +134,7 @@ async function maybeGenerateWithOpenRouter(input: {
   title: string;
   description: string;
   date: string;
+  expiresAt?: string;
   articleType: ArticleType;
   articleTypeLabel: string;
   articleTypeInstructions: string;
@@ -159,7 +165,7 @@ REGOLE DI FORMATTAZIONE OBBLIGATORIE:
 title: "${input.title}"
 description: "${input.description}"
 date: "${input.date}"
----
+${formatExpiresAtFrontmatter(input.expiresAt)}---
 
 2. Usa intestazioni Markdown (##, ###).
 3. Non citare fonti, siti, database, RAG, appunti interni o frasi come "secondo le fonti": usa le note solo come contesto privato.
@@ -188,11 +194,16 @@ SCRIVI ORA L'ARTICOLO COMPLETO IN MDX INCLUDENDO FRONTMATTER, CONSIGLI PRATICI, 
   }
 }
 
+function formatExpiresAtFrontmatter(expiresAt?: string): string {
+  return expiresAt ? `expiresAt: "${expiresAt}"\n` : "";
+}
+
 function buildTemplateDraft(input: {
   topic: string;
   title: string;
   description: string;
   date: string;
+  expiresAt?: string;
   articleTypeLabel: string;
   bridgeDays: number;
   destinationRows: string;
@@ -202,7 +213,7 @@ function buildTemplateDraft(input: {
 title: "${input.title}"
 description: "${input.description}"
 date: "${input.date}"
----
+${formatExpiresAtFrontmatter(input.expiresAt)}---
 
 Pianificare le ferie in anticipo è il modo più semplice per trasformare pochi giorni di permesso in periodi di riposo molto più lunghi. In questa guida ti racconto come imposterei **${input.topic}** (${input.articleTypeLabel}) con un approccio pratico, da calendario alla mano.
 

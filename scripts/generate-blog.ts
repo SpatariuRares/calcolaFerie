@@ -16,20 +16,25 @@ type BlogCommandInput = {
   articleType: ArticleType;
   visibility: BlogVisibility;
   model?: string;
+  expiresAt?: string;
 };
 
 type ParsedArgs = {
   positional: string[];
   visibility?: BlogVisibility;
   model?: string;
+  expiresAt?: string;
 };
 
 async function run() {
-  const { topic, articleType, visibility, model } = await readCommandInput();
+  const { topic, articleType, visibility, model, expiresAt } = await readCommandInput();
 
   console.log(`🤖 [Blog Generator] Preparazione articolo per: "${topic}"...`);
   console.log(`🏷️ Tipologia articolo: "${articleType}"`);
   console.log(`👁️ Visibilità articolo: "${visibility}"`);
+  if (expiresAt) {
+    console.log(`⏳ Scadenza articolo: "${expiresAt}"`);
+  }
 
   const engine = getRAGEngine();
   const stats = engine.getStats();
@@ -38,6 +43,7 @@ async function run() {
 
   const draft = await generateBlogMDXDraft(topic, {
     articleType,
+    expiresAt,
     ragEngine: engine,
     openRouterOptions: model ? { model } : undefined,
   });
@@ -64,7 +70,8 @@ async function readCommandInput(): Promise<BlogCommandInput> {
     const topic = await askRequired(rl, "Tema dell'articolo: ");
     const articleType = await askArticleType(rl);
     const visibility = parsedArgs.visibility || (await askVisibility(rl));
-    return { topic, articleType, visibility };
+    const expiresAt = parsedArgs.expiresAt || (await askOptionalExpiry(rl));
+    return { topic, articleType, visibility, expiresAt };
   } finally {
     rl.close();
   }
@@ -74,6 +81,7 @@ function parseRawArgs(rawArgs: string[]): ParsedArgs {
   const positional: string[] = [];
   let visibility: BlogVisibility | undefined;
   let model: string | undefined;
+  let expiresAt: string | undefined;
 
   for (let i = 0; i < rawArgs.length; i++) {
     const arg = rawArgs[i];
@@ -99,10 +107,20 @@ function parseRawArgs(rawArgs: string[]): ParsedArgs {
       i++;
       continue;
     }
+    if (arg === "--expires-at") {
+      const value = rawArgs[i + 1];
+      if (isIsoDate(value)) {
+        expiresAt = value;
+        i++;
+        continue;
+      }
+      console.error('❌ Valore --expires-at non valido. Usa il formato "YYYY-MM-DD".');
+      process.exit(1);
+    }
     positional.push(arg);
   }
 
-  return { positional, visibility, model };
+  return { positional, visibility, model, expiresAt };
 }
 
 function parseArgs(parsedArgs: ParsedArgs): BlogCommandInput {
@@ -119,7 +137,7 @@ function parseArgs(parsedArgs: ParsedArgs): BlogCommandInput {
     process.exit(1);
   }
 
-  return { topic, articleType, visibility, model };
+  return { topic, articleType, visibility, model, expiresAt: parsedArgs.expiresAt };
 }
 
 async function askRequired(
@@ -160,6 +178,23 @@ async function askVisibility(rl: readline.Interface): Promise<BlogVisibility> {
     }
     console.log('Visibilità non valida. Usa "visible" oppure "hidden".');
   }
+}
+
+async function askOptionalExpiry(rl: readline.Interface): Promise<string | undefined> {
+  while (true) {
+    const answer = (await rl.question("Scadenza articolo [YYYY-MM-DD, vuota = nessuna]: ")).trim();
+    if (answer === "") {
+      return undefined;
+    }
+    if (isIsoDate(answer)) {
+      return answer;
+    }
+    console.log('Scadenza non valida. Usa il formato "YYYY-MM-DD" oppure lascia vuoto.');
+  }
+}
+
+function isIsoDate(value: unknown): value is string {
+  return typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value);
 }
 
 run().catch((err) => {
