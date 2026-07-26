@@ -7,19 +7,16 @@
  * cookie is set by the provider on their domain after the click.
  *
  * Lives in the app layer on purpose: the engine stays free of monetisation.
+ * Static ids/urls live in `affiliate-constants.ts`; this file only builds
+ * links.
  */
 
-/** Travelpayouts redirect endpoint that stamps the marker and forwards the click. */
-const TRAVELPAYOUTS_REDIRECT_BASE = "https://tp.media/r";
-
-/** Travelpayouts program id for Booking.com. Override per-account via env. */
-const BOOKING_PROGRAM_ID = process.env.NEXT_PUBLIC_BOOKING_PROGRAM_ID ?? "4115";
-
-/** Campaign id for the Booking.com search deep-link program. Override per-account via env. */
-const BOOKING_CAMPAIGN_ID = process.env.NEXT_PUBLIC_BOOKING_CAMPAIGN_ID ?? "101";
-
-/** Booking.com hotel search endpoint that accepts checkin/checkout params. */
-const BOOKING_SEARCH_URL = "https://www.booking.com/searchresults.html";
+import {
+  BOOKING_CAMPAIGN_ID,
+  BOOKING_PROGRAM_ID,
+  BOOKING_SEARCH_URL,
+  TRAVELPAYOUTS_REDIRECT_BASE,
+} from "./affiliate-constants";
 
 export interface AffiliateDateRange {
   startDate: string;
@@ -61,21 +58,3 @@ export function buildBookingDeepLink(
 
   return `${TRAVELPAYOUTS_REDIRECT_BASE}?${params.toString()}`;
 }
-
-/**
- * Saily (eSIM data plans) affiliate link. Static short link: no per-opportunity
- * dates to prefill, unlike the Booking.com deep-link above.
- */
-export const SAILY_AFFILIATE_URL = "https://saily.tpk.lv/Hyp9pZwn";
-
-/**
- * Klook (tours, activities and experiences) affiliate link. Static short link:
- * no per-opportunity dates to prefill.
- */
-export const KLOOK_AFFILIATE_URL = "https://klook.tpk.lv/otvyOzi2";
-
-/**
- * Radical Storage (luggage storage network) affiliate link. Static short
- * link: no per-opportunity dates to prefill.
- */
-export const RADICAL_STORAGE_AFFILIATE_URL = "https://radicalstorage.tpk.lv/v6YkL3Zh";

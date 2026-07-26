@@ -2,24 +2,8 @@
 
 import Link from "next/link";
 import { useTranslations } from "next-intl";
+import { AFFILIATE_PROGRAMS } from "../../_lib/affiliate-constants";
 import styles from "../../styles/app.module.scss";
-
-type ProgramStatus = "active" | "planned";
-
-interface AffiliateProgram {
-  key: string;
-  status: ProgramStatus;
-}
-
-const PROGRAMS: AffiliateProgram[] = [
-  { key: "booking", status: "active" },
-  { key: "saily", status: "active" },
-  { key: "klook", status: "active" },
-  { key: "radicalstorage", status: "active" },
-  { key: "getyourguide", status: "planned" },
-  { key: "expedia", status: "planned" },
-  { key: "hostelworld", status: "planned" },
-];
 
 export function AffiliateProgramsView() {
   const t = useTranslations("affiliates");
@@ -39,23 +23,18 @@ export function AffiliateProgramsView() {
         <section>
           <h2>{t("list.title")}</h2>
           <div className={styles.affiliateGrid}>
-            {PROGRAMS.map((program) => (
-              <div className={styles.affiliateCard} key={program.key}>
-                <div className={styles.affiliateCardHead}>
-                  <p className={styles.affiliateCardTitle}>{t(`programs.${program.key}.name`)}</p>
-                  <span
-                    className={`${styles.affiliateBadge} ${
-                      program.status === "active"
-                        ? styles.affiliateBadgeActive
-                        : styles.affiliateBadgePlanned
-                    }`}
-                  >
-                    {t(`status.${program.status}`)}
-                  </span>
+            {AFFILIATE_PROGRAMS.filter((program) => program.status === "active").map(
+              (program) => (
+                <div className={styles.affiliateCard} key={program.key}>
+                  <div className={styles.affiliateCardHead}>
+                    <p className={styles.affiliateCardTitle}>
+                      {t(`programs.${program.key}.name`)}
+                    </p>
+                  </div>
+                  <p>{t(`programs.${program.key}.description`)}</p>
                 </div>
-                <p>{t(`programs.${program.key}.description`)}</p>
-              </div>
-            ))}
+              )
+            )}
           </div>
         </section>
         <section>

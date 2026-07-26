@@ -2,43 +2,23 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import type { BridgeOpportunity } from "@engine";
 import {
-  buildBookingDeepLink,
+  AFFILIATE_PROGRAMS,
   KLOOK_AFFILIATE_URL,
   RADICAL_STORAGE_AFFILIATE_URL,
   SAILY_AFFILIATE_URL,
-} from "../../_lib/affiliate-link";
+  type AffiliateProgramKey,
+} from "../../_lib/affiliate-constants";
 import { useAppTranslations } from "../../_lib/use-app-i18n";
 import styles from "../../styles/app.module.scss";
 
-type AffiliateProgramKey =
-  | "booking"
-  | "saily"
-  | "klook"
-  | "radicalstorage"
-  | "getyourguide"
-  | "expedia"
-  | "hostelworld";
+const PROGRAM_ORDER: AffiliateProgramKey[] = AFFILIATE_PROGRAMS.map((program) => program.key);
 
-const PROGRAM_ORDER: AffiliateProgramKey[] = [
-  "booking",
-  "saily",
-  "klook",
-  "radicalstorage",
-  "getyourguide",
-  "expedia",
-  "hostelworld",
-];
-
-export function BookingCta({
-  endDate,
-  startDate,
-}: Pick<BridgeOpportunity, "endDate" | "startDate">) {
+export function BookingCta(_props: Pick<BridgeOpportunity, "endDate" | "startDate">) {
   const t = useAppTranslations("results");
   const tPrograms = useAppTranslations("affiliates");
-  // Programs with a live affiliate link. Booking.com's is per-opportunity
-  // (dates-only, see buildBookingDeepLink); the rest are static short links.
+  // Programs with a live affiliate link. Booking.com disabled for now (no
+  // active program) — the rest are static short links.
   const programHref: Partial<Record<AffiliateProgramKey, string>> = {
-    booking: buildBookingDeepLink({ startDate, endDate }),
     saily: SAILY_AFFILIATE_URL,
     klook: KLOOK_AFFILIATE_URL,
     radicalstorage: RADICAL_STORAGE_AFFILIATE_URL,

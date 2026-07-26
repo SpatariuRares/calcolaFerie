@@ -200,7 +200,7 @@ describe("results table UI", () => {
     const [trigger] = screen.getAllByRole("button", { name: "Prenota questi giorni" });
     fireEvent.click(trigger);
 
-    expect(screen.getAllByRole("link", { name: "Booking.com" })[0]).toHaveAttribute(
+    expect(screen.getAllByRole("link", { name: "Klook" })[0]).toHaveAttribute(
       "rel",
       expect.stringContaining("sponsored")
     );
