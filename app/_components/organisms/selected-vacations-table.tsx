@@ -68,7 +68,7 @@ export function SelectedVacationsTable({ ranges }: { ranges: SelectedVacationRan
                 {t("table.leaveDays")}: {range.days}
               </span>
             </div>
-            <BookingCta endDate={range.end} startDate={range.start} />
+            <BookingCta />
           </li>
         ))}
       </ul>
@@ -92,7 +92,7 @@ export function SelectedVacationsTable({ ranges }: { ranges: SelectedVacationRan
                 <th scope="row">{formatPeriod(range)}</th>
                 <td>{range.days}</td>
                 <td className={styles.bookingCell}>
-                  <BookingCta endDate={range.end} startDate={range.start} />
+                  <BookingCta />
                 </td>
               </tr>
             ))}

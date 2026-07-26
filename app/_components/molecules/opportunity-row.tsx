@@ -49,7 +49,7 @@ export function OpportunityRow({
         <LevaBadge leva={opportunity.leva} />
       </td>
       <td className={styles.bookingCell} onClick={(event) => event.stopPropagation()}>
-        <BookingCta endDate={opportunity.endDate} startDate={opportunity.startDate} />
+        <BookingCta />
       </td>
     </tr>
   );

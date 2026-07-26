@@ -66,7 +66,7 @@ export function OpportunityCard({
       {isOverBudget ? <span className={styles.budgetChip}>{t("overBudget")}</span> : null}
       {isSelected ? <span className={styles.selectedChip}>{t("selected")}</span> : null}
 
-      <BookingCta endDate={opportunity.endDate} startDate={opportunity.startDate} />
+      <BookingCta />
     </article>
   );
 }

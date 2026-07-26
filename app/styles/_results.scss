@@ -483,8 +483,21 @@
 }
 
 .hamburgerIcon {
-  font-size: 20px;
-  color: #fff;
+  position: relative;
+  display: block;
+  width: 16px;
+  height: 12px;
+  border-top: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+
+  &::before {
+    position: absolute;
+    top: 3px;
+    left: 0;
+    width: 16px;
+    border-top: 2px solid #fff;
+    content: "";
+  }
 }
 
 .bookingMenuBackdrop {

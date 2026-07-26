@@ -1,6 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import type { BridgeOpportunity } from "@engine";
 import {
   AFFILIATE_PROGRAMS,
   KLOOK_AFFILIATE_URL,
@@ -13,7 +12,7 @@ import styles from "../../styles/app.module.scss";
 
 const PROGRAM_ORDER: AffiliateProgramKey[] = AFFILIATE_PROGRAMS.map((program) => program.key);
 
-export function BookingCta(_props: Pick<BridgeOpportunity, "endDate" | "startDate">) {
+export function BookingCta() {
   const t = useAppTranslations("results");
   const tPrograms = useAppTranslations("affiliates");
   // Programs with a live affiliate link. Booking.com disabled for now (no
@@ -79,9 +78,7 @@ export function BookingCta(_props: Pick<BridgeOpportunity, "endDate" | "startDat
         ref={triggerRef}
         type="button"
       >
-        <span aria-hidden="true" className={`material-symbols-outlined ${styles.hamburgerIcon}`}>
-          menu
-        </span>
+        <span aria-hidden="true" className={styles.hamburgerIcon} />
       </button>
       {isOpen
         ? createPortal(
