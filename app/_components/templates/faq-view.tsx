@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { FaqJsonLd } from "../atoms/json-ld";
+import { PageChrome } from "../organisms/page-chrome";
 import styles from "../../styles/app.module.scss";
 
 export function FaqView() {
@@ -10,9 +11,9 @@ export function FaqView() {
   const tPrivacy = useTranslations("privacy");
 
   return (
-    <main className={styles.pageShell}>
+    <PageChrome>
       <FaqJsonLd />
-      <article aria-labelledby="faq-title">
+      <article aria-labelledby="faq-title" className={styles.faqPage}>
         <Link className={styles.backLink} href="/">
           {tPrivacy("back")}
         </Link>
@@ -42,6 +43,6 @@ export function FaqView() {
           </div>
         </section>
       </article>
-    </main>
+    </PageChrome>
   );
 }

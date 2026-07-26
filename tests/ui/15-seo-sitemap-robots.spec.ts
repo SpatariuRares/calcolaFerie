@@ -5,16 +5,16 @@ import robots from "@/app/robots";
 const BASE = "https://calcolaferie.it";
 
 describe("sitemap", () => {
-  it("returns five entries", () => {
+  it("returns sitemap entries for pages and blog posts", () => {
     const entries = sitemap();
-    expect(entries).toHaveLength(5);
+    expect(entries.length).toBeGreaterThanOrEqual(5);
   });
 
-  it("includes root, faq, ponti-2027, affiliazioni and privacy with absolute URLs", () => {
+  it("includes root, faq, blog, affiliazioni and privacy with absolute URLs", () => {
     const urls = sitemap().map((e) => e.url);
     expect(urls).toContain(BASE);
     expect(urls).toContain(`${BASE}/faq`);
-    expect(urls).toContain(`${BASE}/ponti-2027`);
+    expect(urls).toContain(`${BASE}/blog`);
     expect(urls).toContain(`${BASE}/affiliazioni`);
     expect(urls).toContain(`${BASE}/privacy`);
   });

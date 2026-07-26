@@ -27,17 +27,45 @@ export function JsonLd() {
   );
 }
 
-export function Ponti2027JsonLd() {
+export function BlogJsonLd() {
   const schema = {
     "@context": "https://schema.org",
-    "@type": "Article",
-    "@id": `${BASE_URL}/ponti-2027#article`,
-    "headline": "Ponti 2027: tutte le date per pianificare le ferie",
-    "description":
-      "I ponti italiani con la leva più alta di tutto il 2027, calcolati festività per festività.",
+    "@type": "Blog",
+    "@id": `${BASE_URL}/blog#blog`,
+    "name": "Blog CalcolaFerie",
+    "url": `${BASE_URL}/blog`,
+    "inLanguage": ["it", "en"],
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+    />
+  );
+}
+
+export function BlogPostingJsonLd({
+  slug,
+  title,
+  description,
+  date,
+}: {
+  slug: string;
+  title: string;
+  description: string;
+  date: string;
+}) {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "@id": `${BASE_URL}/blog/${slug}#article`,
+    "headline": title,
+    "description": description,
+    "datePublished": date,
     "author": { "@type": "Organization", "name": "CalcolaFerie" },
     "publisher": { "@type": "Organization", "name": "CalcolaFerie" },
-    "mainEntityOfPage": `${BASE_URL}/ponti-2027`,
+    "mainEntityOfPage": `${BASE_URL}/blog/${slug}`,
     "inLanguage": ["it", "en"],
   };
 

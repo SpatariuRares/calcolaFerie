@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import { Ponti2027View } from "@components/templates/ponti-2027-view";
+import { BlogView } from "@components/templates/blog-view";
+import { getAllPosts } from "../_lib/blog";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "https://calcolaferie.it";
-const PAGE_URL = `${BASE_URL}/ponti-2027`;
+const PAGE_URL = `${BASE_URL}/blog`;
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("metadata");
-  const title = t("ponti2027Title");
-  const description = t("ponti2027Description");
+  const title = t("blogTitle");
+  const description = t("blogDescription");
 
   return {
     title,
@@ -18,7 +19,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title,
       description,
       url: PAGE_URL,
-      type: "article",
+      type: "website",
     },
     twitter: {
       card: "summary",
@@ -28,6 +29,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function Ponti2027Page() {
-  return <Ponti2027View />;
+export default function BlogPage() {
+  const posts = getAllPosts();
+  return <BlogView posts={posts} />;
 }

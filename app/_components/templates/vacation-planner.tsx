@@ -19,8 +19,8 @@ import { buildSelectedRanges, CalendarView } from "../organisms/calendar-view";
 import { NewsletterSignup } from "../organisms/newsletter-signup";
 import { PlannerForm } from "../organisms/planner-form";
 import { ResultsPanel } from "../organisms/results-panel";
+import { PageChrome } from "../organisms/page-chrome";
 import { SelectedVacationsTable } from "../organisms/selected-vacations-table";
-import { SiteFooter } from "../organisms/site-footer";
 import { SiteHeader } from "../organisms/site-header";
 
 function createDayOffRow(id: string, type: DayOff["type"] = "companyClosure"): DayOffRow {
@@ -262,7 +262,7 @@ export function VacationPlanner() {
   }
 
   return (
-    <main className={styles.pageShell}>
+    <PageChrome>
       <SiteHeader />
 
       <div className={styles.toolLayout}>
@@ -317,8 +317,6 @@ export function VacationPlanner() {
           ) : null}
         </div>
       </div>
-
-      <SiteFooter />
-    </main>
+    </PageChrome>
   );
 }

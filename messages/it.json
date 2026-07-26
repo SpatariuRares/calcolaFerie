@@ -9,8 +9,8 @@
     "faqDescription": "Tutte le risposte alle domande più frequenti su ponti, ferie e festività italiane: come funziona il calcolo, quali festività sono incluse e come gestire le chiusure aziendali.",
     "affiliatesTitle": "Programmi di affiliazione | CalcolaFerie",
     "affiliatesDescription": "I programmi di affiliazione attivi e in arrivo su CalcolaFerie: hotel, voli, attività, noleggio auto e assicurazioni di viaggio.",
-    "ponti2027Title": "Ponti 2027: tutte le date per pianificare le ferie | CalcolaFerie",
-    "ponti2027Description": "Tutti i ponti italiani con la leva più alta del 2027, calcolati festività per festività: quanti giorni di ferie servono e quanti giorni liberi restituiscono."
+    "blogTitle": "Blog | CalcolaFerie",
+    "blogDescription": "Guide e approfondimenti su ponti, ferie e festività italiane per pianificare le vacanze con la massima resa."
   },
   "home": {
     "accessibleLabel": "Informazioni sul calcolatore",
@@ -188,7 +188,7 @@
     "vat": "P.IVA: {value}",
     "legal": "Legale",
     "faq": "FAQ",
-    "ponti2027": "Ponti 2027",
+    "blog": "Blog",
     "affiliates": "Affiliazioni",
     "privacy": "Privacy",
     "copyright": "© {year} CalcolaFerie · I risultati sono indicativi: verifica sempre festività locali e regole del tuo contratto."
@@ -294,17 +294,12 @@
       "body": "Attivare un programma non cambia il calcolo dei ponti: la logica dell'engine resta indipendente dalla monetizzazione. Per i dettagli su cookie e trattamento dati dei link di affiliazione, consulta la privacy policy."
     }
   },
-  "ponti2027": {
-    "eyebrow": "Guida ponti",
-    "title": "Ponti 2027: tutte le date per pianificare le ferie",
-    "subtitle": "Le combinazioni di festività, weekend e ferie con la leva più alta, dal ponte dell'Immacolata a Capodanno 2028.",
-    "intro1": "L'errore più comune è chiedere le ferie una festività alla volta. I ponti con la resa migliore si vedono solo guardando l'anno intero insieme — per questo conviene pianificarli tutti a inizio anno, non man mano che si avvicinano.",
-    "intro2": "Questi dati sono calcolati con lo stesso motore di CalcolaFerie: {formula}.",
-    "formula": "leva = giorni di stacco totali ÷ giorni di ferie spesi",
-    "sampleIntro": "Esempio con {budget} giorni di ferie, la media dei contratti italiani: ecco come CalcolaFerie li distribuirebbe sui prossimi ponti.",
-    "tableTitle": "I ponti del 2027",
-    "ctaTitle": "Calcola il tuo piano",
-    "ctaBody": "Il tuo monte ferie non è questo? Inseriscilo e vedi subito come cambia la combinazione.",
-    "ctaButton": "Apri il calcolatore"
+  "blog": {
+    "eyebrow": "Blog",
+    "title": "Blog CalcolaFerie",
+    "subtitle": "Guide e approfondimenti su ponti, ferie e festività italiane.",
+    "back": "Torna al blog",
+    "empty": "Nessun articolo ancora pubblicato.",
+    "readMore": "Leggi l'articolo"
   }
 }

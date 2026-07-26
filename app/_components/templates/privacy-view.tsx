@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useTranslations } from "next-intl";
+import { PageChrome } from "../organisms/page-chrome";
 import styles from "../../styles/app.module.scss";
 
 const CONTACT_EMAIL = process.env.NEXT_PUBLIC_EMAIL ?? "privacy@calcolaferie.it";
@@ -16,7 +17,7 @@ export function PrivacyView() {
   );
 
   return (
-    <main className={styles.pageShell}>
+    <PageChrome>
       <article className={styles.privacyPage} aria-labelledby="privacy-title">
         <Link className={styles.backLink} href="/">
           {t("back")}
@@ -76,6 +77,6 @@ export function PrivacyView() {
           <p>{t.rich("requests.body", { email: () => email, github: () => github })}</p>
         </section>
       </article>
-    </main>
+    </PageChrome>
   );
 }

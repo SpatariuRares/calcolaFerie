@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { AFFILIATE_PROGRAMS } from "../../_lib/affiliate-constants";
+import { PageChrome } from "../organisms/page-chrome";
 import styles from "../../styles/app.module.scss";
 
 export function AffiliateProgramsView() {
@@ -10,7 +11,7 @@ export function AffiliateProgramsView() {
   const tPrivacy = useTranslations("privacy");
 
   return (
-    <main className={styles.pageShell}>
+    <PageChrome>
       <article className={styles.privacyPage} aria-labelledby="affiliates-title">
         <Link className={styles.backLink} href="/">
           {tPrivacy("back")}
@@ -42,6 +43,6 @@ export function AffiliateProgramsView() {
           <p>{t("disclosure.body")}</p>
         </section>
       </article>
-    </main>
+    </PageChrome>
   );
 }

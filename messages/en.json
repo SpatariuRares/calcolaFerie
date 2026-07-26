@@ -9,8 +9,8 @@
     "faqDescription": "Answers to the most common questions about Italian holiday bridges: how the calculation works, which public holidays are included, and how company closures are handled.",
     "affiliatesTitle": "Affiliate programs | CalcolaFerie",
     "affiliatesDescription": "The affiliate programs active and planned on CalcolaFerie: hotels, flights, activities, car rental, and travel insurance.",
-    "ponti2027Title": "2027 Bridge Holidays: every date to plan your leave | CalcolaFerie",
-    "ponti2027Description": "Every Italian holiday bridge with the highest leverage across 2027, holiday by holiday: how many leave days it takes and how many days off it returns."
+    "blogTitle": "Blog | CalcolaFerie",
+    "blogDescription": "Guides and insights on Italian holiday bridges and leave planning to get the most out of your vacation days."
   },
   "home": {
     "accessibleLabel": "About the calculator",
@@ -188,7 +188,7 @@
     "vat": "VAT no.: {value}",
     "legal": "Legal",
     "faq": "FAQ",
-    "ponti2027": "2027 bridges",
+    "blog": "Blog",
     "affiliates": "Affiliates",
     "privacy": "Privacy",
     "copyright": "© {year} CalcolaFerie · Results are indicative: always check local holidays and your contract rules."
@@ -294,17 +294,12 @@
       "body": "Activating a program never changes the bridge calculation: the engine logic stays independent from monetization. See the privacy policy for details on cookies and data processing for affiliate links."
     }
   },
-  "ponti2027": {
-    "eyebrow": "Bridge guide",
-    "title": "2027 bridge holidays: every date to plan your leave",
-    "subtitle": "The holiday, weekend, and leave combinations with the highest leverage, from the Immaculate Conception bridge through New Year 2028.",
-    "intro1": "The most common mistake is requesting leave one holiday at a time. The bridges with the best return only show up when you look at the whole year at once — which is why planning them all at the start of the year beats reacting as each one approaches.",
-    "intro2": "These numbers are computed with the same engine that powers CalcolaFerie: {formula}.",
-    "formula": "leverage = total consecutive days off ÷ leave days spent",
-    "sampleIntro": "Example with {budget} leave days, the Italian contractual average: here's how CalcolaFerie would spread them across the upcoming bridges.",
-    "tableTitle": "The bridges of 2027",
-    "ctaTitle": "Calculate your plan",
-    "ctaBody": "Your leave balance isn't this? Enter it and see instantly how the combination changes.",
-    "ctaButton": "Open the calculator"
+  "blog": {
+    "eyebrow": "Blog",
+    "title": "CalcolaFerie blog",
+    "subtitle": "Guides and insights on Italian holiday bridges and leave planning.",
+    "back": "Back to blog",
+    "empty": "No articles published yet.",
+    "readMore": "Read the article"
   }
 }

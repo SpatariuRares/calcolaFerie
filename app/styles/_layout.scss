@@ -96,14 +96,14 @@
 .pageFooter {
   width: auto;
   margin: 24px calc(var(--page-x) * -1) calc(var(--page-bottom) * -1);
-  border-top: 1px solid #27313a;
+  border-top: 1px solid $border;
   padding: 18px var(--page-x) calc(20px + env(safe-area-inset-bottom));
-  background: #111820;
-  color: #d8e0e5;
+  background: $surface;
+  color: $text;
   font-size: 0.92rem;
 
   a {
-    color: #f0c66f;
+    color: $accent;
     font-weight: 800;
     text-decoration-thickness: 2px;
     text-underline-offset: 3px;
@@ -128,7 +128,7 @@
 
 .footerName {
   margin: $margin-reset;
-  color: #fff;
+  color: $strong;
   font-family: var(--font-display, Georgia, serif);
   font-size: 1.35rem;
   line-height: 1;
@@ -136,7 +136,7 @@
 
 .footerTagline {
   margin: $margin-reset;
-  color: #d8e0e5;
+  color: $muted;
   font-size: 0.9rem;
   line-height: 1.4;
 }
@@ -151,7 +151,7 @@
   }
 
   span {
-    color: #d8e0e5;
+    color: $muted;
   }
 }
 
@@ -167,8 +167,8 @@
 .footerBottom {
   margin: $margin-footer-bottom;
   padding-top: $padding-top-section;
-  border-top: 1px solid #27313a;
-  color: #d8e0e5;
+  border-top: 1px solid $border;
+  color: $muted;
   font-size: 0.82rem;
   line-height: 1.4;
 }
@@ -208,6 +208,12 @@
     color: $muted;
     line-height: 1.6;
   }
+}
+
+.faqPage {
+  max-width: $copy-max-width;
+  margin: $margin-centered;
+  width: 100%;
 }
 
 .privacyPage {
@@ -268,7 +274,15 @@
 
 .backLink {
   width: $width-fit;
+  color: $accent;
   font-size: 0.92rem;
+  font-weight: 800;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+
+  &:focus-visible {
+    @include focus;
+  }
 }
 
 .affiliateGrid {
@@ -409,6 +423,125 @@
   gap: 16px;
 }
 
+.siteNav {
+  width: auto;
+  margin: 0 calc(var(--page-x) * -1) 22px;
+  padding: 0 var(--page-x) 14px;
+  border-bottom: 1px solid $border;
+}
+
+.siteNavInner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 20px;
+  max-width: $page-max-width;
+  margin: 0 auto;
+}
+
+.siteNavBrand {
+  font-family: var(--font-display, Georgia, serif);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: $strong;
+  text-decoration: none;
+
+  &:focus-visible {
+    @include focus;
+  }
+}
+
+.siteNavLinks {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px;
+  font-size: 0.86rem;
+  font-weight: 800;
+
+  a {
+    color: $text;
+    text-decoration: none;
+
+    &:hover {
+      color: $accent;
+    }
+
+    &:focus-visible {
+      @include focus;
+    }
+  }
+}
+
+.blogList {
+  @include stack(0);
+}
+
+.blogListItem {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 22px 0;
+  border-top: 1px solid $border;
+  color: inherit;
+  text-decoration: none;
+
+  &:first-child {
+    padding-top: 0;
+    border-top: none;
+  }
+
+  &:focus-visible {
+    @include focus;
+  }
+
+  &:hover .blogListTitle {
+    color: $accent;
+  }
+}
+
+.blogListDate {
+  margin: $margin-reset;
+  color: $muted;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.blogListTitle {
+  margin: $margin-reset;
+  color: $strong;
+  font-family: var(--font-display, Georgia, serif);
+  font-size: 1.55rem;
+  font-weight: 700;
+  line-height: 1.15;
+  transition: color 0.15s ease;
+}
+
+.blogListDescription {
+  max-width: $copy-max-width;
+  margin: $margin-reset;
+  color: $muted;
+  font-weight: 400;
+  line-height: 1.55;
+}
+
+.blogListCta {
+  margin-top: 2px;
+  color: $accent;
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+
+.blogArticle h2 {
+  margin-top: 6px;
+  font-family: var(--font-display, Georgia, serif);
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+
 @include at($breakpoint-fields) {
   .primaryFields {
     grid-template-columns: minmax(0, 1fr) minmax($compact-field-min-width, 0.45fr);
@@ -474,9 +607,9 @@
   display: inline-flex;
   width: $width-fit;
   padding: $padding-switcher;
-  border: 1px solid #27313a;
+  border: 1px solid $border;
   border-radius: $radius-pill;
-  background: rgb(255 255 255 / 0.06);
+  background: $page-bg;
 }
 
 .languageSwitcherButton {
@@ -485,7 +618,7 @@
   border: 0;
   border-radius: $radius-pill;
   background: transparent;
-  color: #d8e0e5;
+  color: $muted;
   cursor: pointer;
   font: inherit;
   font-size: 0.78rem;
@@ -497,8 +630,8 @@
     box-shadow 150ms ease;
 
   &:hover {
-    color: #fff;
-    background: rgb(255 255 255 / 0.1);
+    color: $strong;
+    background: rgb(0 0 0 / 0.04);
   }
 
   &:focus-visible {
@@ -507,13 +640,13 @@
 }
 
 .languageSwitcherButtonActive {
-  background: #f0c66f;
-  color: #111820;
-  box-shadow: 0 1px 3px rgb(0 0 0 / 0.22);
+  background: $accent;
+  color: #fff;
+  box-shadow: 0 1px 3px rgb(25 20 15 / 0.22);
 
   &:hover {
-    background: #f0c66f;
-    color: #111820;
+    background: $accent;
+    color: #fff;
   }
 }
 
@@ -537,23 +670,23 @@
 
 .seoFaqSection {
   margin-top: 2rem;
-  padding: 1.5rem;
-  background: var(--bg-surface, #ffffff);
-  border: 1px solid var(--border-color, #e2e8f0);
-  border-radius: 12px;
+  padding: $padding-panel;
+  background: $surface;
+  border: 1px solid $border;
+  border-radius: $radius-panel;
 }
 
 .seoFaqTitle {
   font-family: var(--font-display, Georgia, serif);
   font-size: 1.35rem;
   font-weight: 700;
-  color: var(--text-primary, #1e293b);
+  color: $strong;
   margin-bottom: 0.25rem;
 }
 
 .seoFaqSubtitle {
   font-size: 0.9rem;
-  color: var(--text-secondary, #64748b);
+  color: $muted;
   margin-bottom: 1.25rem;
 }
 
@@ -564,26 +697,26 @@
 }
 
 .seoFaqItem {
-  border: 1px solid var(--border-subtle, #cbd5e1);
+  border: 1px solid $border;
   border-radius: 8px;
   padding: 0.85rem 1rem;
-  background: var(--bg-subtle, #f8fafc);
+  background: $page-bg;
   transition: border-color 0.2s ease;
 
   &[open] {
-    border-color: var(--color-primary, #2563eb);
-    background: #ffffff;
+    border-color: $accent;
+    background: $surface;
   }
 }
 
 .seoFaqQuestion {
   font-weight: 600;
   font-size: 0.98rem;
-  color: var(--text-primary, #0f172a);
+  color: $strong;
   cursor: pointer;
 
   &:hover {
-    color: var(--color-primary, #2563eb);
+    color: $accent;
   }
 }
 
@@ -591,6 +724,6 @@
   margin-top: 0.5rem;
   font-size: 0.9rem;
   line-height: 1.5;
-  color: var(--text-secondary, #334155);
+  color: $muted;
 }
 
