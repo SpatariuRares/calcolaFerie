@@ -9,7 +9,12 @@ export default defineConfig({
         extends: true,
         test: {
           environment: "node",
-          include: ["engine/tests/**/*.test.ts", "tests/engine/**/*.spec.ts"],
+          include: [
+            "engine/tests/**/*.test.ts",
+            "packages/engine-rag/tests/**/*.test.ts",
+            "packages/content-generation/tests/**/*.test.ts",
+            "tests/engine/**/*.spec.ts",
+          ],
           name: "engine",
         },
       },
@@ -25,7 +30,13 @@ export default defineConfig({
     setupFiles: ["./tests/setup/jest-dom.ts"],
     coverage: {
       provider: "v8",
-      include: ["engine/src/**", "app/_lib/**", "app/_components/**"],
+      include: [
+        "engine/src/**",
+        "packages/engine-rag/src/**",
+        "packages/content-generation/src/**",
+        "app/_lib/**",
+        "app/_components/**",
+      ],
       exclude: ["**/*.test.ts", "**/*.spec.ts"],
       reporter: ["text", "html"],
     },
@@ -34,6 +45,8 @@ export default defineConfig({
     alias: {
       "@": fileURLToPath(new URL("./", import.meta.url)),
       "@engine": fileURLToPath(new URL("./engine/src/index.ts", import.meta.url)),
+      "@engine-rag": fileURLToPath(new URL("./packages/engine-rag/src/index.ts", import.meta.url)),
+      "@content-generation": fileURLToPath(new URL("./packages/content-generation/src/index.ts", import.meta.url)),
       "@components": fileURLToPath(new URL("./app/_components", import.meta.url)),
     },
   },

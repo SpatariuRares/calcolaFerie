@@ -30,6 +30,12 @@
       "@engine": [
         "./engine/src/index.ts"
       ],
+      "@engine-rag": [
+        "./packages/engine-rag/src/index.ts"
+      ],
+      "@content-generation": [
+        "./packages/content-generation/src/index.ts"
+      ],
       "@components/*": [
         "./app/_components/*"
       ]

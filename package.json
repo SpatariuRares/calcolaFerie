@@ -6,6 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "generate-blog": "tsx scripts/generate-blog.ts",
+    "generate-blog:visible": "tsx scripts/generate-blog.ts --visibility visible",
+    "generate-blog:hidden": "tsx scripts/generate-blog.ts --visibility hidden",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
@@ -55,6 +58,7 @@
     "msw": "^2.15.0",
     "prettier": "^3.9.6",
     "sass": "^1.101.6",
+    "tsx": "^4.21.0",
     "typescript": "^6.0.3",
     "vitest": "4.1.10"
   }

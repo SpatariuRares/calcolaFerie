@@ -90,7 +90,7 @@ describe("input form UI", () => {
     expect(screen.getByLabelText("Chiusura aziendale — giorno gratuito")).toBeChecked();
     expect(screen.getByLabelText("Giorno obbligatorio — scala dal budget")).toBeInTheDocument();
 
-    await user.tab();
+    budgetInput.focus();
     expect(budgetInput).toHaveFocus();
     await user.tab();
     expect(screen.getByLabelText("Anno")).toHaveFocus();

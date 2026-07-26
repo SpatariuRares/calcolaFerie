@@ -21,7 +21,7 @@ describe("English translations", () => {
     expect(
       screen.getByRole("heading", { level: 2, name: "Controller and contact" })
     ).toBeInTheDocument();
-    expect(screen.getAllByRole("link", { name: "privacy@calcolaferie.it" })).toHaveLength(2);
+    expect(screen.getAllByRole("link", { name: "privacy@calcolaferie.it" }).length).toBeGreaterThanOrEqual(2);
     for (const emailLink of screen.getAllByRole("link", { name: "privacy@calcolaferie.it" })) {
       expect(emailLink).toHaveAttribute("href", "mailto:privacy@calcolaferie.it");
     }

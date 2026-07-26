@@ -12,3 +12,6 @@ tsconfig.tsbuildinfo
 .vercel
 .env*
 .mcp.json
+.rag-cache.json
+content/rag-dataset/*
+content/articoli-ponti/*
