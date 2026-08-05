@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { VacationPlanner } from "@components/templates/vacation-planner";
-import { JsonLd } from "./_components/atoms/json-ld";
+import { HowToJsonLd, JsonLd } from "./_components/atoms/json-ld";
 
 export default function Home() {
   const t = useTranslations("home");
@@ -10,6 +10,7 @@ export default function Home() {
   return (
     <>
       <JsonLd />
+      <HowToJsonLd />
       <VacationPlanner />
       <section aria-label={t("accessibleLabel")} className="sr-only">
         <h2>{t("accessibleTitle")}</h2>

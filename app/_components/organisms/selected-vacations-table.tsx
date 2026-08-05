@@ -1,8 +1,8 @@
-import { formatDateRange, formatSingleDay } from "../../_lib/opportunity-display";
-import { useAppLocale, useAppTranslations } from "../../_lib/use-app-i18n";
-import styles from "../../styles/app.module.scss";
-import { BookingCta } from "../molecules/booking-cta";
-import type { SelectedVacationRange } from "./calendar-view";
+import { formatDateRange, formatSingleDay } from "@lib/opportunity-display";
+import { useAppLocale, useAppTranslations } from "@lib/use-app-i18n";
+import styles from "@styles/app.module.scss";
+import { BookingCta } from "@components/molecules/booking-cta";
+import type { SelectedVacationRange } from "@components/organisms/calendar-view";
 
 export function SelectedVacationsTable({ ranges }: { ranges: SelectedVacationRange[] }) {
   const t = useAppTranslations("results");

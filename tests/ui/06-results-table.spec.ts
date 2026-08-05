@@ -174,18 +174,18 @@ describe("results table UI", () => {
     ).toBeInTheDocument();
   });
 
-  it("shows 'Link affiliato' label next to CTA in desktop table view", () => {
+  it("renders the booking CTA in desktop table view", () => {
     const { container } = renderResults(output([opportunity({})]));
     const tableRow = container.querySelector("tbody tr")!;
 
-    expect(within(tableRow).getByText("Link affiliato")).toBeInTheDocument();
+    expect(within(tableRow).getByLabelText("Prenota questi giorni")).toBeInTheDocument();
   });
 
-  it("shows 'Link affiliato' label next to CTA in mobile card view", () => {
+  it("renders the booking CTA in mobile card view", () => {
     const { container } = renderResults(output([opportunity({})]));
     const card = container.querySelector("article[role='button']")!;
 
-    expect(within(card).getByText("Link affiliato")).toBeInTheDocument();
+    expect(within(card).getByLabelText("Prenota questi giorni")).toBeInTheDocument();
   });
 
   it("keeps the extended affiliate disclosure and sponsored link relation", () => {

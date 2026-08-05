@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { useTranslations } from "next-intl";
-import { PageChrome } from "../organisms/page-chrome";
-import styles from "../../styles/app.module.scss";
+import { PageChrome } from "@components/organisms/page-chrome";
+import styles from "@styles/app.module.scss";
 
 const CONTACT_EMAIL = process.env.NEXT_PUBLIC_EMAIL ?? "privacy@calcolaferie.it";
 

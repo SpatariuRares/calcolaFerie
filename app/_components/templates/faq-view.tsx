@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { useTranslations } from "next-intl";
-import { FaqJsonLd } from "../atoms/json-ld";
-import { PageChrome } from "../organisms/page-chrome";
-import styles from "../../styles/app.module.scss";
+import { FaqJsonLd } from "@components/atoms/json-ld";
+import { PageChrome } from "@components/organisms/page-chrome";
+import styles from "@styles/app.module.scss";
 
 export function FaqView() {
   const t = useTranslations("home.faq");

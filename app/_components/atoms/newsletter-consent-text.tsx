@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useAppTranslations } from "../../_lib/use-app-i18n";
+import { useAppTranslations } from "@lib/use-app-i18n";
 
 export function NewsletterConsentText() {
   const t = useAppTranslations("newsletter");

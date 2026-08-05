@@ -2,10 +2,10 @@
 
 import { useId, type FormEvent } from "react";
 import type { DayOff } from "@engine";
-import { MAX_VACATION_DAYS, type PlannerConfig } from "../../_lib/user-config-url";
-import { useAppTranslations } from "../../_lib/use-app-i18n";
-import type { DayOffRow } from "../planner-types";
-import styles from "../../styles/app.module.scss";
+import { MAX_VACATION_DAYS, type PlannerConfig } from "@lib/user-config-url";
+import { useAppTranslations } from "@lib/use-app-i18n";
+import type { DayOffRow } from "@components/planner-types";
+import styles from "@styles/app.module.scss";
 
 export function PlannerForm({
   canCalculate,

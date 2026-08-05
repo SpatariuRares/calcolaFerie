@@ -6,9 +6,9 @@ import {
   RADICAL_STORAGE_AFFILIATE_URL,
   SAILY_AFFILIATE_URL,
   type AffiliateProgramKey,
-} from "../../_lib/affiliate-constants";
-import { useAppTranslations } from "../../_lib/use-app-i18n";
-import styles from "../../styles/app.module.scss";
+} from "@lib/affiliate-constants";
+import { useAppTranslations } from "@lib/use-app-i18n";
+import styles from "@styles/app.module.scss";
 
 const PROGRAM_ORDER: AffiliateProgramKey[] = AFFILIATE_PROGRAMS.map((program) => program.key);
 
@@ -82,32 +82,31 @@ export function BookingCta() {
       </button>
       {isOpen
         ? createPortal(
-            <>
-              <div className={styles.bookingMenuBackdrop} onClick={() => setIsOpen(false)} />
-              <ul
-                className={styles.bookingMenuList}
-                ref={menuRef}
-                style={{ top: menuPosition.top, left: menuPosition.left }}
-              >
-                {PROGRAM_ORDER.filter((program) => programHref[program]).map((program) => (
-                  <li key={program}>
-                    <a
-                      className={styles.bookingMenuLink}
-                      href={programHref[program]}
-                      onClick={() => setIsOpen(false)}
-                      rel="sponsored noopener noreferrer"
-                      target="_blank"
-                    >
-                      {tPrograms(`programs.${program}.name`)}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </>,
-            document.body
-          )
+          <>
+            <div className={styles.bookingMenuBackdrop} onClick={() => setIsOpen(false)} />
+            <ul
+              className={styles.bookingMenuList}
+              ref={menuRef}
+              style={{ top: menuPosition.top, left: menuPosition.left }}
+            >
+              {PROGRAM_ORDER.filter((program) => programHref[program]).map((program) => (
+                <li key={program}>
+                  <a
+                    className={styles.bookingMenuLink}
+                    href={programHref[program]}
+                    onClick={() => setIsOpen(false)}
+                    rel="sponsored noopener noreferrer"
+                    target="_blank"
+                  >
+                    {tPrograms(`programs.${program}.name`)}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </>,
+          document.body
+        )
         : null}
-      <span className={styles.affiliateLabel}>{t("affiliateLabel")}</span>
     </span>
   );
 }

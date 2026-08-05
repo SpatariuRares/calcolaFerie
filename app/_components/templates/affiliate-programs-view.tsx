@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { useTranslations } from "next-intl";
-import { AFFILIATE_PROGRAMS } from "../../_lib/affiliate-constants";
-import { PageChrome } from "../organisms/page-chrome";
-import styles from "../../styles/app.module.scss";
+import { AFFILIATE_PROGRAMS } from "@lib/affiliate-constants";
+import { PageChrome } from "@components/organisms/page-chrome";
+import styles from "@styles/app.module.scss";
 
 export function AffiliateProgramsView() {
   const t = useTranslations("affiliates");

@@ -1,5 +1,5 @@
-import { getLevaTier } from "../../_lib/opportunity-display";
-import styles from "../../styles/app.module.scss";
+import { getLevaTier } from "@lib/opportunity-display";
+import styles from "@styles/app.module.scss";
 
 export function LevaBadge({ leva }: { leva: number }) {
   const tier = getLevaTier(leva);

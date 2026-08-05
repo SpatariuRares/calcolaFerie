@@ -6,11 +6,11 @@ import {
   DAY_TYPE_LABELS,
   getCalendarDayLabel,
   isSelectableVacationDay,
-} from "../../_lib/calendar-model";
-import { type CalculationState } from "../../_lib/calculate-vacation-plan";
-import { formatDateRange } from "../../_lib/opportunity-display";
-import { useAppLocale, useAppTranslations } from "../../_lib/use-app-i18n";
-import styles from "../../styles/app.module.scss";
+} from "@lib/calendar-model";
+import { type CalculationState } from "@lib/calculate-vacation-plan";
+import { formatDateRange } from "@lib/opportunity-display";
+import { useAppLocale, useAppTranslations } from "@lib/use-app-i18n";
+import styles from "@styles/app.module.scss";
 
 export type SelectedVacationRange = {
   start: ISODateString;
@@ -76,9 +76,9 @@ export function CalendarView({
   ) as typeof DAY_TYPE_LABELS;
   const months = calculation
     ? buildCalendarMonths(calculation.input, calculation.output, {
-        locale,
-        holidayLabel: (key) => holidayTranslations(key as never),
-      })
+      locale,
+      holidayLabel: (key) => holidayTranslations(key as never),
+    })
     : [];
   const selectableIsoDates = months.flatMap((month) =>
     month.days.filter((day) => isSelectableVacationDay(day.type)).map((day) => day.iso)
@@ -112,29 +112,29 @@ export function CalendarView({
         </div>
       </div>
 
-      <div className={styles.legend} aria-label={t("legendAria")}>
-        {CALENDAR_LEGEND.map((type) => (
-          <span className={styles.legendItem} key={type}>
-            <span className={`${styles.legendSwatch} ${styles[`dayCell_${type}`]}`} />
-            {dayTypeLabels[type]}
-          </span>
-        ))}
-        <span className={styles.legendItem}>
-          <span className={`${styles.legendSwatch} ${styles.dayCellSelected}`} />
-          {t("selectedLeave")}
-        </span>
-      </div>
-
       {calculation ? (
         <>
+          <div className={styles.legend} aria-label={t("legendAria")}>
+            {CALENDAR_LEGEND.map((type) => (
+              <span className={styles.legendItem} key={type}>
+                <span className={`${styles.legendSwatch} ${styles[`dayCell_${type}`]}`} />
+                {dayTypeLabels[type]}
+              </span>
+            ))}
+            <span className={styles.legendItem}>
+              <span className={`${styles.legendSwatch} ${styles.dayCellSelected}`} />
+              {t("selectedLeave")}
+            </span>
+          </div>
+
           <div className={styles.selectedVacationBar}>
             <div>
               <strong>{t("selectionCount", { count: selectedVacationDates.size })}</strong>
               <span>
                 {selectedRanges.length > 0
                   ? selectedRanges
-                      .map((range) => formatSelectedRangeLabel(range, locale))
-                      .join(", ")
+                    .map((range) => formatSelectedRangeLabel(range, locale))
+                    .join(", ")
                   : t("selectionHelp")}
               </span>
             </div>

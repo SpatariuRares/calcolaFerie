@@ -155,6 +155,14 @@
       "Dec"
     ]
   },
+  "nextBridge": {
+    "eyebrow": "Next long weekend",
+    "ongoing": "Ongoing",
+    "countdown": "{days, plural, one {In # day} other {In # days}}",
+    "stacco": "Days off",
+    "ferie": "Leave",
+    "leva": "Leverage"
+  },
   "holidays": {
     "newYear": "New Year's Day",
     "epiphany": "Epiphany",

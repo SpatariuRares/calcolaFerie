@@ -22,7 +22,10 @@
         "name": "next"
       }
     ],
-    "types": ["vitest/globals", "@testing-library/jest-dom"],
+    "types": [
+      "vitest/globals",
+      "@testing-library/jest-dom"
+    ],
     "paths": {
       "@/*": [
         "./*"
@@ -38,6 +41,15 @@
       ],
       "@components/*": [
         "./app/_components/*"
+      ],
+      "@lib/*": [
+        "./app/_lib/*"
+      ],
+      "@styles/*": [
+        "./app/styles/*"
+      ],
+      "@i18n/*": [
+        "./i18n/*"
       ]
     }
   },
@@ -45,6 +57,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
+    "messages/**/*.json",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
   ],

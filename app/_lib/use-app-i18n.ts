@@ -8,6 +8,7 @@ export type TranslationNamespace =
   | "results"
   | "calendar"
   | "holidays"
+  | "nextBridge"
   | "newsletter"
   | "footer"
   | "affiliates";

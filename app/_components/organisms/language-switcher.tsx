@@ -1,8 +1,8 @@
 "use client";
 
 import { useLocale } from "next-intl";
-import { localeCookieName, locales, type Locale } from "../../../i18n/config";
-import styles from "../../styles/app.module.scss";
+import { localeCookieName, locales, type Locale } from "@i18n/config";
+import styles from "@styles/app.module.scss";
 
 const labels: Record<Locale, string> = {
   it: "It",

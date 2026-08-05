@@ -117,3 +117,42 @@ export function FaqJsonLd() {
     />
   );
 }
+
+export function HowToJsonLd() {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "@id": `${BASE_URL}/#howto`,
+    "name": "Come calcolare i ponti e ottimizzare le ferie",
+    "description":
+      "In tre passaggi trova i ponti tra le festività italiane che massimizzano i giorni di stacco per ogni giorno di ferie speso.",
+    "inLanguage": "it",
+    "step": [
+      {
+        "@type": "HowToStep",
+        "position": 1,
+        "name": "Inserisci i giorni di ferie disponibili",
+        "text": "Indica quanti giorni di ferie hai a disposizione per l'anno da pianificare.",
+      },
+      {
+        "@type": "HowToStep",
+        "position": 2,
+        "name": "Aggiungi patrono e chiusure aziendali",
+        "text": "Specifica la festa del patrono locale ed eventuali chiusure aziendali, distinguendo tra giorni gratuiti e ferie obbligatorie.",
+      },
+      {
+        "@type": "HowToStep",
+        "position": 3,
+        "name": "Calcola e scegli i ponti migliori",
+        "text": "Premi Calcola per ottenere i ponti ordinati per leva, ossia i giorni di stacco ottenuti per ogni giorno di ferie speso.",
+      },
+    ],
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+    />
+  );
+}

@@ -138,11 +138,16 @@ describe("input form UI", () => {
       screen.getByLabelText("Festività del tuo patrono locale (opzionale)"),
       patronDateIso
     );
+    const callsBeforeSubmit = calculatePlanSpy.mock.calls.length;
     await user.click(screen.getByRole("button", { name: "Calcola" }));
 
-    await waitFor(() => expect(calculatePlanSpy).toHaveBeenCalledOnce());
+    await waitFor(() =>
+      expect(calculatePlanSpy.mock.calls.length).toBeGreaterThan(callsBeforeSubmit)
+    );
 
-    const input = calculatePlanSpy.mock.calls[0][0];
+    // Il widget "prossimo ponte" chiama anch'esso calculatePlan al mount, quindi
+    // isoliamo la prima call innescata dal submit del form (non l'ultima assoluta).
+    const input = calculatePlanSpy.mock.calls[callsBeforeSubmit][0];
     expect(input.totalVacationDays).toBe(20);
     expect(input.daysOff).toEqual([{ date: "2026-08-14", type: "mandatoryLeave" }]);
     expect(input.publicHolidays).toContainEqual({
@@ -159,9 +164,14 @@ describe("input form UI", () => {
 
     await user.type(screen.getByLabelText("Giorni di ferie disponibili"), "20");
     await user.selectOptions(screen.getByLabelText("Anno"), String(nextYear));
+    const callsBeforeSubmit = calculatePlanSpy.mock.calls.length;
     await user.click(screen.getByRole("button", { name: "Calcola" }));
 
-    await waitFor(() => expect(calculatePlanSpy).toHaveBeenCalledOnce());
-    expect(calculatePlanSpy.mock.calls[0][0].windowStart).toBe(`${nextYear}-01-01`);
+    await waitFor(() =>
+      expect(calculatePlanSpy.mock.calls.length).toBeGreaterThan(callsBeforeSubmit)
+    );
+    // Isola la call del form, escludendo quella del widget "prossimo ponte".
+    const latestCallInput = calculatePlanSpy.mock.calls[callsBeforeSubmit][0];
+    expect(latestCallInput.windowStart).toBe(`${nextYear}-01-01`);
   });
 });

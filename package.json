@@ -9,6 +9,8 @@
     "generate-blog": "tsx scripts/generate-blog.ts",
     "generate-blog:visible": "tsx scripts/generate-blog.ts --visibility visible",
     "generate-blog:hidden": "tsx scripts/generate-blog.ts --visibility hidden",
+    "generate:seasonal": "tsx scripts/generate-seasonal.ts",
+    "fix:articles": "pwsh ./scripts/fix-articles.ps1",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",

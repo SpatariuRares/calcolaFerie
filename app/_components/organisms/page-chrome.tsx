@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import styles from "../../styles/app.module.scss";
+import styles from "@styles/app.module.scss";
 import { SiteFooter } from "./site-footer";
 import { SiteNav } from "./site-nav";
 

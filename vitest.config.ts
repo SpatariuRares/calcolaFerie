@@ -48,6 +48,9 @@ export default defineConfig({
       "@engine-rag": fileURLToPath(new URL("./packages/engine-rag/src/index.ts", import.meta.url)),
       "@content-generation": fileURLToPath(new URL("./packages/content-generation/src/index.ts", import.meta.url)),
       "@components": fileURLToPath(new URL("./app/_components", import.meta.url)),
+      "@lib": fileURLToPath(new URL("./app/_lib", import.meta.url)),
+      "@styles": fileURLToPath(new URL("./app/styles", import.meta.url)),
+      "@i18n": fileURLToPath(new URL("./i18n", import.meta.url)),
     },
   },
 });

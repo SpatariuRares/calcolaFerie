@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useAppTranslations } from "../../_lib/use-app-i18n";
-import styles from "../../styles/app.module.scss";
+import { useAppTranslations } from "@lib/use-app-i18n";
+import styles from "@styles/app.module.scss";
 
 export function SiteNav() {
   const t = useAppTranslations("footer");

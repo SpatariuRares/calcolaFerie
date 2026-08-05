@@ -2,10 +2,10 @@ import {
   formatDateRange,
   formatExplanation,
   getSelectedOpportunityCost,
-} from "../../_lib/opportunity-display";
-import { type CalculationState } from "../../_lib/calculate-vacation-plan";
-import { useAppLocale, useAppTranslations } from "../../_lib/use-app-i18n";
-import styles from "../../styles/app.module.scss";
+} from "@lib/opportunity-display";
+import { type CalculationState } from "@lib/calculate-vacation-plan";
+import { useAppLocale, useAppTranslations } from "@lib/use-app-i18n";
+import styles from "@styles/app.module.scss";
 import { ResultsTable } from "./results-table";
 
 export function ResultsPanel({
@@ -28,8 +28,8 @@ export function ResultsPanel({
   const bestOpportunity =
     opportunities.length > 0
       ? opportunities.reduce((best, opportunity) =>
-          opportunity.leva > best.leva ? opportunity : best
-        )
+        opportunity.leva > best.leva ? opportunity : best
+      )
       : null;
 
   return (

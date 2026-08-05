@@ -1,10 +1,10 @@
 "use client";
 
 import { useId, useState, type FormEvent } from "react";
-import { NewsletterConsentText } from "../atoms/newsletter-consent-text";
-import type { NewsletterStatus } from "../planner-types";
-import { useAppTranslations } from "../../_lib/use-app-i18n";
-import styles from "../../styles/app.module.scss";
+import { NewsletterConsentText } from "@components/atoms/newsletter-consent-text";
+import type { NewsletterStatus } from "@components/planner-types";
+import { useAppTranslations } from "@lib/use-app-i18n";
+import styles from "@styles/app.module.scss";
 
 export function NewsletterSignup({ isVisible }: { isVisible: boolean }) {
   const t = useAppTranslations("newsletter");

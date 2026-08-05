@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { useAppTranslations } from "../../_lib/use-app-i18n";
-import styles from "../../styles/app.module.scss";
+import { useAppTranslations } from "@lib/use-app-i18n";
+import styles from "@styles/app.module.scss";
 import { LanguageSwitcher } from "./language-switcher";
 
 const FOOTER_MANAGER = process.env.NEXT_PUBLIC_GESTORE ?? "Spatariu Rares";
@@ -24,10 +24,13 @@ export function SiteFooter() {
           {piva ? <span>{t("vat", { value: piva })}</span> : null}
         </div>
 
+
         <div className={styles.footerCol}>
           <p className={styles.footerHeading}>{t("legal")}</p>
-          <Link href="/faq">{t("faq")}</Link>
           <Link href="/blog">{t("blog")}</Link>
+          <Link href="/blog/guida-ponti-2026">Ponti 2026</Link>
+          <Link href="/blog/guida-ponti-2027">Ponti 2027</Link>
+          <Link href="/faq">{t("faq")}</Link>
           <Link href="/affiliazioni">{t("affiliates")}</Link>
           <Link href="/privacy">{t("privacy")}</Link>
           <LanguageSwitcher />

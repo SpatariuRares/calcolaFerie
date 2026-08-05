@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
-import { BlogJsonLd } from "../atoms/json-ld";
-import { PageChrome } from "../organisms/page-chrome";
-import styles from "../../styles/app.module.scss";
-import type { BlogPostMeta } from "../../_lib/blog";
+import { BlogJsonLd } from "@components/atoms/json-ld";
+import { PageChrome } from "@components/organisms/page-chrome";
+import styles from "@styles/app.module.scss";
+import type { BlogPostMeta } from "@lib/blog";
 
 type BlogViewProps = {
   posts: BlogPostMeta[];

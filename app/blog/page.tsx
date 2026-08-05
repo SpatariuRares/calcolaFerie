@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { BlogView } from "@components/templates/blog-view";
-import { getAllPosts } from "../_lib/blog";
+import { getAllPosts } from "@lib/blog";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "https://calcolaferie.it";
 const PAGE_URL = `${BASE_URL}/blog`;

@@ -1,7 +1,7 @@
 import type { BridgeOpportunity } from "@engine";
-import { formatDateRange } from "../../_lib/opportunity-display";
-import { useAppLocale, useAppTranslations } from "../../_lib/use-app-i18n";
-import styles from "../../styles/app.module.scss";
+import { formatDateRange } from "@lib/opportunity-display";
+import { useAppLocale, useAppTranslations } from "@lib/use-app-i18n";
+import styles from "@styles/app.module.scss";
 import { BookingCta } from "./booking-cta";
 import { LevaBadge } from "./leva-badge";
 

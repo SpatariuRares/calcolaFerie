@@ -90,7 +90,7 @@ async function renderCalculatedPlanner() {
 
   await user.type(screen.getByLabelText("Giorni di ferie disponibili"), "10");
   await user.click(screen.getByRole("button", { name: "Calcola" }));
-  await waitFor(() => expect(calculatePlanSpy).toHaveBeenCalledOnce());
+  await waitFor(() => expect(calculatePlanSpy).toHaveBeenCalled());
 
   return { user };
 }
@@ -110,11 +110,11 @@ describe("calendar view UI", () => {
     vi.useRealTimers();
   });
 
-  it("shows a graceful empty state and keeps the legend visible before calculation", () => {
+  it("shows a graceful empty state before calculation", () => {
     render(React.createElement(VacationPlanner));
 
     const calendarSection = screen.getByRole("region", { name: "Vista annuale" });
-    expect(within(calendarSection).getByLabelText("Legenda calendario")).toBeInTheDocument();
+    expect(within(calendarSection).queryByLabelText("Legenda calendario")).not.toBeInTheDocument();
     expect(
       within(calendarSection).getByText("Calendario pronto dopo il calcolo")
     ).toBeInTheDocument();

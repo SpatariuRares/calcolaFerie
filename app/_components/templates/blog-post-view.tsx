@@ -1,10 +1,10 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
-import { BlogPostingJsonLd } from "../atoms/json-ld";
-import { PageChrome } from "../organisms/page-chrome";
-import styles from "../../styles/app.module.scss";
-import type { BlogPost } from "../../_lib/blog";
+import { BlogPostingJsonLd } from "@components/atoms/json-ld";
+import { PageChrome } from "@components/organisms/page-chrome";
+import styles from "@styles/app.module.scss";
+import type { BlogPost } from "@lib/blog";
 
 type BlogPostViewProps = {
   post: BlogPost;

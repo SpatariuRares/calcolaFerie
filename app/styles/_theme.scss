@@ -48,7 +48,7 @@ $margin-reset: 0;
 $margin-centered: 0 auto;
 $margin-hero: 0 auto 24px;
 $margin-footer: 32px auto 0;
-$margin-about: 24px auto 44px;
+$margin-about: 20px auto 20px;
 $margin-eyebrow: 0 0 7px;
 $margin-status: -6px 0 0;
 $margin-checkbox: 2px 0 0;
@@ -107,47 +107,38 @@ $padding-top-section: 16px;
 $padding-section-divider: 18px;
 
 $leva: (
-  high: (
-    #fff0a8,
+  high: (#fff0a8,
     #6b4a00,
   ),
-  medium: (
-    #fff0bd,
+  medium: (#fff0bd,
     #765000,
   ),
-  low: (
-    #e8edf0,
+  low: (#e8edf0,
     #4a565e,
   ),
 );
 $days: (
-  workday: (
-    #fff,
+  workday: (#fff,
     $strong,
     #d8e0e6,
   ),
-  weekend: (
-    #e8edf1,
+  weekend: (#e8edf1,
     #5a6670,
     #d8e0e6,
   ),
-  publicHoliday: (
-    #ffd9d0,
+  publicHoliday: (#ffd9d0,
     #8c2f1c,
     #e4b0a3,
   ),
-  companyClosure: (
-    #d7eafa,
+  companyClosure: (#d7eafa,
     #1e557d,
     #9dbfdd,
   ),
-  mandatoryLeave: (
-    #ffe5b8,
+  mandatoryLeave: (#ffe5b8,
     #7b4c00,
     #e4bd7d,
   ),
-  recommendedLeave: (
-    #ccefdc,
+  recommendedLeave: (#ccefdc,
     #0b5b35,
     #8bc9a9,
   ),

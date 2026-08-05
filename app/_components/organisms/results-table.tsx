@@ -1,8 +1,8 @@
 import type { EngineOutput } from "@engine";
-import { useAppTranslations } from "../../_lib/use-app-i18n";
-import styles from "../../styles/app.module.scss";
-import { OpportunityCard } from "../molecules/opportunity-card";
-import { OpportunityRow } from "../molecules/opportunity-row";
+import { useAppTranslations } from "@lib/use-app-i18n";
+import styles from "@styles/app.module.scss";
+import { OpportunityCard } from "@components/molecules/opportunity-card";
+import { OpportunityRow } from "@components/molecules/opportunity-row";
 
 export function ResultsTable({
   onToggleOpportunity,

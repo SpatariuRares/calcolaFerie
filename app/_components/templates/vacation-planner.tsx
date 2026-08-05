@@ -2,8 +2,8 @@
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { isoToDate, tryIsoDate, type DayOff, type ISODateString, type UserConfig } from "@engine";
-import { calculateVacationPlan, type CalculationState } from "../../_lib/calculate-vacation-plan";
-import { buildSelectableVacationDates } from "../../_lib/calendar-model";
+import { calculateVacationPlan, type CalculationState } from "@lib/calculate-vacation-plan";
+import { buildSelectableVacationDates } from "@lib/calendar-model";
 import {
   CONFIG_STORAGE_KEY,
   MAX_VACATION_DAYS,
@@ -11,17 +11,19 @@ import {
   type PlannerConfig,
   serializeConfig,
   serializeStoredConfig,
-} from "../../_lib/user-config-url";
-import { useAppTranslations } from "../../_lib/use-app-i18n";
-import styles from "../../styles/app.module.scss";
-import type { DayOffRow } from "../planner-types";
-import { buildSelectedRanges, CalendarView } from "../organisms/calendar-view";
-import { NewsletterSignup } from "../organisms/newsletter-signup";
-import { PlannerForm } from "../organisms/planner-form";
-import { ResultsPanel } from "../organisms/results-panel";
-import { PageChrome } from "../organisms/page-chrome";
-import { SelectedVacationsTable } from "../organisms/selected-vacations-table";
-import { SiteHeader } from "../organisms/site-header";
+} from "@lib/user-config-url";
+import { useAppTranslations } from "@lib/use-app-i18n";
+import styles from "@styles/app.module.scss";
+import type { DayOffRow } from "@components/planner-types";
+import { buildSelectedRanges, CalendarView } from "@components/organisms/calendar-view";
+import { NewsletterSignup } from "@components/organisms/newsletter-signup";
+import { PlannerForm } from "@components/organisms/planner-form";
+import { ResultsPanel } from "@components/organisms/results-panel";
+import { PageChrome } from "@components/organisms/page-chrome";
+import { SelectedVacationsTable } from "@components/organisms/selected-vacations-table";
+import { SiteHeader } from "@components/organisms/site-header";
+import { NextBridge } from "@components/molecules/next-bridge";
+import { HowWorkSection } from "@components/organisms/how-work";
 
 function createDayOffRow(id: string, type: DayOff["type"] = "companyClosure"): DayOffRow {
   return {
@@ -265,6 +267,8 @@ export function VacationPlanner() {
     <PageChrome>
       <SiteHeader />
 
+      <NextBridge />
+
       <div className={styles.toolLayout}>
         <div className={styles.formColumn}>
           <PlannerForm
@@ -317,6 +321,7 @@ export function VacationPlanner() {
           ) : null}
         </div>
       </div>
+      <HowWorkSection />
     </PageChrome>
   );
 }

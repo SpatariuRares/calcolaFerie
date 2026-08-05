@@ -1,5 +1,5 @@
-import { useAppTranslations } from "../../_lib/use-app-i18n";
-import styles from "../../styles/app.module.scss";
+import { useAppTranslations } from "@lib/use-app-i18n";
+import styles from "@styles/app.module.scss";
 
 export function SiteHeader() {
   const t = useAppTranslations("planner");
@@ -23,13 +23,6 @@ export function SiteHeader() {
             {t("formula.leverage", { value: "2,3" })}
           </span>
         </div>
-      </section>
-
-      <section aria-labelledby="about-title" className={styles.aboutSection}>
-        <p className={styles.eyebrow}>{t("about.eyebrow")}</p>
-        <h2 id="about-title">{t("about.title")}</h2>
-        <p>{t("about.description")}</p>
-        <p>{t("about.disclaimer")}</p>
       </section>
     </>
   );
