@@ -5,7 +5,7 @@ import { isoToDate, type ISODateString } from "@engine";
 import { getNextBridge } from "@lib/next-bridge";
 import { useAppLocale, useAppTranslations } from "@lib/use-app-i18n";
 import { BookingCta } from "./booking-cta";
-import styles from "./next-bridge.module.scss";
+import styles from "@styles/next-bridge.module.scss";
 
 // Le date dell'engine sono mezzanotte UTC: formatto in UTC per evitare
 // sfasamenti di un giorno rispetto al fuso locale.
@@ -20,7 +20,7 @@ function formatRange(startIso: string, endIso: string, locale: string): string {
   return `${fmt.format(start)} – ${fmt.format(end)}`;
 }
 
-const emptySubscribe = () => () => {};
+const emptySubscribe = () => () => { };
 const getSnapshot = () => true;
 const getServerSnapshot = () => false;
 

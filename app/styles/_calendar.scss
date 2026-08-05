@@ -19,9 +19,9 @@
   align-items: center;
   gap: 6px;
   color: #34423a;
-  font-size: 0.78rem;
-  font-weight: 750;
-  line-height: 1.2;
+  font-size: $text-xs;
+  font-weight: $weight-bolder;
+  line-height: $leading-tight;
 }
 
 .legendSwatch {
@@ -49,15 +49,15 @@
   }
 
   strong {
-    color: #0b5b35;
-    font-size: 0.92rem;
-    line-height: 1.25;
+    color: $success-text;
+    font-size: $text-base;
+    line-height: $leading-snug;
   }
 
   span {
     color: #365244;
-    font-size: 0.84rem;
-    line-height: 1.35;
+    font-size: $text-sm;
+    line-height: $leading-normal;
     overflow-wrap: anywhere;
   }
 }
@@ -68,12 +68,12 @@
   border-radius: $radius-control;
   padding: $padding-clear-selection;
   background: $surface;
-  color: #0b5b35;
+  color: $success-text;
   cursor: pointer;
   font: inherit;
-  font-size: 0.8rem;
-  font-weight: 850;
-  line-height: 1.1;
+  font-size: $text-xs;
+  font-weight: $weight-heavy;
+  line-height: $leading-tight;
 
   &:focus-visible {
     @include focus;
@@ -104,8 +104,8 @@
   h3 {
     @include heading;
     color: $strong;
-    font-size: 1rem;
-    line-height: 1.25;
+    font-size: $text-md;
+    line-height: $leading-snug;
     text-transform: capitalize;
   }
 
@@ -125,8 +125,8 @@
 
 .weekdayGrid span {
   color: #66727b;
-  font-size: 0.7rem;
-  font-weight: 850;
+  font-size: $text-2xs;
+  font-weight: $weight-heavy;
   text-align: center;
 }
 
@@ -146,10 +146,10 @@
   border: 1px solid token($days, workday, 3);
   color: $strong;
   cursor: pointer;
-  font-size: 0.72rem;
-  font-weight: 800;
+  font-size: $text-2xs;
+  font-weight: $weight-extrabold;
   font-family: inherit;
-  line-height: 1;
+  line-height: $leading-none;
   padding: $padding-reset;
 
   &:focus-visible {
@@ -172,9 +172,9 @@
     background: #17211b;
     color: #fff;
     content: attr(data-tooltip);
-    font-size: 0.76rem;
-    font-weight: 750;
-    line-height: 1.25;
+    font-size: $text-xs;
+    font-weight: $weight-bolder;
+    line-height: $leading-snug;
     text-align: center;
     white-space: normal;
     box-shadow: 0 8px 20px rgb(35 45 55 / 0.18);
@@ -196,7 +196,7 @@
 }
 
 .dayCellSelected {
-  border-color: #0b5b35;
+  border-color: $success-text;
   background: #0f7a4f;
   color: #fff;
   box-shadow:

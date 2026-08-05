@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { BlogPostView } from "@components/templates/blog-post-view";
-import { getAllPosts, getPostBySlug } from "@components/atoms@lib/blog";
+import { getAllPosts, getPostBySlug } from "@lib/blog";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "https://calcolaferie.it";
 

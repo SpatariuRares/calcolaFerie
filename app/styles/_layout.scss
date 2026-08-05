@@ -32,16 +32,16 @@
     @include heading;
     color: #111820;
     font-family: var(--font-display, Georgia, serif);
-    font-size: 2.6rem;
-    line-height: 0.98;
+    font-size: $display-xl;
+    line-height: $leading-none;
   }
 
   p {
     max-width: $hero-copy-max-width;
     margin: $margin-reset;
     color: #4f5d66;
-    font-size: 1rem;
-    line-height: 1.55;
+    font-size: $text-md;
+    line-height: $leading-loose;
   }
 }
 
@@ -57,27 +57,27 @@
   border-radius: $radius-panel;
   background: $accent-soft;
   color: #4a2016;
-  font-size: 0.95rem;
+  font-size: $text-base;
 }
 
 .heroFormulaNum {
   font-family: var(--font-display, Georgia, serif);
-  font-size: 1.7rem;
-  font-weight: 700;
-  line-height: 1;
+  font-size: $display-sm;
+  font-weight: $weight-bold;
+  line-height: $leading-none;
   color: #3a1913;
 }
 
 .heroFormulaLabel {
-  font-size: 0.82rem;
-  font-weight: 700;
+  font-size: $text-sm;
+  font-weight: $weight-bold;
   letter-spacing: 0.01em;
 }
 
 .heroFormulaOp {
   color: $accent;
-  font-size: 1.2rem;
-  font-weight: 800;
+  font-size: $text-xl;
+  font-weight: $weight-extrabold;
 }
 
 .heroFormulaResult {
@@ -89,8 +89,8 @@
   background: $accent;
   color: #fff;
   font-family: var(--font-display, Georgia, serif);
-  font-size: 1.1rem;
-  font-weight: 700;
+  font-size: $text-lg;
+  font-weight: $weight-bold;
 }
 
 .pageFooter {
@@ -100,11 +100,11 @@
   padding: 18px var(--page-x) calc(20px + env(safe-area-inset-bottom));
   background: $surface;
   color: $text;
-  font-size: 0.92rem;
+  font-size: $text-base;
 
   a {
     color: $accent;
-    font-weight: 800;
+    font-weight: $weight-extrabold;
     text-decoration-thickness: 2px;
     text-underline-offset: 3px;
 
@@ -122,21 +122,19 @@
   margin: 0 auto;
 }
 
-
-
 .footerName {
   margin: $margin-reset;
   color: $strong;
   font-family: var(--font-display, Georgia, serif);
-  font-size: 1.35rem;
-  line-height: 1;
+  font-size: $text-2xl;
+  line-height: $leading-none;
 }
 
 .footerTagline {
   margin: $margin-reset;
   color: $muted;
-  font-size: 0.9rem;
-  line-height: 1.4;
+  font-size: $text-base;
+  line-height: $leading-normal;
 }
 
 .footerCol {
@@ -145,7 +143,7 @@
 
   a,
   span {
-    line-height: 1.4;
+    line-height: $leading-normal;
   }
 
   span {
@@ -156,8 +154,8 @@
 .footerHeading {
   margin: $margin-footer-heading;
   color: $accent;
-  font-size: 0.72rem;
-  font-weight: 800;
+  font-size: $text-2xs;
+  font-weight: $weight-extrabold;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -167,8 +165,8 @@
   padding-top: $padding-top-section;
   border-top: 1px solid $border;
   color: $muted;
-  font-size: 0.82rem;
-  line-height: 1.4;
+  font-size: $text-sm;
+  line-height: $leading-normal;
 }
 
 @include at($breakpoint-footer) {
@@ -198,13 +196,13 @@
   h2 {
     @include heading;
     color: $strong;
-    font-size: 1.35rem;
+    font-size: $text-2xl;
   }
 
   p:not(.eyebrow) {
     max-width: $copy-max-width;
     color: $muted;
-    line-height: 1.6;
+    line-height: $leading-loose;
   }
 }
 
@@ -239,23 +237,23 @@
   }
 
   h1 {
-    font-size: 2.35rem;
-    line-height: 1;
+    font-size: $display-lg;
+    line-height: $leading-none;
   }
 
   h2 {
-    font-size: 1.15rem;
-    line-height: 1.25;
+    font-size: $text-lg;
+    line-height: $leading-snug;
   }
 
   p {
     color: #4f5d66;
-    line-height: 1.6;
+    line-height: $leading-loose;
   }
 
   a {
     color: $accent;
-    font-weight: 800;
+    font-weight: $weight-extrabold;
     text-decoration-thickness: 2px;
     text-underline-offset: 3px;
 
@@ -273,8 +271,8 @@
 .backLink {
   width: $width-fit;
   color: $accent;
-  font-size: 0.92rem;
-  font-weight: 800;
+  font-size: $text-base;
+  font-weight: $weight-extrabold;
   text-decoration-thickness: 2px;
   text-underline-offset: 3px;
 
@@ -306,8 +304,8 @@
 
 .affiliateCardTitle {
   margin: $margin-reset;
-  font-size: 1rem;
-  font-weight: 800;
+  font-size: $text-md;
+  font-weight: $weight-extrabold;
   color: $strong;
 }
 
@@ -315,8 +313,8 @@
   flex-shrink: 0;
   padding: 2px 9px;
   border-radius: 999px;
-  font-size: 0.72rem;
-  font-weight: 800;
+  font-size: $text-2xs;
+  font-weight: $weight-extrabold;
   letter-spacing: 0.02em;
   text-transform: uppercase;
 }
@@ -334,8 +332,8 @@
 .eyebrow {
   margin: $margin-eyebrow;
   color: $accent;
-  font-size: 0.76rem;
-  font-weight: 800;
+  font-size: $text-xs;
+  font-weight: $weight-extrabold;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -404,8 +402,8 @@
 .sectionHeader h2 {
   @include heading;
   color: $text;
-  font-size: 1.35rem;
-  line-height: 1.2;
+  font-size: $text-2xl;
+  line-height: $leading-tight;
 }
 
 .sectionHeader,
@@ -440,8 +438,8 @@
 
 .siteNavBrand {
   font-family: var(--font-display, Georgia, serif);
-  font-size: 1.1rem;
-  font-weight: 700;
+  font-size: $text-lg;
+  font-weight: $weight-bold;
   color: $strong;
   text-decoration: none;
 
@@ -455,8 +453,8 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 18px;
-  font-size: 0.86rem;
-  font-weight: 800;
+  font-size: $text-sm;
+  font-weight: $weight-extrabold;
 
   a {
     color: $text;
@@ -502,8 +500,8 @@
 .blogListDate {
   margin: $margin-reset;
   color: $muted;
-  font-size: 0.76rem;
-  font-weight: 800;
+  font-size: $text-xs;
+  font-weight: $weight-extrabold;
   letter-spacing: 0.07em;
   text-transform: uppercase;
 }
@@ -512,9 +510,9 @@
   margin: $margin-reset;
   color: $strong;
   font-family: var(--font-display, Georgia, serif);
-  font-size: 1.55rem;
-  font-weight: 700;
-  line-height: 1.15;
+  font-size: $text-3xl;
+  font-weight: $weight-bold;
+  line-height: $leading-tight;
   transition: color 0.15s ease;
 }
 
@@ -522,22 +520,22 @@
   max-width: $copy-max-width;
   margin: $margin-reset;
   color: $muted;
-  font-weight: 400;
-  line-height: 1.55;
+  font-weight: $weight-regular;
+  line-height: $leading-loose;
 }
 
 .blogListCta {
   margin-top: 2px;
   color: $accent;
-  font-size: 0.85rem;
-  font-weight: 800;
+  font-size: $text-sm;
+  font-weight: $weight-extrabold;
 }
 
 .blogArticle h2 {
   margin-top: 6px;
   font-family: var(--font-display, Georgia, serif);
-  font-size: 1.5rem;
-  line-height: 1.2;
+  font-size: $text-3xl;
+  line-height: $leading-tight;
 }
 
 @include at($breakpoint-fields) {
@@ -559,7 +557,7 @@
 
     h1 {
       font-family: var(--font-display, Georgia, serif);
-      font-size: 4rem;
+      font-size: $display-2xl;
     }
   }
 
@@ -594,10 +592,10 @@
 
 .languageSwitcherLabel {
   color: $accent;
-  font-size: 0.72rem;
-  font-weight: 800;
+  font-size: $text-2xs;
+  font-weight: $weight-extrabold;
   letter-spacing: 0.08em;
-  line-height: 1;
+  line-height: $leading-none;
   text-transform: uppercase;
 }
 
@@ -619,9 +617,9 @@
   color: #4f5d66;
   cursor: pointer;
   font: inherit;
-  font-size: 0.78rem;
-  font-weight: 800;
-  line-height: 1;
+  font-size: $text-xs;
+  font-weight: $weight-extrabold;
+  line-height: $leading-none;
   transition:
     background-color 150ms ease,
     color 150ms ease,
@@ -676,14 +674,14 @@
 
 .seoFaqTitle {
   font-family: var(--font-display, Georgia, serif);
-  font-size: 1.35rem;
-  font-weight: 700;
+  font-size: $text-2xl;
+  font-weight: $weight-bold;
   color: $strong;
   margin-bottom: 0.25rem;
 }
 
 .seoFaqSubtitle {
-  font-size: 0.9rem;
+  font-size: $text-base;
   color: $muted;
   margin-bottom: 1.25rem;
 }
@@ -708,8 +706,8 @@
 }
 
 .seoFaqQuestion {
-  font-weight: 600;
-  font-size: 0.98rem;
+  font-weight: $weight-semibold;
+  font-size: $text-md;
   color: $strong;
   cursor: pointer;
 
@@ -720,7 +718,7 @@
 
 .seoFaqAnswer {
   margin-top: 0.5rem;
-  font-size: 0.9rem;
-  line-height: 1.5;
+  font-size: $text-base;
+  line-height: $leading-relaxed;
   color: $muted;
 }

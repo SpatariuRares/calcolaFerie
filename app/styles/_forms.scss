@@ -3,8 +3,8 @@
 .label,
 .fieldset legend {
   color: #26342b;
-  font-size: 0.94rem;
-  font-weight: 800;
+  font-size: $text-base;
+  font-weight: $weight-extrabold;
 }
 
 .input {
@@ -41,7 +41,7 @@
   summary {
     padding: $padding-advanced-summary;
     color: $strong;
-    font-weight: 850;
+    font-weight: $weight-heavy;
     cursor: pointer;
 
     &:focus-visible {
@@ -64,8 +64,8 @@
 .mutedText {
   margin: $margin-reset;
   color: $muted;
-  font-size: 0.93rem;
-  line-height: 1.45;
+  font-size: $text-base;
+  line-height: $leading-relaxed;
 }
 
 .dayOffRow {
@@ -95,9 +95,9 @@
   cursor: pointer;
 
   &:has(input:checked) {
-    border-color: #16724f;
+    border-color: $interactive;
     background: #e7f5ee;
-    box-shadow: inset 0 0 0 1px #16724f;
+    box-shadow: inset 0 0 0 1px $interactive;
   }
 
   &:has(input:focus-visible) {
@@ -109,13 +109,13 @@
     width: $control-mark-size;
     height: $control-mark-size;
     margin: $margin-reset;
-    accent-color: #16724f;
+    accent-color: $interactive;
   }
 
   span {
     min-width: $width-zero;
-    font-size: 0.88rem;
-    line-height: 1.25;
+    font-size: $text-sm;
+    line-height: $leading-snug;
   }
 }
 
@@ -124,7 +124,7 @@
 .linkButton {
   border: 0;
   font: inherit;
-  font-weight: 850;
+  font-weight: $weight-heavy;
   cursor: pointer;
 
   &:focus-visible {
@@ -167,7 +167,7 @@
   padding: $padding-link-button;
   background: transparent;
   color: #a23d26;
-  font-size: 0.88rem;
+  font-size: $text-sm;
 }
 
 .submitActions {
@@ -178,8 +178,8 @@
 .shareStatus {
   margin: $margin-status;
   color: $muted;
-  font-size: 0.9rem;
-  line-height: 1.35;
+  font-size: $text-base;
+  line-height: $leading-normal;
 }
 
 .checkboxLine {
@@ -188,8 +188,8 @@
   gap: 9px;
   align-items: start;
   color: #34423a;
-  font-size: 0.9rem;
-  line-height: 1.45;
+  font-size: $text-base;
+  line-height: $leading-relaxed;
 
   &:has(input:focus-visible) {
     @include focus;
@@ -200,12 +200,12 @@
     width: $control-mark-size;
     height: $control-mark-size;
     margin: $margin-checkbox;
-    accent-color: #16724f;
+    accent-color: $interactive;
   }
 
   a {
     color: $accent;
-    font-weight: 800;
+    font-weight: $weight-extrabold;
     text-decoration-thickness: 2px;
     text-underline-offset: 3px;
   }
@@ -213,10 +213,10 @@
 
 .formError {
   margin: $margin-status;
-  color: #96351c;
-  font-size: 0.9rem;
-  font-weight: 750;
-  line-height: 1.35;
+  color: $error;
+  font-size: $text-base;
+  font-weight: $weight-bolder;
+  line-height: $leading-normal;
 }
 
 @include at($breakpoint-fields) {

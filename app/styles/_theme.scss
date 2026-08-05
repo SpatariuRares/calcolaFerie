@@ -1,6 +1,12 @@
 @use "sass:list";
 @use "sass:map";
 
+// Spacing scale — 4px base grid (Tailwind-style): space(1) = 0.25rem = 4px,
+// space(0.5) = 2px. Used for all paddings/margins so spacing stays on the grid.
+@function space($n) {
+  @return $n * 0.25rem;
+}
+
 $surface: #fafaf7;
 $page-bg: #edeae0;
 $text: #1a2228;
@@ -14,7 +20,48 @@ $blue: #1a5a8f;
 $accent: #9a3f2b;
 $accent-strong: #7f3222;
 $accent-soft: #f3e2db;
+// Interactive / status colors (recurring across partials)
+$interactive: #16724f;
+$interactive-hover: #0f5d3f;
+$success-text: #0b5b35;
+$error: #96351c;
 $shadow: 0 10px 28px rgb(25 20 15 / 0.09);
+
+// Typographic scale — UI/body range consolidated, display sizes kept exact
+$text-2xs: 0.7rem;
+$text-xs: 0.78rem;
+$text-sm: 0.85rem;
+$text-base: 0.92rem;
+$text-md: 1rem;
+$text-lg: 1.1rem;
+$text-xl: 1.25rem;
+$text-2xl: 1.35rem;
+$text-3xl: 1.5rem;
+$display-sm: 1.7rem;
+$display-md: 2.1rem;
+$display-lg: 2.35rem;
+$display-xl: 2.6rem;
+$display-2xl: 4rem;
+
+// Font weights — exact values preserved (Inter variable renders the half-steps)
+$weight-regular: 400;
+$weight-medium: 500;
+$weight-semibold: 600;
+$weight-bold: 700;
+$weight-bolder: 750;
+$weight-extrabold: 800;
+$weight-heavy: 850;
+$weight-black: 900;
+
+// Line-height scale — consolidated (drift ≤ 0.05), sub-1 display "flush" kept exact
+$leading-flush: 0.9;
+$leading-none: 1;
+$leading-tight: 1.15;
+$leading-snug: 1.25;
+$leading-normal: 1.4;
+$leading-relaxed: 1.45;
+$leading-loose: 1.55;
+
 // Layout dimensions
 $width-zero: 0;
 $width-full: 100%;
@@ -34,37 +81,39 @@ $form-column-max-width: 400px;
 $hero-title-min-width: 260px;
 $hero-title-max-width: 420px;
 $compact-field-min-width: 120px;
-$control-mark-size: 17px;
-$selection-mark-size: 18px;
+$control-mark-size: 1.0625rem; // 17px — checkbox/radio, scales with font-size
+$selection-mark-size: 1.125rem; // 18px
 $legend-swatch-size: 12px;
-$breakpoint-small: 420px;
-$breakpoint-fields: 540px;
-$breakpoint-footer: 640px;
-$breakpoint-table: 768px;
-$breakpoint-desktop: 860px;
+// Breakpoints in em (media queries: relative to the 16px root, so they react
+// to the user's font-size zoom — identical to the old px values at 100%).
+$breakpoint-small: 26.25em; // 420px
+$breakpoint-fields: 33.75em; // 540px
+$breakpoint-footer: 40em; // 640px
+$breakpoint-table: 48em; // 768px
+$breakpoint-desktop: 53.75em; // 860px
 
-// Reusable margins
+// Reusable margins (on the space() grid; odd px snapped up to the next even)
 $margin-reset: 0;
 $margin-centered: 0 auto;
-$margin-hero: 0 auto 24px;
-$margin-footer: 32px auto 0;
-$margin-about: 20px auto 20px;
-$margin-eyebrow: 0 0 7px;
-$margin-status: -6px 0 0;
-$margin-checkbox: 2px 0 0;
-$margin-footer-bottom: 20px 0 0;
-$margin-selected-results: 22px 0 0;
-$margin-selected-title: 0 0 12px;
-$margin-note: 10px 0 0;
-$margin-top-formula: 2px;
-$margin-top-language: 6px;
-$margin-top-selected-results: 22px;
-$margin-footer-heading: 0 0 2px;
-// Heights
+$margin-hero: 0 auto space(6); // 24px
+$margin-footer: space(8) auto 0; // 32px
+$margin-about: space(5) auto space(5); // 20px
+$margin-eyebrow: 0 0 space(2); // 8px (was 7px)
+$margin-status: space(-1.5) 0 0; // -6px
+$margin-checkbox: space(0.5) 0 0; // 2px
+$margin-footer-bottom: space(5) 0 0; // 20px
+$margin-selected-results: space(5.5) 0 0; // 22px
+$margin-selected-title: 0 0 space(3); // 12px
+$margin-note: space(2.5) 0 0; // 10px
+$margin-top-formula: space(0.5); // 2px
+$margin-top-language: space(1.5); // 6px
+$margin-top-selected-results: space(5.5); // 22px
+$margin-footer-heading: 0 0 space(0.5); // 2px
+// Heights — interactive controls in rem so they grow with the user's font-size
 $height-viewport: 100vh;
-$height-language-control: 30px;
-$height-segment: 44px;
-$height-control: 46px;
+$height-language-control: 1.875rem; // 30px
+$height-segment: 2.75rem; // 44px
+$height-control: 2.875rem; // 46px
 $height-empty-state: 96px;
 
 // Border radii
@@ -76,69 +125,78 @@ $radius-panel: 8px;
 $radius-feature: 10px;
 $radius-pill: 999px;
 
-// Paddings
+// Paddings (on the space() grid; odd px snapped up to the next even)
 $padding-reset: 0;
-$padding-switcher: 2px;
-$padding-bottom-panel-header: 4px;
-$padding-bottom-privacy-header: 2px;
-$padding-link-button: 4px;
-$padding-result-chip: 4px 8px;
-$padding-language-button: 4px 10px;
-$padding-formula-result: 4px 12px;
-$padding-clear-selection: 6px 9px;
-$padding-tooltip: 7px 9px;
-$padding-booking-cta: 7px 14px;
-$padding-compact: 8px;
-$padding-segment: 9px 10px;
-$padding-summary: 10px;
-$padding-input: 10px 12px;
-$padding-button: 11px 15px;
-$padding-card: 12px;
-$padding-emphasis: 12px 16px;
-$padding-summary-feature: 12px 16px;
-$padding-advanced-summary: 13px 14px;
-$padding-advanced-content: 14px;
-$padding-panel: 16px;
-$padding-about: 20px;
-$padding-page-mobile: 28px 16px 44px;
-$padding-page-desktop: 38px 24px 56px;
-$padding-top-footer: 24px;
-$padding-top-section: 16px;
-$padding-section-divider: 18px;
+$padding-switcher: space(0.5); // 2px
+$padding-bottom-panel-header: space(1); // 4px
+$padding-bottom-privacy-header: space(0.5); // 2px
+$padding-link-button: space(1); // 4px
+$padding-result-chip: space(1) space(2); // 4px 8px
+$padding-language-button: space(1) space(2.5); // 4px 10px
+$padding-formula-result: space(1) space(3); // 4px 12px
+$padding-clear-selection: space(1.5) space(2.5); // 6px 10px (was 6px 9px)
+$padding-tooltip: space(2) space(2.5); // 8px 10px (was 7px 9px)
+$padding-booking-cta: space(2) space(3.5); // 8px 14px (was 7px 14px)
+$padding-compact: space(2); // 8px
+$padding-segment: space(2.5) space(2.5); // 10px 10px (was 9px 10px)
+$padding-summary: space(2.5); // 10px
+$padding-input: space(2.5) space(3); // 10px 12px
+$padding-button: space(3) space(4); // 12px 16px (was 11px 15px)
+$padding-card: space(3); // 12px
+$padding-emphasis: space(3) space(4); // 12px 16px
+$padding-summary-feature: space(3) space(4); // 12px 16px
+$padding-advanced-summary: space(3.5) space(3.5); // 14px 14px (was 13px 14px)
+$padding-advanced-content: space(3.5); // 14px
+$padding-panel: space(4); // 16px
+$padding-about: space(5); // 20px
+$padding-page-mobile: space(7) space(4) space(11); // 28px 16px 44px
+$padding-page-desktop: space(9.5) space(6) space(14); // 38px 24px 56px
+$padding-top-footer: space(6); // 24px
+$padding-top-section: space(4); // 16px
+$padding-section-divider: space(4.5); // 18px
 
 $leva: (
-  high: (#fff0a8,
+  high: (
+    #fff0a8,
     #6b4a00,
   ),
-  medium: (#fff0bd,
+  medium: (
+    #fff0bd,
     #765000,
   ),
-  low: (#e8edf0,
+  low: (
+    #e8edf0,
     #4a565e,
   ),
 );
 $days: (
-  workday: (#fff,
+  workday: (
+    #fff,
     $strong,
     #d8e0e6,
   ),
-  weekend: (#e8edf1,
+  weekend: (
+    #e8edf1,
     #5a6670,
     #d8e0e6,
   ),
-  publicHoliday: (#ffd9d0,
+  publicHoliday: (
+    #ffd9d0,
     #8c2f1c,
     #e4b0a3,
   ),
-  companyClosure: (#d7eafa,
+  companyClosure: (
+    #d7eafa,
     #1e557d,
     #9dbfdd,
   ),
-  mandatoryLeave: (#ffe5b8,
+  mandatoryLeave: (
+    #ffe5b8,
     #7b4c00,
     #e4bd7d,
   ),
-  recommendedLeave: (#ccefdc,
+  recommendedLeave: (
+    #ccefdc,
     #0b5b35,
     #8bc9a9,
   ),
