@@ -353,13 +353,8 @@
 .formPanel,
 .formColumn,
 .newsletterPanel,
-.fieldGroup,
-.fieldset,
-.dayOffList,
 .outputStack,
-.outputSection,
-.calendarList,
-.monthBlock {
+.outputSection {
   @include stack(12px);
 }
 

@@ -80,7 +80,7 @@
   border-radius: $radius-feature;
   padding: $padding-emphasis;
   background: $accent;
-  color: #fff;
+  color: $white;
 
   strong {
     font-family: var(--font-display, Georgia, serif);
@@ -211,7 +211,7 @@
   }
 
   dt {
-    color: #5d6971;
+    color: $secondary-text;
     font-size: $text-xs;
     text-transform: none;
   }
@@ -271,7 +271,7 @@
 .selectedTableWrap {
   display: none;
   overflow-x: auto;
-  border: 1px solid #e2e8ed;
+  border: 1px solid $subtle-border;
   border-radius: $radius-panel;
 
   .resultsTable {
@@ -280,7 +280,7 @@
 
   tfoot th,
   tfoot td {
-    background: #f6f8fa;
+    background: $subtle-surface;
     color: $strong;
     font-weight: $weight-heavy;
   }
@@ -317,7 +317,7 @@
 }
 
 .selectedVacationCardDays {
-  color: #5d6971;
+  color: $secondary-text;
   font-size: $text-sm;
   font-weight: $weight-bold;
 }
@@ -326,10 +326,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: 1px solid #e2e8ed;
+  border: 1px solid $subtle-border;
   border-radius: $radius-panel;
   padding: $padding-summary;
-  background: #f6f8fa;
+  background: $subtle-surface;
   color: $strong;
   font-weight: $weight-heavy;
 }
@@ -343,14 +343,14 @@
 
   th,
   td {
-    border-bottom: 1px solid #e2e8ed;
+    border-bottom: 1px solid $subtle-border;
     padding: $padding-summary;
     text-align: left;
     vertical-align: top;
   }
 
   thead th {
-    background: #f6f8fa;
+    background: $subtle-surface;
     color: $muted;
     font-size: $text-2xs;
     font-weight: $weight-heavy;
@@ -428,7 +428,7 @@
   border-radius: $radius-pill;
   padding: $padding-booking-cta;
   background: $green;
-  color: #fff;
+  color: $white;
   font-size: $text-sm;
   font-weight: $weight-heavy;
   line-height: $leading-tight;
@@ -487,15 +487,15 @@
   display: block;
   width: 1rem; // 16px
   height: 0.75rem; // 12px
-  border-top: 2px solid #fff;
-  border-bottom: 2px solid #fff;
+  border-top: 2px solid $white;
+  border-bottom: 2px solid $white;
 
   &::before {
     position: absolute;
     top: 0.1875rem; // 3px
     left: 0;
     width: 1rem;
-    border-top: 2px solid #fff;
+    border-top: 2px solid $white;
     content: "";
   }
 }
@@ -519,7 +519,7 @@
   padding: 6px;
   border: 1px solid $border;
   border-radius: 10px;
-  background: #fff;
+  background: $white;
   box-shadow: 0 8px 20px rgb(0 0 0 / 15%);
   list-style: none;
 }
@@ -544,20 +544,20 @@
 
 .affiliateLabel {
   font-size: $text-2xs;
-  color: #5d6971;
+  color: $secondary-text;
   font-weight: $weight-medium;
 }
 
 .resultsDisclaimer {
   margin: $margin-note;
-  color: #5d6971;
+  color: $secondary-text;
   font-size: $text-xs;
   line-height: $leading-normal;
 }
 
 .affiliateDisclosure {
   margin: $margin-note;
-  color: #5d6971;
+  color: $secondary-text;
   font-size: $text-xs;
   line-height: $leading-normal;
 }
@@ -570,14 +570,14 @@
   border-radius: $radius-panel;
   padding: $padding-panel;
   background: #f5f1e8;
-  color: #34423a;
+  color: $content-text;
 
   strong {
     color: $strong;
   }
 
   span {
-    color: #5d6971;
+    color: $secondary-text;
     font-size: $text-base;
     line-height: $leading-relaxed;
   }
@@ -591,7 +591,7 @@
   .desktopTableWrap {
     display: block;
     overflow-x: auto;
-    border: 1px solid #e2e8ed;
+    border: 1px solid $subtle-border;
     border-radius: $radius-panel;
   }
 

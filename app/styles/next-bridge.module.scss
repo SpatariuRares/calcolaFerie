@@ -34,7 +34,7 @@
 .title {
   @include t.heading;
   margin-top: 4px;
-  font-family: var(--font-display), serif;
+  font-family: var(--font-display, Georgia, serif);
   font-size: t.$text-3xl;
   line-height: t.$leading-tight;
   color: t.$strong;

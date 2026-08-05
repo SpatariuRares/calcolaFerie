@@ -18,7 +18,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: #34423a;
+  color: $content-text;
   font-size: $text-xs;
   font-weight: $weight-bolder;
   line-height: $leading-tight;
@@ -81,8 +81,7 @@
 }
 
 .calendarList {
-  display: grid;
-  gap: 12px;
+  @include stack(12px);
   grid-template-columns: minmax(0, 1fr);
 }
 
@@ -93,7 +92,7 @@
 }
 
 .monthBlock {
-  gap: 8px;
+  @include stack(8px);
   border: 1px solid $border;
   border-radius: $radius-panel;
   padding: $padding-card;
@@ -170,7 +169,7 @@
     border-radius: $radius-control;
     padding: $padding-tooltip;
     background: #17211b;
-    color: #fff;
+    color: $white;
     content: attr(data-tooltip);
     font-size: $text-xs;
     font-weight: $weight-bolder;
@@ -198,9 +197,9 @@
 .dayCellSelected {
   border-color: $success-text;
   background: #0f7a4f;
-  color: #fff;
+  color: $white;
   box-shadow:
-    inset 0 0 0 2px #fff,
+    inset 0 0 0 2px $white,
     0 0 0 2px #0f7a4f;
 }
 

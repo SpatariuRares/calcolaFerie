@@ -1,5 +1,11 @@
 @use "./theme" as *;
 
+.fieldGroup,
+.fieldset,
+.dayOffList {
+  @include stack(12px);
+}
+
 .label,
 .fieldset legend {
   color: #26342b;
@@ -187,7 +193,7 @@
   grid-template-columns: auto minmax(0, 1fr);
   gap: 9px;
   align-items: start;
-  color: #34423a;
+  color: $content-text;
   font-size: $text-base;
   line-height: $leading-relaxed;
 
