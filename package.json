@@ -32,7 +32,7 @@
     "@vercel/analytics": "2.0.1",
     "@vercel/speed-insights": "^2.0.0",
     "gray-matter": "^4.0.3",
-    "material-symbols": "^0.45.9",
+    "material-symbols": "^0.45.10",
     "next": "16.2.12",
     "next-intl": "^4.13.3",
     "next-mdx-remote": "^6.0.0",
