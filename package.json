@@ -34,7 +34,7 @@
     "gray-matter": "^4.0.3",
     "material-symbols": "^0.45.9",
     "next": "16.2.12",
-    "next-intl": "^4.13.3",
+    "next-intl": "^4.13.5",
     "next-mdx-remote": "^6.0.0",
     "react": "19.2.7",
     "react-dom": "19.2.7"
